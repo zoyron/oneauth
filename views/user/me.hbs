@@ -59,6 +59,11 @@
                       <div>
                           <span class="faded">{{user.mobile_number}}</span>
                       </div>
+                      {{#unless user.verifiedmobile}}
+                          <a href="/verifymobile">
+                              <button class="red">Verify</button>
+                          </a>
+                      {{/unless}}
                   </div>
                 {{/if}}
 
