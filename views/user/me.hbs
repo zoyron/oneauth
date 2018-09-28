@@ -59,11 +59,6 @@
                       <div>
                           <span class="faded">{{user.mobile_number}}</span>
                       </div>
-                      {{#unless user.verifiedmobile}}
-                          <a href="/verifymobile">
-                              <button class="red">Verify</button>
-                          </a>
-                      {{/unless}}
                   </div>
                 {{/if}}
 
@@ -75,6 +70,18 @@
                                 <a class="grey" href="mailto:{{user.email}}">{{user.verifiedemail}}</a>
                             {{else}}
                                 <a class="grey" href="#">Not Verified</a>
+                            {{/if}}
+                        </span>
+                    </div>
+                </div>
+                <div id="profile-row-lastname" class="flex-row">
+                    <div>Verified Mobile Number</div>
+                    <div>
+                        <span class="faded">
+                            {{#if user.verifiedmobile}}
+                                <a class="grey">{{user.verifiedmobile}}</a>
+                            {{else}}
+                                <a class="grey" href="/verifymobile">Not Verified</a>
                             {{/if}}
                         </span>
                     </div>
