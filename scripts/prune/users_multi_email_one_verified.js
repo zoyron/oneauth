@@ -26,7 +26,7 @@ HAVING
 ORDER BY "count" DESC, "users"."email" ASC
         `)
         console.log("Going to delete " + users.length + " users")
-        for (user of users) {
+        for (let user of users) {
             console.log("Deleting for " + user.email )
             await User.destroy({
                 where: {

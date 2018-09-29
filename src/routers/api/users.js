@@ -49,7 +49,7 @@ router.get('/me',
             let includes = []
             if (req.query.include) {
                 let includedAccounts = req.query.include.split(',')
-                for (ia of includedAccounts) {
+                for (let ia of includedAccounts) {
                     switch (ia) {
                         case 'facebook':
                             includes.push({ model: models.UserFacebook, attributes: {exclude: ["accessToken","refreshToken"]}})
@@ -99,7 +99,7 @@ router.get('/me/address',
             }]
             if (req.query.include) {
                 let includedAccounts = req.query.include.split(',')
-                for (ia of includedAccounts) {
+                for (let ia of includedAccounts) {
                     switch (ia) {
                         case 'facebook':
                             includes.push({ model: models.UserFacebook, attributes: {exclude: ["accessToken","refreshToken"]}})

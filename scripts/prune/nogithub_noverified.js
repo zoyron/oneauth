@@ -29,7 +29,7 @@ having
         `)
         console.log("Going to delete " + users.length + " users")
         /* Delete all without verified emails */
-        for (user of users) {
+        for (let user of users) {
             console.log("Deleting for " + user.email )
             await User.destroy({
                 where: {
