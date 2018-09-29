@@ -31,7 +31,7 @@ having
         `)
         console.log("Going to delete " + users.length + " users")
         /* Delete the ones which are not verified */
-        for (user of users) {
+        for (let user of users) {
             console.log("Deleting for " + user.email )
             await User.destroy({
                 where: {

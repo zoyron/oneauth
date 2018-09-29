@@ -28,7 +28,7 @@ if (!flags.list && !flags.migrate) {
 if (flags.list) {
     fs.readdir(__dirname + '/../migrations', (err, items) => {
         if (err) throw err;
-        for (item of items) {
+        for (let item of items) {
             debug(item);
         }
     })
