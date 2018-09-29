@@ -6,6 +6,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/coding-blocks/oneauth/badge)](https://www.codefactor.io/repository/github/coding-blocks/oneauth)
 [![codebeat badge](https://codebeat.co/badges/93d5f023-5bab-40c0-9c65-aeb724814bd3)](https://codebeat.co/projects/github-com-coding-blocks-oneauth-master)
 [![Known Vulnerabilities](https://snyk.io/test/github/coding-blocks/oneauth/badge.svg)](https://snyk.io/test/github/coding-blocks/oneauth)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/coding-blocks/oneauth.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/coding-blocks/oneauth/alerts/)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/coding-blocks/oneauth.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/coding-blocks/oneauth/context:javascript)
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=championswimmer&url=https://github.com/coding-blocks/oneauth&title=oneauth&language=&tags=github&category=software)
 
