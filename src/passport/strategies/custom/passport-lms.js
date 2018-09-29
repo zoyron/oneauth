@@ -131,7 +131,7 @@ Strategy.prototype.authenticate = function (req, options) {
 }
 
 
-exports = module.exports = LmsStrategy
+module.exports = exports = LmsStrategy
 exports.Strategy = LmsStrategy
 
 /**
