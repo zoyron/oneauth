@@ -73,7 +73,7 @@ server.exchange(oauth.exchange.code(
                 return done(null,false) //Wrong Client ID
             }
             let callbackMatch = false
-            for (url of client.callbackURL) {
+            for (let url of client.callbackURL) {
                 if (redirectURI.startsWith(url)) callbackMatch = true
             }
             if (!callbackMatch) {
@@ -97,7 +97,7 @@ const authorizationMiddleware = [
         try {
             const client = await findClientById(clientId);
             debug(callbackURL)
-            for (url of client.callbackURL) {
+            for (let url of client.callbackURL) {
                 if (callbackURL.startsWith(url)) {
                     return done(null, client, callbackURL)
                 }
