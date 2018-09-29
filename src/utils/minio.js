@@ -13,7 +13,7 @@ const minioClient = new AWS.S3 ({
 function deleteObject(bucket, key) {
     if (typeof bucket !== 'string') {
         throw new Error('bucket not a string')
-    } else if (typeof bucket !== 'string') {
+    } else if (typeof key !== 'string') {
         throw new Error('key not a string')
     }
     minioClient.deleteObject({Bucket: bucket, Key: key},function (err, data) {
