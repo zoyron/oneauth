@@ -211,4 +211,4 @@ router.post('/password/new', makeGaEvent('submit', 'form', 'forgot.password.new'
 })
 
 
-exports = module.exports = router
+module.exports = router
