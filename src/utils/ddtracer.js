@@ -31,7 +31,7 @@ const expresstracer = (req, res, next) => {
     next()
 }
 
-module.exports = exports = {
+module.exports = {
     expresstracer,
     datadogRouter,
     tracer
