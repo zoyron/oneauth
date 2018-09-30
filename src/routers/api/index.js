@@ -8,8 +8,13 @@ const { apiLimiter } = require('../../middlewares/ratelimit')
 router.use((req, res, next) => {
     res.set('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization')
     res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-    res.set('Access-Control-Allow-Origin', req.get('origin'))
-    res.set('Access-Control-Allow-Credentials', true)
+
+    let origin = req.get('origin')
+    if (origin.indexOf('codingblocks.com') !== -1) {
+        res.set('Access-Control-Allow-Credentials', true)
+        res.set('Access-Control-Allow-Origin', origin)
+    }
+
     next()
 })
 router.use(apiLimiter)
