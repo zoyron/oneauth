@@ -1,16 +1,18 @@
 {{!< centercolumn}}
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/script.js"></script>
 <div class="offset-md-4 col-md-8 c-profile-edit">
     <div class="card">
             <div class="heading-u-red">Edit Profile</div>
 
             <form id="edit-form" enctype="multipart/form-data" method="POST">
-                {{#if user.email}} 
+                {{#if user.email}}
                     {{#unless user.mobile_number}}
                         <div class="alert alert-danger" role="alert">
                             Please enter your mobile number to continue.
                         </div>
-                    {{/unless}} 
-                {{else}} 
+                    {{/unless}}
+                {{else}}
                     {{#if user.mobile_number}}
                         <div class="alert alert-danger" role="alert">
                             Please enter your email address to continue.
