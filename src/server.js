@@ -11,6 +11,7 @@ const express = require('express')
     , exphbs = require('express-hbs')
     , expressGa = require('express-ga-middleware')
     , flash = require('express-flash')
+    , csurf = require('csurf')
     , Raven = require('raven')
     , debug = require('debug')('oneauth:server')
 
@@ -102,6 +103,7 @@ app.use(saveIp)
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(csurf({cookie: true}))
 app.use(setuserContext)
 app.use(redirectToHome)
 app.use(expressGa('UA-83327907-12'))
@@ -116,7 +118,7 @@ app.use('/verifyemail', verifyemailrouter)
 app.use('/api', apirouter)
 app.use('/oauth', oauthrouter)
 app.use('/', pagerouter)
-app.get('*', (req, res) => res.render('404')); 
+app.get('*', (req, res) => res.render('404'));
 
 app.use(Raven.errorHandler())
 
