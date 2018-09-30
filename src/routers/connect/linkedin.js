@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const passport = require('../../passport/passporthandler')
 
-const config = require('../../../config')
 const debug = require('debug')('oauth:connect:linkedin')
 
 
