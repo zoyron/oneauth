@@ -131,8 +131,10 @@ Strategy.prototype.authenticate = function (req, options) {
 }
 
 
-module.exports = LmsStrategy
+exports = LmsStrategy
 exports.Strategy = LmsStrategy
+
+module.exports = exports
 
 /**
  * @callback Strategy~verifyCallback
