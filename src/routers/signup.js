@@ -47,7 +47,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         }
 
         const userByEmail = await findUserByParams({email: req.body.email})
-        if (User) {
+        if (userByEmail) {
             req.flash('error', 'Email already exists. Please try again.')
             return res.redirect('/signup')
         }
