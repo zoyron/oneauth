@@ -3,7 +3,6 @@ const cel = require('connect-ensure-login')
 const router = require('express').Router()
 
 const models = require('../../../db/models').models
-const acl = require('../../../middlewares/acl')
 const {hasNull} = require('../../../utils/nullCheck')
 const passutils = require('../../../utils/password')
 const multer = require('../../../utils/multer')
