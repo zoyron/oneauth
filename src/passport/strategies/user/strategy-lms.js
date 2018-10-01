@@ -7,7 +7,6 @@ const models = require('../../../db/models').models
 
 const config = require('../../../../config')
 const secrets = config.SECRETS
-const passutils = require('../../../utils/password')
 
 
 module.exports = new LmsStrategy({

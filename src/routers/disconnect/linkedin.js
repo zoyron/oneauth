@@ -1,4 +1,3 @@
-const router = require('express').Router()
 const models = require('../../db/models').models
 
 function DisconnectLinkedin(req, res) {

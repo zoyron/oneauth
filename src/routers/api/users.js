@@ -4,7 +4,6 @@
  * This is the /api/v1/users path
  */
 const router = require('express').Router()
-const cel = require('connect-ensure-login')
 const passport = require('../../passport/passporthandler')
 const models = require('../../db/models').models
 
@@ -142,7 +141,7 @@ router.get('/me/logout',
         if (req.user && req.user.id) {
             let token = req.header('Authorization').split(' ')[1];
             try {
-                const del = await deleteAuthToken(token)
+                await deleteAuthToken(token)
                 res.status(202).send({
                     'user_id': req.user.id,
                     'logout': "success"
