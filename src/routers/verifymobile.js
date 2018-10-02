@@ -8,6 +8,9 @@ const models = require('../db/models').models
 const cel = require('connect-ensure-login')
 const {findUserById} = require('../controllers/user')
 const Raven = require('raven')
+const request = require('request')
+const secrets = require('../../secrets')
+const debug = require('debug')('mobileVerification:routes:verifymobile')
 
 route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
 
@@ -21,6 +24,27 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
         }
 
         const key = Math.floor(Math.random() * 1000000) //creates a 6 digit random number.
+
+        var options = {
+            method: 'POST',
+            url: 'http://sms.smscollection.com/sendsmsv2.asp',
+            qs: {
+                user: secrets.MOBILE_VERIFY_USERNAME,
+                password: secrets.MOBILE_VERIFY_PASS,
+                sender: 'CDGBLK',
+                text: 'Your OTP for verification is ' + key,
+                PhoneNumber: user.mobile_number
+            }
+        }
+
+        request(options, function (error, response, body) {
+
+            if (error) {
+                throw new Error(error)
+            }
+
+            debug(body)
+        })
 
         await models.Verifymobile.upsert({
             mobile_number: user.dataValues.mobile_number,
@@ -72,7 +96,7 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
                 }
             })
 
-        }else{
+        } else {
             req.flash('error', 'You have entered an incorrect OTP.')
             return res.redirect('/verifymobile')
         }
