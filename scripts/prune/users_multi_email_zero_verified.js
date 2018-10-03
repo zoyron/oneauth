@@ -9,7 +9,7 @@ const {db, models: {
 async function runPrune() {
     try {
         // Only deleting older than 01 May 2018
-        const users = await db.query(`
+        const [users] = await db.query(`
 SELECT  
         count("email") AS "count", 
         count("verifiedemail") as "Verified", 
