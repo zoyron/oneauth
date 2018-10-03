@@ -5,10 +5,9 @@
  */
 const router = require('express').Router()
 const OauthMiddewares = require('../oauth/oauthserver').Middlewares
-const { authLimiter } = require('../middlewares/ratelimit')
+const { authLimiter, apiLimiter } = require('../middlewares/ratelimit')
 
-router.use(authLimiter)
-router.get('/authorize', OauthMiddewares.authorizationMiddleware)
-router.post('/dialog/authorize/decision', OauthMiddewares.decisionMiddleware)
-router.post('/token', OauthMiddewares.tokenMiddleware)
+router.get('/authorize', authLimiter, OauthMiddewares.authorizationMiddleware)
+router.post('/dialog/authorize/decision', authLimiter, OauthMiddewares.decisionMiddleware)
+router.post('/token', apiLimiter, OauthMiddewares.tokenMiddleware)
 module.exports = router
