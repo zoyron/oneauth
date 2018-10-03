@@ -91,7 +91,6 @@ app.use(express.static(path.join(__dirname, '../public_static')))
 app.use(express.static(path.join(__dirname, '../submodules/motley/examples/public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(profilePhotoMiddleware)
 app.use(session({
     store: sessionStore,
     secret: secrets.EXPRESS_SESSION_SECRET,
@@ -112,6 +111,7 @@ app.use(redirectToHome)
 app.use(expressGa('UA-83327907-12'))
 app.use(datadogRouter)
 app.use('/api', apirouter)
+app.use(profilePhotoMiddleware)
 app.use(csurf({cookie: false}))
 app.use((req, res, next) => {
     res.locals.csrfToken = req.csrfToken() // Inject csrf to hbs views

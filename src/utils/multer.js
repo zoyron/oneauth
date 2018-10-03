@@ -1,7 +1,7 @@
 const Multer = require ('multer'),
     MulterS3 = require ('multer-s3'),
-    Minio = require ('./minio')
-;
+    Raven = require('raven')
+    Minio = require ('./minio');
 
 const upload = Multer ({
     storage: MulterS3 ({
@@ -9,9 +9,13 @@ const upload = Multer ({
         bucket: 'oneauth-assets',
         contentType: MulterS3.AUTO_CONTENT_TYPE,
         key: function (request, file, callback) {
-
-            let srvFileName = 'user' + request.user.id + "_" + Date.now() + '.' + file.originalname.split('.').pop()
-            callback (null, srvFileName)
+            try {
+              let srvFileName = 'user' + request.user.id + "_" + Date.now() + '.' + file.originalname.split('.').pop()
+              callback (null, srvFileName)
+            } catch (e) {
+                Raven.captureException(e)
+              callback(new Error('Photo Upload Exeption'))
+            }
         }
     }),
     limits: {
