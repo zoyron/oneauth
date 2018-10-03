@@ -5,7 +5,8 @@
          <div class="heading-u-red">
              Forgot Username
          </div>
-         <form action="/forgot/username" method="post">
+         <form action="/forgot/username" method="POST">
+             <input type="hidden" name="_csrf" value="{{csrfToken}}">
              {{#if messages.error}}
                  <div class="alert alert-danger" role="alert">
                      {{messages.error}}

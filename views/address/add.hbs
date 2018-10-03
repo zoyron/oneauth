@@ -4,6 +4,7 @@
     <div class="heading-u-red">Add Address</div>
 
       <form action="/api/address" method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <input type="hidden" name="returnTo" id="redirect-input" />
 
         <div class="attributes">

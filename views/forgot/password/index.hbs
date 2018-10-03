@@ -5,6 +5,7 @@
             Forgot Password
         </div>
         <form action="/forgot/password" method="post">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
             {{#if messages.error}}
                 <div class="alert alert-danger" role="alert">
                     {{messages.error}}

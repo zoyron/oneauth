@@ -10,6 +10,7 @@
         {{/if}}
 
         <form class="form-group" method="post">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
             <div class="attributes">
                 <div class="row no-gutters align-items-center justify-content-between detail-row">
                     <div class="label-input col-2">UserID</div>

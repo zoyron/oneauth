@@ -4,6 +4,7 @@
   <h2 class="text-center thin-font custom-h2">AUTHORIZE APP</h2>
 </div>
 <form class="form-group p-4 auth-form" method="post" action="/oauth/dialog/authorize/decision">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <p>
         Hello, {{user.firstname}} {{user.lastname}} ( <span class="bold">{{user.username}}</span> )
     </p>

@@ -3,6 +3,7 @@
     <div class="card">
         <div class="heading-u-red">Edit Details for {{address.id}}</div>
 <form class="form-group" method="post" action="/api/address/{{address.id}}">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input type="hidden" name="returnTo" id="redirect-input">
             <div class="attributes">
                 <div class="row no-gutters align-items-center justify-content-between detail-row">
