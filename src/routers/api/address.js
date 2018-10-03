@@ -19,6 +19,12 @@ router.post('/', cel.ensureLoggedIn('/login'),async function (req, res) {
         if (req.query) {
             var redirectUrl = req.query.returnTo;
         }
+
+        if(!req.body.label){
+            req.flash('error', 'Please provide the label of the address.')
+            return res.redirect('/address/add')
+        }
+
         try {
             const [demographics, created] = await findOrCreateDemographic(req.user.id);
             const options = {
@@ -58,6 +64,11 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
     }
     let addrId = parseInt(req.params.id)
     let userId = parseInt(req.user.id)
+
+    if(!req.body.label){
+        req.flash('error', 'Please provide the label of the address.')
+        return res.redirect('/address/' + req.params.id + '/edit')
+    }
 
 
     try {
