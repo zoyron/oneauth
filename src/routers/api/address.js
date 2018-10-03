@@ -22,7 +22,7 @@ router.post('/', cel.ensureLoggedIn('/login'),async function (req, res) {
 
         if(!req.body.label){
             req.flash('error', 'Please provide the label of the address.')
-            return res.redirect('/address')
+            return res.redirect('/address/add')
         }
 
         try {
