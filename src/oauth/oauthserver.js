@@ -10,7 +10,7 @@ const {
     createGrantCode,
     createAuthToken,
     findGrantCode,
-    findAuthToken, 
+    findAuthToken,
     findOrCreateAuthToken
 } = require('../controllers/oauth');
 const {findClientById} = require('../controllers/clients');
@@ -65,7 +65,7 @@ server.grant(oauth.grant.token(
 server.exchange(oauth.exchange.code(
     async function (client, code, redirectURI, done) {
         try {
-            const grantCode = await findGrantCode(code)    
+            const grantCode = await findGrantCode(code)
             if (!grantCode) {
                 return done(null,false) // Grant code does not exist
             }
@@ -79,7 +79,7 @@ server.exchange(oauth.exchange.code(
             if (!callbackMatch) {
                 return done(null,false) // Wrong redirect URI
             }
-            const [authToken, created] = await findOrCreateAuthToken(grantCode)
+            const [authToken /*, created */] = await findOrCreateAuthToken(grantCode)
             grantCode.destroy()
             return done(null, authToken.token);
         } catch (error) {

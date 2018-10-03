@@ -1,18 +1,18 @@
-const generator = require("../utils/generator");
-const { Client, Demographic, Address, User, EventSubscription } = require("../db/models").models;
+// const generator = require("../utils/generator");
+// const { Client, Demographic, Address, User, EventSubscription } = require("../db/models").models;
 
 function deleteEventSubscription(id) {
   return EventSubscription.destroy({
-    where: { 
-      clientId: id 
+    where: {
+      clientId: id
     }
   });
 }
 
 function findAllEventSubscription(id) {
   return EventSubscription.findAll({
-    where: { 
-      clientId: id 
+    where: {
+      clientId: id
     }
   });
 }

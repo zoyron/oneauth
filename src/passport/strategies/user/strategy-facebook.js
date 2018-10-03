@@ -8,8 +8,7 @@ const models = require('../../../db/models').models
 
 const config = require('../../../../config')
 const secrets = config.SECRETS
-const passutils = require('../../../utils/password')
-const debug = require('debug')('oauth:strategy:facebook')
+// const debug = require('debug')('oauth:strategy:facebook')
 
 
 /**
@@ -105,7 +104,7 @@ module.exports = new FacebookStrategy({
                     let oldIds = existingUsers.map(eu => eu.id).join(',')
                     return cb(null, false, {
                         message: `
-                    Your email id "${profileJson.email}" is already used in the following Coding Blocks Account(s): 
+                    Your email id "${profileJson.email}" is already used in the following Coding Blocks Account(s):
                     [ ${oldIds} ]
                     Please log into your old account and connect Facebook in it instead.
                     Use 'Forgot Password' option if you do not remember password of old account`
