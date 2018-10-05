@@ -113,6 +113,7 @@ app.use(datadogRouter)
 app.use('/api', apirouter)
 app.use(profilePhotoMiddleware)
 app.use('/oauth', oauthrouter)
+app.use('/verifyemail', verifyemailrouter)
 app.use(csurf({cookie: false}))
 app.use((req, res, next) => {
     res.locals.csrfToken = req.csrfToken() // Inject csrf to hbs views
@@ -124,7 +125,6 @@ app.use('/login', loginrouter)
 app.use(redirectToEditProfile);
 app.use('/disconnect', disconnectrouter)
 app.use('/connect', connectrouter)
-app.use('/verifyemail', verifyemailrouter)
 app.use('/', pagerouter)
 app.get('*', (req, res) => res.render('404'));
 
