@@ -7,8 +7,6 @@ $(function () {
     var btnClear = $("#btn-clear")
     var userImg = $('.user-pic')
     const origPic = $(userImg[0]).attr('src')
-    var callbackInput = $("form input[name=callback]")
-    var callbackWarning = $("#callback-warning")
 
     picInput.change(function () {
         if (picInput.val() === "") {
@@ -49,16 +47,6 @@ $(function () {
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    callbackInput.change(function () {
-        let hashRegEx = /\/#\//
-        if (hashRegEx.test(callbackInput.val())) {
-            callbackWarning.removeClass('hidden')
-        }
-        else{
-            callbackWarning.addClass('hidden')
-        }
-    })
 
 //------------------------------------------------Profile Picture Update------------------------------------------------
 
