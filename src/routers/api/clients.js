@@ -33,7 +33,7 @@ router.post('/add', async function (req, res) {
     let hashRegEx = /\/#\//
     if (hashRegEx.test(req.body.callback)) {
         req.flash('error', '"/#/" is not allowed in Callback URL')
-        return res.redirect('/users/me')
+        return res.redirect('/clients/add')
     }
 
     let options = {
@@ -71,7 +71,7 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
             let hashRegEx = /\/#\//
             if (hashRegEx.test(req.body.callback)) {
                 req.flash('error', '"/#/" is not allowed in Callback URL')
-                return res.redirect('/users/me')
+                return res.redirect('/clients/' + req.params.id + '/edit')
             }
 
             if(req.user.role === 'admin'){
