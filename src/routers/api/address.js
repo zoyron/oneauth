@@ -10,23 +10,27 @@ const {
     updateAddressbyAddrId,
     findDemographic,
     createAddress
-} = require('../../controllers/demographics');
+} = require('../../controllers/demographics')
 
-router.post('/', cel.ensureLoggedIn('/login'),async function (req, res) {
+router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
     if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId'])) {
         res.send(400)
     } else {
-        if (req.query) {
-            var redirectUrl = req.query.returnTo;
+        let returnTo = false
+        if (req.query && req.query.returnTo) {
+            returnTo = req.query.returnTo
+        }
+        if (req.body && req.body.returnTo) {
+            returnTo = req.query.returnTo
         }
 
-        if(!req.body.label){
+        if (!req.body.label) {
             req.flash('error', 'Please provide the label of the address.')
             return res.redirect('/address/add')
         }
 
         try {
-            const [demographics, created] = await findOrCreateDemographic(req.user.id);
+            const [demographics, created] = await findOrCreateDemographic(req.user.id)
             const options = {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
@@ -44,16 +48,16 @@ router.post('/', cel.ensureLoggedIn('/login'),async function (req, res) {
                 // if no addresses, then first one added is primary
                 primary: !demographics.get().addresses
             }
-            const address = await createAddress(options); 
-            if (req.body.returnTo) {
-                res.redirect(req.body.returnTo)
-            } else{
+            const address = await createAddress(options)
+            if (returnTo) {
+                res.redirect(returnTo)
+            } else {
                 res.redirect('/address/' + address.id)
-            }           
+            }
         } catch (err) {
             Raven.captureException(err)
             req.flash('error', 'Error inserting Address')
-            res.redirect('/users/me')
+            return res.redirect('/address/add')
         }
     }
 })
@@ -65,7 +69,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
     let addrId = parseInt(req.params.id)
     let userId = parseInt(req.user.id)
 
-    if(!req.body.label){
+    if (!req.body.label) {
         req.flash('error', 'Please provide the label of the address.')
         return res.redirect('/address/' + req.params.id + '/edit')
     }
@@ -74,26 +78,26 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
     try {
         await db.transaction(async (t) => {
             if (req.body.primary === 'on') {
-                let demo = await findDemographic(req.user.id);
+                let demo = await findDemographic(req.user.id)
                 let demoId = demo.id
                 await updateAddressbyDemoId(demoId, {primary: false})
             }
 
-            await updateAddressbyAddrId(addrId,{
-                    label: req.body.label || null,
-                    first_name: req.body.first_name,
-                    last_name: req.body.last_name,
-                    mobile_number: req.body.number,
-                    email: req.body.email,
-                    pincode: req.body.pincode,
-                    street_address: req.body.street_address,
-                    landmark: req.body.landmark,
-                    city: req.body.city,
-                    stateId: req.body.stateId,
-                    countryId: req.body.countryId,
-                    whatsapp_number: req.body.whatsapp_number || null,
-                    primary: req.body.primary === 'on'
-                })
+            await updateAddressbyAddrId(addrId, {
+                label: req.body.label || null,
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                mobile_number: req.body.number,
+                email: req.body.email,
+                pincode: req.body.pincode,
+                street_address: req.body.street_address,
+                landmark: req.body.landmark,
+                city: req.body.city,
+                stateId: req.body.stateId,
+                countryId: req.body.countryId,
+                whatsapp_number: req.body.whatsapp_number || null,
+                primary: req.body.primary === 'on'
+            })
             if (req.body.returnTo) {
                 return res.redirect(req.body.returnTo)
             } else {
