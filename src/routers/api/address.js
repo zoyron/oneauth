@@ -23,6 +23,9 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
         if (req.body && req.body.returnTo) {
             returnTo = req.query.returnTo
         }
+        if (req.session && req.session.returnTo) {
+            returnTo = req.query.returnTo
+        }
 
         if (!req.body.label) {
             req.flash('error', 'Please provide the label of the address.')
