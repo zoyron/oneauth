@@ -83,6 +83,19 @@ router.get('/edit',
 router.post('/edit',
   cel.ensureLoggedIn('/login'),
   async function (req, res, next) {
+    let returnTo = '/users/me'
+
+    if (req.query && req.query.returnTo) {
+        returnTo = req.query.returnTo
+    }
+    if (req.body && req.body.returnTo) {
+        returnTo = req.query.returnTo
+    }
+    if (req.session && req.session.returnTo) {
+        returnTo = req.query.returnTo
+    }
+
+
     //exit if password doesn't match
     if ((req.body.password) && (req.body.password !== req.body.repassword)) {
       req.flash('error', 'Passwords do not match')
@@ -168,7 +181,7 @@ router.post('/edit',
           password: passHash
         })
       }
-      res.redirect('/users/me')
+      res.redirect(returnTo)
     } catch (err) {
       Raven.captureException(err)
       req.flash('error', 'Error in Server')
