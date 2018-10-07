@@ -30,6 +30,12 @@ router.post('/add', async function (req, res) {
         return res.status(403).send("Only logged in users can make clients")
     }
 
+    let hashRegEx = /\/#\//
+    if (hashRegEx.test(req.body.callback)) {
+        req.flash('error', '"/#/" is not allowed in Callback URL')
+        return res.redirect('/clients/add')
+    }
+
     let options = {
         clientName : req.body.clientname,
         clientDomains : req.body.domain.replace(/ /g, '').split(';'),
@@ -40,6 +46,7 @@ router.post('/add', async function (req, res) {
     if (req.body.webhookURL && isURL(req.body.webhookURL)) {
       options.webhookURL = req.body.webhookURL
     }
+
     try {
         const clientid = await createClient(options, req.user.id)
         res.redirect('/clients/' + clientid.id)
@@ -61,6 +68,12 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
                 defaultURL : req.body.defaulturl.replace(/ /g, ''),
                 trustedClient : false
             }
+            let hashRegEx = /\/#\//
+            if (hashRegEx.test(req.body.callback)) {
+                req.flash('error', '"/#/" is not allowed in Callback URL')
+                return res.redirect('/clients/' + req.params.id + '/edit')
+            }
+
             if(req.user.role === 'admin'){
                 options.trustedClient = req.body.trustedClient
             }
