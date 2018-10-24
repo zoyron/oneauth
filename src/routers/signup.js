@@ -9,7 +9,7 @@ const models = require('../db/models').models
 const passutils = require('../utils/password')
 const makeGaEvent = require('../utils/ga').makeGaEvent
 const mail = require('../utils/email')
-const { findUserByParams, createUserLocal } = require('../controllers/user')
+const {findUserByParams, createUserLocal} = require('../controllers/user')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
@@ -65,13 +65,14 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             }
         }
 
-          let includes = [{model: models.User, include: [models.Demographic]}]
-          const user = await createUserLocal(query, passhash, includes)
+        let includes = [{model: models.User, include: [models.Demographic]}]
+        const user = await createUserLocal(query, passhash, includes)
 
-          mail.welcomeEmail(user.user.dataValues)
-          res.redirect('/login')
+        mail.welcomeEmail(user.user.dataValues)
+        req.flash('info', 'Registered you successfully!')
+        res.redirect('/login')
 
-     } catch(err) {
+    } catch (err) {
         Raven.captureException(err)
         req.flash('error', 'Unsuccessful registration. Please try again.')
         return res.redirect('/signup')
