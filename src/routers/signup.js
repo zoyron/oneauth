@@ -46,14 +46,14 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
     try {
 
-        const User = await findUserByParams({username: req.body.username})
-        if (User) {
+        let user = await findUserByParams({username: req.body.username})
+        if (user) {
             req.flash('error', 'Username already exists. Please try again.')
             return res.redirect('/signup')
         }
 
-        const userByEmail = await findUserByParams({email: req.body.email})
-        if (userByEmail) {
+        user = await findUserByParams({email: req.body.email})
+        if (user) {
             req.flash('error', 'Email already exists. Please try again.')
             return res.redirect('/signup')
         }
@@ -72,13 +72,19 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         }
 
         let includes = [{model: models.User, include: [models.Demographic]}]
-        const user = await createUserLocal(query, passhash, includes)
+        let userLocal = await createUserLocal(query, passhash, includes)
+        if (!userLocal) {
+            req.flash('error', 'Error creating account! Please try in some time')
+            return res.redirect('/signup')
+        }
+
+        user = userLocal.user
 
         // Send welcome email
-        mail.welcomeEmail(user.user.dataValues)
+        mail.welcomeEmail(user.dataValues)
 
         // Send verification email
-        createVerifyEmailEntry(user, true)
+        await createVerifyEmailEntry(user, true)
 
         req.flash('info',
             'Registered you successfully! ' +
