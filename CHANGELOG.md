@@ -1,6 +1,11 @@
 # CHANGELOG
 
 ## 1.0.0
+### 0.7.0
+
+#### 0.6.3
+
+ - redirect fixes for login and signup
 
 ### 0.5.0
 
