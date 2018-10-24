@@ -7,7 +7,12 @@ const config = require('../../config')
 const makeGaEvent = require('../utils/ga').makeGaEvent
 
 router.get('/', makeGaEvent('submit', 'form', 'logout'), function (req, res) {
-    const redirectUrl = req.query.redirect || req.session.returnTo || '/login'
+    const redirectUrl =
+        req.query.returnTo ||
+        req.query.redirect ||
+        req.session.returnTo ||
+        '/login'
+
     req.user = null
     req.logout()
     req.session.destroy(function (err) {

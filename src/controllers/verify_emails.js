@@ -14,14 +14,16 @@ const mail = require('../utils/email')
  * create a verify email entry and (optionally) send email
  * @param user {User}
  * @param [sendEmail] {boolean}
+ * @param returnTo {string} URL to return to when verify link is hit
  * @returns {Verifyemail}
  */
-async function createVerifyEmailEntry (user, sendEmail = false) {
+async function createVerifyEmailEntry (user, sendEmail = false, returnTo) {
     let uniqueKey = uid(15)
 
     let verifyEntry =  await Verifyemail.create({
         key: uniqueKey,
         userId: user.dataValues.id,
+        returnTo: returnTo,
         include: [User]
     })
 

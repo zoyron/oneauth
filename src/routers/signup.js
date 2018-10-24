@@ -84,7 +84,9 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         mail.welcomeEmail(user.dataValues)
 
         // Send verification email
-        await createVerifyEmailEntry(user, true)
+        await createVerifyEmailEntry(user, true,
+            req.session && req.session.returnTo
+        )
 
         req.flash('info',
             'Registered you successfully! ' +

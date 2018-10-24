@@ -52,6 +52,7 @@ const Resetpassword = db.define('resetpassword', {
 const Verifyemail = db.define('verifyemail', {
     id: {type: Sequelize.DataTypes.BIGINT, autoIncrement: true, primaryKey: true},
     key: {type: Sequelize.DataTypes.STRING, unique: true, allowNull: false},
+    returnTo: {type: Sequelize.DataTypes.TEXT}
 }, {
     paranoid: true
 })

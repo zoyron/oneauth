@@ -64,12 +64,13 @@ router.post(
                 return res.redirect('/users/me')
             }
 
-            await createVerifyEmailEntry(user, true)
+            await createVerifyEmailEntry(user, true,
+                req.session && req.session.returnTo
+            )
             return res.redirect('/verifyemail/inter')
 
         } catch (err) {
             Raven.captureException(err)
-            console.error(err.toString())
             req.flash('error', 'Something went wrong. Please try again with your registered email.')
             return res.redirect('/users/me')
         }
@@ -82,39 +83,53 @@ router.get('/key/:key', function (req, res) {
         req.flash('error', 'Invalid key. please try again.')
         return res.redirect('/users/me')
     }
+    let returnTo = req.session && req.session.returnTo;
 
     findVerifyEmailEntryByKey(req.params.key)
         .then((resetEntry) => {
 
+            // Key not found
             if (!resetEntry) {
                 req.flash('error', 'Invalid key. please try again.')
                 return []
             }
 
+            // Key had been deleted
             if (resetEntry.deletedAt) {
                 return []
             }
 
+            // Key belongs to some other user
             if (req.user) {
-
                 if (req.user.dataValues.id !== resetEntry.dataValues.userId) {
-
                     req.flash('error', 'Key authorization failed.')
                     return []
                 }
             }
+            if (resetEntry.dataValues.returnTo) {
+                returnTo = resetEntry.dataValues.returnTo
+            }
 
             if (moment().diff(resetEntry.createdAt, 'seconds') <= 86400) {
+                return Promise.all([
+                    // Delete this to prevent future usage
+                    models.Verifyemail.update(
+                        {deletedAt: moment().format()},
+                        {
+                            where: {
+                                userId: resetEntry.dataValues.userId,
+                                key: resetEntry.dataValues.key
+                            }
+                        }
+                    ),
 
-                return Promise.all([models.Verifyemail.update({
-                        deletedAt: moment().format()
-                    },
-                    {
-                        where: {userId: resetEntry.dataValues.userId, key: resetEntry.dataValues.key}
-                    }), models.User.findOne({
-                    where: {id: resetEntry.dataValues.userId}
-                })])
-
+                    // Find user of this entry
+                    models.User.findOne({
+                        where: {
+                            id: resetEntry.dataValues.userId
+                        }
+                    }),
+                ])
             } else {
 
                 req.flash('error', 'Key expired. Please try again.')
@@ -126,6 +141,7 @@ router.get('/key/:key', function (req, res) {
         .then(([updates, user]) => {
 
             if (req.user) {
+                // If user's email is already verified
                 if (req.user.dataValues.verifiedemail) {
                     req.flash('success', 'Your email is already verified.')
                     return
@@ -133,10 +149,9 @@ router.get('/key/:key', function (req, res) {
             }
 
             if (updates) {
-
-                return models.User.update({
-                        verifiedemail: user.dataValues.email
-                    },
+                // Update the value of verifiedEmail for the user
+                return models.User.update(
+                    {verifiedemail: user.dataValues.email},
                     {where: {id: user.dataValues.id}})
             } else {
                 return
@@ -146,9 +161,9 @@ router.get('/key/:key', function (req, res) {
 
             if (verifiedemail) {
                 req.flash('success', 'Your email is verified. Thank you.')
-                return res.redirect('/users/me')
+                return res.redirect(returnTo || '/users/me')
             } else {
-                return res.redirect('/')
+                return res.redirect(returnTo || '/')
             }
 
         })
