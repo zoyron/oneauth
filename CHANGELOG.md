@@ -3,6 +3,11 @@
 ## 1.0.0
 ### 0.7.0
 
+#### 0.6.4
+
+ - fix redirect across verify cycle too
+ - send verify email immediately after signup
+
 #### 0.6.3
 
  - redirect fixes for login and signup
