@@ -6,12 +6,7 @@
 
         <form method="post" action="/login">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            {{#if error}}
-                <div class="alert alert-danger">{{error}}</div>
-            {{/if}}
-            {{#if messages.info}}
-                <div class="alert alert-info">{{messages.info}}</div>
-            {{/if}}
+            {{> error-snippet}}
             <div class="input-btn">
                 <input type="text" class="input-text icon user-bg" placeholder="Username or Verfied Email ID" name="username" required>
                 <a href="/forgot/username">

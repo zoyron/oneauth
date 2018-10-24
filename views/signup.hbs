@@ -6,11 +6,7 @@
 
         <form method="post" action="/signup">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            {{#if messages.error}}
-                <div class="alert alert-danger" role="alert">
-                    {{messages.error}}
-                </div>
-            {{/if}}
+            {{> error-snippet}}
 
             <input type="text" class="input-text icon user-bg" name="username" placeholder="Username" required>
 

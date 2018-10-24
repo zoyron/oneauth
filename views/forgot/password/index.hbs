@@ -6,11 +6,7 @@
         </div>
         <form action="/forgot/password" method="post">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            {{#if messages.error}}
-                <div class="alert alert-danger" role="alert">
-                    {{messages.error}}
-                </div>
-            {{/if}}
+            {{> error-snippet}}
             <div class="row no-gutters align-items-center justify-content-between detail-row">
                 <div class="label-input col-md-4 col-sm-3">Enter your registered Email-Id</div>
                 <input type="email" class="input-text col-8" placeholder="abc@gmail.com" name="email" required/>

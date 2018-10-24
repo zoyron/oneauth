@@ -7,11 +7,7 @@
         </div>
         <form action="/forgot/password/new" method="post">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            {{#if messages.error}}
-                <div class="alert alert-danger" role="alert">
-                    {{messages.error}}
-                </div>
-            {{/if}}
+            {{> error-snippet}}
             <div class="attributes">
                 <div class="row no-gutters align-items-center justify-content-between detail-row">
                     <div class="label-input col-md-4 col-sm-3">New Password</div>

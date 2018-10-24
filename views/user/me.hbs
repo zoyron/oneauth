@@ -271,12 +271,7 @@
                     </form>
                 </div>
             {{/unless}}
-            {{#if messages.error}}
-                <span class="alert alert-danger">{{messages.error}}</span>
-            {{/if}}
-            {{#if messages.info}}
-                <span class="alert alert-info">{{messages.info}}</span>
-            {{/if}}
+            {{> error-snippet}}
         </div>
     </div>
 </div>

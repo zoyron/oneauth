@@ -37,11 +37,7 @@
                     </div>
                 </div>
 
-                {{#if messages.error}}
-                    <div class="alert alert-danger" role="alert">
-                        {{messages.error}}
-                    </div>
-                {{/if}}
+                {{> error-snippet}}
 
                 <div class="attributes">
                     <div class="row no-gutters align-items-center justify-content-between detail-row">
