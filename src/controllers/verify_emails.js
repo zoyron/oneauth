@@ -22,7 +22,7 @@ async function createVerifyEmailEntry (user, sendEmail = false) {
     let verifyEntry =  await Verifyemail.create({
         key: uniqueKey,
         userId: user.dataValues.id,
-        include: [models.User]
+        include: [User]
     })
 
     if (sendEmail) {

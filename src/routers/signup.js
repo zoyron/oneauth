@@ -82,7 +82,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
         req.flash('info',
             'Registered you successfully! ' +
-            'You can use your account only after verifying you email id' +
+            '<b>You can use your account only after verifying you email id.</b> ' +
             'Please verify your email using the link we sent you.')
 
         res.redirect('/login')
