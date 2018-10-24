@@ -9,7 +9,13 @@ const models = require('../db/models').models
 const passutils = require('../utils/password')
 const makeGaEvent = require('../utils/ga').makeGaEvent
 const mail = require('../utils/email')
-const {findUserByParams, createUserLocal} = require('../controllers/user')
+const {
+    findUserByParams,
+    createUserLocal
+} = require('../controllers/user')
+const {
+    createVerifyEmailEntry
+} = require('../controllers/verify_emails')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
@@ -40,14 +46,14 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
     try {
 
-        const User = await findUserByParams({username: req.body.username})
-        if (User) {
+        let user = await findUserByParams({username: req.body.username})
+        if (user) {
             req.flash('error', 'Username already exists. Please try again.')
             return res.redirect('/signup')
         }
 
-        const userByEmail = await findUserByParams({email: req.body.email})
-        if (userByEmail) {
+        user = await findUserByParams({email: req.body.email})
+        if (user) {
             req.flash('error', 'Email already exists. Please try again.')
             return res.redirect('/signup')
         }
@@ -66,10 +72,25 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         }
 
         let includes = [{model: models.User, include: [models.Demographic]}]
-        const user = await createUserLocal(query, passhash, includes)
+        let userLocal = await createUserLocal(query, passhash, includes)
+        if (!userLocal) {
+            req.flash('error', 'Error creating account! Please try in some time')
+            return res.redirect('/signup')
+        }
 
-        mail.welcomeEmail(user.user.dataValues)
-        req.flash('info', 'Registered you successfully!')
+        user = userLocal.user
+
+        // Send welcome email
+        mail.welcomeEmail(user.dataValues)
+
+        // Send verification email
+        await createVerifyEmailEntry(user, true)
+
+        req.flash('info',
+            'Registered you successfully! ' +
+            '<b>You can use your account only after verifying you email id.</b> ' +
+            'Please verify your email using the link we sent you.')
+
         res.redirect('/login')
 
     } catch (err) {
