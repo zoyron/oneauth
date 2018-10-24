@@ -37,7 +37,7 @@ const welcomeEmail = function (user) {
 
 }
 
-//Send a Single Email to Single or Multiple Recipients where they see each others email addresses
+//Send a Single Email to Single Recipient to verify
 
 const verifyEmail = function (user, key) {
 
@@ -79,7 +79,7 @@ const forgotPassEmail = function (user, key) {
 
 //Send a Single Email to Single or Multiple Recipients where they don't see each others email addresses
 
-const verifyEmailPrivate = function (userEmails) {
+const verifyMultipleEmails = function (userEmails) {
 
     let msgTemplate = {}
     msgTemplate.template_id = config.VERIFY_EMAIL
@@ -121,9 +121,9 @@ const forgotUsernameEmail = function (user) {
 
 
 module.exports = {
-    'welcomeEmail': welcomeEmail,
-    'verifyEmail': verifyEmail,
-    'forgotPasswordEmail': forgotPassEmail,
-    'forgotUserEmail': forgotUsernameEmail,
-    'verifyEmailPrivate': verifyEmailPrivate
+    welcomeEmail,
+    verifyEmail,
+    forgotPassEmail,
+    forgotUsernameEmail,
+    verifyMultipleEmails
 }

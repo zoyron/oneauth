@@ -12,86 +12,67 @@ const Raven = require('raven')
 const uid = require('uid2')
 const cel = require('connect-ensure-login')
 
-router.post('/', cel.ensureLoggedIn('/login'), makeGaEvent('submit', 'form', 'verifyemail'), function (req, res, next) {
+router.post(
+    '/',
+    cel.ensureLoggedIn('/login'),
+    makeGaEvent('submit', 'form', 'verifyemail'),
+    function (req, res, next) {
 
-    if (req.body.email.trim() === '') {
-        req.flash('error', 'Email cannot be empty')
-        return res.redirect('/verifyemail')
-    }
-    // Find user with verified email if exists
-    models.User.findOne({
-        where: {verifiedemail: req.body.email}
-    })
-        .then((user) => {
+        if (req.body.email.trim() === '') {
+            req.flash('error', 'Email cannot be empty')
+            return res.redirect('/verifyemail')
+        }
+        // Find user with verified email if exists
+        models.User.findOne({
+            where: {verifiedemail: req.body.email}
+        }).then((user) => {
 
             if (user) {
                 // Email already verified, take person to profile page
                 req.flash('error', 'Email already verified with codingblocks account ID:' + user.get('id'))
                 return res.redirect('/users/me')
-            }
-            else {
+            } else {
                 //Email not verified, go to next middleware
                 next()
             }
         })
 
-}, function (req, res) {
+    },
+    async (req, res) => {
 
-    let user
-    if (req.user.email) {
-        // User already has email id in data
-        user = models.User.findOne({where: {email: req.body.email, id: req.user.id}})
-    }
-    else {
-        // User does not have email in profile data, add from query
-        user = models.User.update(
-            {email: req.body.email},
-            {
-                where: {
-                    id: req.user.id
-                }
-            })
-            .then(() => {
-                return models.User.findOne({where: {email: req.body.email, id: req.user.id}})
-            })
-    }
+        try {
 
-    user.then((user) => {
-
-        if (!user) {
-            return user
-        }
-
-        //Email verification token
-        let uniqueKey = uid(15)
-
-        return models.Verifyemail.create({
-            key: uniqueKey,
-            userId: user.dataValues.id,
-            include: [models.User]
-        })
-            .then((entry) => {
-                return mail.verifyEmail(user.dataValues, entry.key)
-            })
-
-    })
-        .then((dataValue) => {
-
-            if (dataValue) {
-                return res.redirect('/verifyemail/inter')
+            if (!req.user.email) {
+                await models.User.update({email: req.body.email},
+                    {where: {id: req.user.id}})
             }
-            else {
+            let user = await models.User.findOne({where: {email: req.body.email, id: req.user.id}})
+
+            if (!user) {
+                // No user with this email
                 req.flash('error', 'The email id entered is not registered with this codingblocks account. Please enter your registered email.')
                 return res.redirect('/users/me')
             }
-        })
-        .catch(function (err) {
+
+            //Email verification token
+            let uniqueKey = uid(15)
+
+            let verifyToken = await models.Verifyemail.create({
+                key: uniqueKey,
+                userId: user.dataValues.id,
+                include: [models.User]
+            })
+            mail.verifyEmail(user.dataValues, verifyToken.key)
+            return res.redirect('/verifyemail/inter')
+
+        } catch (err) {
             Raven.captureException(err)
             console.error(err.toString())
             req.flash('error', 'Something went wrong. Please try again with your registered email.')
             return res.redirect('/users/me')
-        })
-})
+        }
+    }
+)
 
 router.get('/key/:key', function (req, res) {
 
@@ -133,8 +114,7 @@ router.get('/key/:key', function (req, res) {
                     where: {id: resetEntry.dataValues.userId}
                 })])
 
-            }
-            else {
+            } else {
 
                 req.flash('error', 'Key expired. Please try again.')
                 return []
@@ -157,8 +137,7 @@ router.get('/key/:key', function (req, res) {
                         verifiedemail: user.dataValues.email
                     },
                     {where: {id: user.dataValues.id}})
-            }
-            else {
+            } else {
                 return
             }
         })
@@ -167,8 +146,7 @@ router.get('/key/:key', function (req, res) {
             if (verifiedemail) {
                 req.flash('info', 'Your email is verified. Thank you.')
                 return res.redirect('/users/me')
-            }
-            else {
+            } else {
                 return res.redirect('/')
             }
 

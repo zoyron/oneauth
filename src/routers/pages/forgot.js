@@ -34,7 +34,7 @@ router.post('/username', makeGaEvent('submit', 'form', 'forgot.username'), funct
 
     models.User.findAll({where: {email: req.body.email}})
         .then((users) => Promise.all(users.map(user =>
-            mail.forgotUserEmail(user.dataValues))
+            mail.forgotUsernameEmail(user.dataValues))
         )).then((dataValues) => {
 
         if (dataValues.length) {
@@ -80,7 +80,7 @@ router.post('/password', makeGaEvent('submit', 'form', 'resetpassword'), functio
                 userId: user.dataValues.id,
                 include: [models.User]
             }).then((entry) =>
-                mail.forgotPasswordEmail(user.dataValues, entry.key)
+                mail.forgotPassEmail(user.dataValues, entry.key)
             )
         ))
     ).then((dataValues) => {
