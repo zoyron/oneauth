@@ -4,49 +4,59 @@
  * This is the verify email path
  */
 const router = require('express').Router()
-const models = require('../db/models').models
-const makeGaEvent = require('../utils/ga').makeGaEvent
-const mail = require('../utils/email')
 const moment = require('moment')
 const Raven = require('raven')
 const uid = require('uid2')
 const cel = require('connect-ensure-login')
 
+const models = require('../db/models').models
+const makeGaEvent = require('../utils/ga').makeGaEvent
+const mail = require('../utils/email')
+const {
+    findUserByParams,
+    updateUserByParams
+} = require('../controllers/user')
+const {
+    createVerifyEmailEntry,
+    findVerifyEmailEntryByKey
+} = require('../controllers/verify_emails')
+
 router.post(
     '/',
     cel.ensureLoggedIn('/login'),
     makeGaEvent('submit', 'form', 'verifyemail'),
-    function (req, res, next) {
+    async (req, res, next) => {
 
         if (req.body.email.trim() === '') {
             req.flash('error', 'Email cannot be empty')
             return res.redirect('/verifyemail')
         }
-        // Find user with verified email if exists
-        models.User.findOne({
-            where: {verifiedemail: req.body.email}
-        }).then((user) => {
-
-            if (user) {
-                // Email already verified, take person to profile page
-                req.flash('error', 'Email already verified with codingblocks account ID:' + user.get('id'))
-                return res.redirect('/users/me')
-            } else {
-                //Email not verified, go to next middleware
-                next()
-            }
+        let user = await findUserByParams({
+            verifiedemail: req.body.email
         })
-
+        if (!user) {
+            //Email not verified, go to next middleware
+            return next()
+        } else {
+            // Email already verified, take person to profile page
+            req.flash('error',
+                'Email already verified with codingblocks account ID:' + user.get('id'))
+            return res.redirect('/users/me')
+        }
     },
     async (req, res) => {
 
         try {
 
             if (!req.user.email) {
-                await models.User.update({email: req.body.email},
-                    {where: {id: req.user.id}})
+                await updateUserByParams(
+                    {id: req.user.id},
+                    {email: req.body.email}
+                )
             }
-            let user = await models.User.findOne({where: {email: req.body.email, id: req.user.id}})
+            let user = await findUserByParams({
+                email: req.body.email, id: req.user.id
+            })
 
             if (!user) {
                 // No user with this email
@@ -54,15 +64,7 @@ router.post(
                 return res.redirect('/users/me')
             }
 
-            //Email verification token
-            let uniqueKey = uid(15)
-
-            let verifyToken = await models.Verifyemail.create({
-                key: uniqueKey,
-                userId: user.dataValues.id,
-                include: [models.User]
-            })
-            mail.verifyEmail(user.dataValues, verifyToken.key)
+            await createVerifyEmailEntry(user, true)
             return res.redirect('/verifyemail/inter')
 
         } catch (err) {
@@ -81,8 +83,7 @@ router.get('/key/:key', function (req, res) {
         return res.redirect('/users/me')
     }
 
-    models.Verifyemail.findOne({where: {key: req.params.key}})
-
+    findVerifyEmailEntryByKey(req.params.key)
         .then((resetEntry) => {
 
             if (!resetEntry) {
@@ -126,7 +127,7 @@ router.get('/key/:key', function (req, res) {
 
             if (req.user) {
                 if (req.user.dataValues.verifiedemail) {
-                    req.flash('info', 'Your email is already verified.')
+                    req.flash('success', 'Your email is already verified.')
                     return
                 }
             }
@@ -144,7 +145,7 @@ router.get('/key/:key', function (req, res) {
         .then((verifiedemail) => {
 
             if (verifiedemail) {
-                req.flash('info', 'Your email is verified. Thank you.')
+                req.flash('success', 'Your email is verified. Thank you.')
                 return res.redirect('/users/me')
             } else {
                 return res.redirect('/')

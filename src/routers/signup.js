@@ -9,7 +9,13 @@ const models = require('../db/models').models
 const passutils = require('../utils/password')
 const makeGaEvent = require('../utils/ga').makeGaEvent
 const mail = require('../utils/email')
-const {findUserByParams, createUserLocal} = require('../controllers/user')
+const {
+    findUserByParams,
+    createUserLocal
+} = require('../controllers/user')
+const {
+    createVerifyEmailEntry
+} = require('../controllers/verify_emails')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
@@ -68,8 +74,17 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         let includes = [{model: models.User, include: [models.Demographic]}]
         const user = await createUserLocal(query, passhash, includes)
 
+        // Send welcome email
         mail.welcomeEmail(user.user.dataValues)
-        req.flash('info', 'Registered you successfully!')
+
+        // Send verification email
+        createVerifyEmailEntry(user, true)
+
+        req.flash('info',
+            'Registered you successfully! ' +
+            'You can use your account only after verifying you email id' +
+            'Please verify your email using the link we sent you.')
+
         res.redirect('/login')
 
     } catch (err) {

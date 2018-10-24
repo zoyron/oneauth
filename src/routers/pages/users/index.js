@@ -9,7 +9,7 @@ const acl = require('../../../middlewares/acl')
 
 const {
     findUserById,
-    updateUser
+    updateUserById
 } = require('../../../controllers/user');
 
 const meRoute = require('./me')
@@ -63,7 +63,7 @@ router.post('/:id/edit',
     acl.ensureRole('admin'),
     async function (req, res, next) {
         try {
-            const user = await updateUser(req.params.id,{
+            const user = await updateUserById(req.params.id,{
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 gender:req.body.gender,
