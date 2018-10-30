@@ -17,7 +17,7 @@ module.exports = new LmsStrategy({
     let profileJson = JSON.parse(profile)
     Raven.setContext({extra: {file: 'lmsstrategy'}})
     try{
-        const [userLms, created] = await models.UserLms.findCreateFind({
+        await models.UserLms.findCreateFind({
             include: [models.User],
             where: {id: profileJson.id},
             defaults: {

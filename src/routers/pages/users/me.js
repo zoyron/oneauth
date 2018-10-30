@@ -5,7 +5,6 @@ const router = require('express').Router()
 const models = require('../../../db/models').models
 const {hasNull} = require('../../../utils/nullCheck')
 const passutils = require('../../../utils/password')
-const { profilePhotoMiddleware } = require('../../../middlewares/profilephoto')
 const { deleteMinio } = require('../../../utils/multer')
 
 const {

@@ -1,4 +1,3 @@
-const config = require('../../config');
 const {db, models: {
     User
 }} = require('../../src/db/models');
@@ -10,20 +9,20 @@ async function runPrune() {
     try {
         // Only deleting older than 01 May 2018
         const [users] = await db.query(`
-SELECT  
-        count("email") AS "count", 
-        count("verifiedemail") as "Verified", 
-        max("createdAt") as "Last Attempt", 
+SELECT
+        count("email") AS "count",
+        count("verifiedemail") as "Verified",
+        max("createdAt") as "Last Attempt",
         min("createdAt") as "First Attempt",
         "users"."email" AS "email"
 FROM "users"
-WHERE 
+WHERE
     "deletedAt" is NULL
     AND
     "updatedAt" < date('2018-05-01')
 GROUP BY "users"."email"
-HAVING 
-        count("email") > 1 AND 
+HAVING
+        count("email") > 1 AND
         count("verifiedemail") = 0
 ORDER BY "count" DESC, "users"."email" ASC
         `)

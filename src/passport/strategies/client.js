@@ -8,7 +8,6 @@
 
 const BasicStrategy = require('passport-http').BasicStrategy
 const ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy
-const models = require('../../db/models').models
 const Raven = require('raven')
 const { findClientById } = require('../../controllers/clients')
 

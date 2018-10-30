@@ -1,5 +1,4 @@
 const sgMail = require('@sendgrid/mail')
-const secret = require('../../secrets-sample')
 const config = require('../../config')
 
 sgMail.setApiKey(config.SECRETS.SENDGRID_API_KEY)
@@ -107,8 +106,6 @@ const forgotUsernameEmail = function (user) {
     msgTemplate.from = senderEmail
 
     msgTemplate.to = user.email
-
-    let username = user.username
 
     msgTemplate.substitutions = {
         "subject": "Forgot username Codingblocks",

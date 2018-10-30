@@ -1,6 +1,5 @@
 const config = require('../../config');
-const secret = config.SECRETS;
-const {db, models: {
+const {models: {
     College
 }} = require('../../src/db/models');
 
@@ -110,7 +109,7 @@ const {db, models: {
             {"name":"Visvesvaraya National Institute Of Technology (Nagpur)"},
             {"name":"Zakir Husain College Of Engineering & Technology, Aligarh (Aligarh)"}
         ])
-        
+
     } catch (err) {
         console.error(err)
     } finally {

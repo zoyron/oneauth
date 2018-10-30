@@ -10,7 +10,6 @@ const express = require('express')
     , exphbs = require('express-hbs')
     , expressGa = require('express-ga-middleware')
     , flash = require('express-flash')
-    , csurf = require('csurf')
     , Raven = require('raven')
     , debug = require('debug')('oneauth:server')
 

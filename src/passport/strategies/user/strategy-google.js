@@ -31,7 +31,7 @@ module.exports = new GoogleStrategy({
                 if (glaccount) {
                     throw new Error('Your Google account is already linked with codingblocks account Id: ' + glaccount.dataValues.userId)
                 } else {
-                    const updated = await models.UserGoogle.upsert({
+                    await models.UserGoogle.upsert({
                         id: profileJson.id,
                         accessToken: accessToken,
                         refreshToken: refreshToken,

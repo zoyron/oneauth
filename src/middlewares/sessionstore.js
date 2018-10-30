@@ -11,7 +11,7 @@ const db = require('../db/models').db
 // We trust local ips, first untrusted is outside this
 const proxyfilter = proxyaddr.compile(['loopback', 'linklocal', 'uniquelocal'])
 
-const sessions = db.define('session', {
+db.define('session', {
     sid: {
         type: DataTypes.STRING,
         primaryKey: true

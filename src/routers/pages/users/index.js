@@ -63,7 +63,7 @@ router.post('/:id/edit',
     acl.ensureRole('admin'),
     async function (req, res, next) {
         try {
-            const user = await updateUserById(req.params.id,{
+            await updateUserById(req.params.id,{
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 gender:req.body.gender,

@@ -44,6 +44,7 @@ module.exports = new LocalStrategy(async function (username, password, cb) {
 
     } catch (err) {
         Raven.captureException(err)
+        console.log(err)
         return cb(null, false, {message: 'Error connecting to user database'})
     }
 })

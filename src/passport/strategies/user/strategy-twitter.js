@@ -37,7 +37,7 @@ module.exports = new TwitterStrategy({
             if (twaccount) {
                 throw new Error('Your Twitter account is already linked with coding blocks account Id: ' + twaccount.dataValues.userId)
             } else {
-                const updated = await models.UserTwitter.upsert({
+                await models.UserTwitter.upsert({
                     id: profileJson.id,
                     token: token,
                     tokenSecret: tokenSecret,
