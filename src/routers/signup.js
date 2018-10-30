@@ -78,20 +78,20 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             return res.redirect('/signup')
         }
 
-        // user = userLocal.user
-        //
-        // // Send welcome email
-        // mail.welcomeEmail(user.dataValues)
-        //
-        // // Send verification email
-        // await createVerifyEmailEntry(user, true,
-        //     req.session && req.session.returnTo
-        // )
-        //
-        // req.flash('info',
-        //     'Registered you successfully! ' +
-        //     '<b>You can use your account only after verifying you email id.</b> ' +
-        //     'Please verify your email using the link we sent you.')
+        user = userLocal.user
+
+        // Send welcome email
+        mail.welcomeEmail(user.dataValues)
+
+        // Send verification email
+        await createVerifyEmailEntry(user, true,
+            req.session && req.session.returnTo
+        )
+
+        req.flash('info',
+            'Registered you successfully! ' +
+            '<b>You can use your account only after verifying you email id.</b> ' +
+            'Please verify your email using the link we sent you.')
 
         res.redirect('/login')
 
