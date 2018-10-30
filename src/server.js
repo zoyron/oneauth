@@ -29,8 +29,8 @@ const config = require('../config')
     , statusrouter = require('./routers/statusrouter')
     , {expresstracer, datadogRouter} = require('./utils/ddtracer')
     , {expressLogger} = require('./utils/logger')
-    , handlebarsHelpers = require('./utils/handlebars')
     ,  { profilePhotoMiddleware } = require('./middlewares/profilephoto');
+require('./utils/handlebars')
 
 const app = express()
 
