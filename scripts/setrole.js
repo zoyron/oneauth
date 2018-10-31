@@ -1,5 +1,6 @@
 const args = require('args');
 
+const db = require('../src/db/models').db;
 const models = require('../src/db/models').models;
 const debug = require('debug')('oauth:scripts:setrole')
 

@@ -1,5 +1,7 @@
+const config = require('../../config');
+const secret = config.SECRETS;
 const debug = require('debug')('oauth:states.js')
-const {models: {
+const {db, models: {
         Country,
         State
     }} = require('../../src/db/models');

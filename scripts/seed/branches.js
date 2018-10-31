@@ -1,4 +1,6 @@
-const {models: {
+const config = require('../../config');
+const secret = config.SECRETS;
+const {db, models: {
     Branch
 }} = require('../../src/db/models');
 
