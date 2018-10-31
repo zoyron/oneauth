@@ -1,4 +1,3 @@
-const config = require('../../config');
 const debug = require('debug')('oauth:states.js')
 const {models: {
         Country,
