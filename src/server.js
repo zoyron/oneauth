@@ -10,7 +10,6 @@ const express = require('express')
     , exphbs = require('express-hbs')
     , expressGa = require('express-ga-middleware')
     , flash = require('express-flash')
-    , csurf = require('csurf')
     , Raven = require('raven')
     , debug = require('debug')('oneauth:server')
 
@@ -30,8 +29,8 @@ const config = require('../config')
     , statusrouter = require('./routers/statusrouter')
     , {expresstracer, datadogRouter} = require('./utils/ddtracer')
     , {expressLogger} = require('./utils/logger')
-    , handlebarsHelpers = require('./utils/handlebars')
     ,  { profilePhotoMiddleware } = require('./middlewares/profilephoto');
+require('./utils/handlebars')
 
 const app = express()
 

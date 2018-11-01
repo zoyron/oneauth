@@ -110,7 +110,7 @@ const {db, models: {
             {"name":"Visvesvaraya National Institute Of Technology (Nagpur)"},
             {"name":"Zakir Husain College Of Engineering & Technology, Aligarh (Aligarh)"}
         ])
-        
+
     } catch (err) {
         console.error(err)
     } finally {

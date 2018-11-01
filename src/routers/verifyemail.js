@@ -6,12 +6,10 @@
 const router = require('express').Router()
 const moment = require('moment')
 const Raven = require('raven')
-const uid = require('uid2')
 const cel = require('connect-ensure-login')
 
 const models = require('../db/models').models
 const makeGaEvent = require('../utils/ga').makeGaEvent
-const mail = require('../utils/email')
 const {
     findUserByParams,
     updateUserByParams

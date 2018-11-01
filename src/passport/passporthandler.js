@@ -8,11 +8,8 @@ const UserStrategies = require('./strategies/user')
     , ApiStrategies = require('./strategies/api')
     , debug = require('debug')('oauth:passporthandler')
 
-const models = require('../db/models').models
 const { findUserById } = require('../controllers/user')
 const { findClientById } = require('../controllers/clients')
-
-const config = require('../../config')
 
 passport.use(UserStrategies.localStrategy)
 passport.use(UserStrategies.fbStrategy)

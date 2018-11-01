@@ -33,7 +33,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
         }
 
         try {
-            const [demographics, created] = await findOrCreateDemographic(req.user.id)
+            await findOrCreateDemographic(req.user.id)
             const options = {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
@@ -70,7 +70,6 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
         return res.send(400)
     }
     let addrId = parseInt(req.params.id)
-    let userId = parseInt(req.user.id)
 
     if (!req.body.label) {
         req.flash('error', 'Please provide the label of the address.')

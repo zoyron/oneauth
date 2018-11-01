@@ -1,7 +1,6 @@
 const Winston = require('winston'),
     ExpressWinston = require('express-winston'),
-    WinstonGraylog2 = require('winston-graylog2'),
-    Logentries = require('le_node')
+    WinstonGraylog2 = require('winston-graylog2')
 
 
 const GRAYLOG_HOST = process.env.GRAYLOG_HOST || 'graylog.cb.lk',

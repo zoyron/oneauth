@@ -2,7 +2,6 @@ $(function () {
 //------------------------------------------------Profile Picture Update------------------------------------------------
     var picInput = $("#userpic")
     var avatarPics = $("img.avatar")
-    var editFrom = $("#edit-form")
     var hiddenInput = $("#avatar-selector")
     var btnClear = $("#btn-clear")
     var userImg = $('.user-pic')
@@ -27,7 +26,6 @@ $(function () {
         $(this).addClass("click-pic")
         let idx = avatarPics.index(this)
         ++idx
-        let loc = `https://minio.cb.lk/img/avatar-${idx}.svg`
         hiddenInput.val(idx)
         picInput.change()
     })

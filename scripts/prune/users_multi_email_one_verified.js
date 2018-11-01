@@ -11,17 +11,17 @@ async function runPrune() {
     try {
 
         const [users, result] = await db.query(`
-SELECT  
-        count("email") AS "count", 
-        count("verifiedemail") as "Verified", 
-        max("createdAt") as "Last Attempt", 
+SELECT
+        count("email") AS "count",
+        count("verifiedemail") as "Verified",
+        max("createdAt") as "Last Attempt",
         min("createdAt") as "First Attempt",
         "users"."email" AS "email"
 FROM "users"
 WHERE "deletedAt" is NULL
 GROUP BY "users"."email"
-HAVING 
-        count("email") > 1 AND 
+HAVING
+        count("email") > 1 AND
         count("verifiedemail") = 1
 ORDER BY "count" DESC, "users"."email" ASC
         `)

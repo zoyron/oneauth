@@ -1,9 +1,6 @@
 const router = require('express').Router()
 const passport = require('../../passport/passporthandler')
 
-const debug = require('debug')('oauth:connect:linkedin')
-
-
 router.get('/', passport.authorize('linkedin'))
 
 router.get('/callback', passport.authorize('linkedin',{
