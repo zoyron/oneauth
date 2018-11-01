@@ -20,6 +20,7 @@ router.use(function (req, res, next) {
     res.locals.userName= req.user && req.user.firstname
     res.locals.userPhoto= req.user && req.user.photo
     res.locals.currentUrl= req.url.split("/")[1];
+    res.locals.title = "Coding Blocks Account"
     next()
 })
 

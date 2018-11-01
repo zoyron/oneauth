@@ -18,11 +18,11 @@ router.use((req, res, next) => {
 })
 
 router.get('/username', (req, res) => {
-    res.render('forgot/username/index', {title: "Resetusername | OneAuth"})
+    res.render('forgot/username/index', {pageTitle: "Reset Username"})
 })
 
 router.get('/username/inter', (req, res) => {
-    res.render('forgot/username/inter', {title: "Resetusername | OneAuth"})
+    res.render('forgot/username/inter', {pageTitle: "Reset Username"})
 })
 
 router.post('/username', makeGaEvent('submit', 'form', 'forgot.username'), function (req, res) {
@@ -56,11 +56,11 @@ router.post('/username', makeGaEvent('submit', 'form', 'forgot.username'), funct
 })
 
 router.get('/password', (req, res) => {
-    res.render('forgot/password/index', {title: "Resetpassword | OneAuth"})
+    res.render('forgot/password/index', {pageTitle: "Reset Password"})
 })
 
 router.get('/password/inter', (req, res) => {
-    res.render('forgot/password/inter', {title: "Resetinter | OneAuth"})
+    res.render('forgot/password/inter', {pageTitle: "Reset Password"})
 })
 
 router.post('/password', makeGaEvent('submit', 'form', 'resetpassword'), function (req, res) {
@@ -115,13 +115,18 @@ router.post('/password/new', makeGaEvent('submit', 'form', 'forgot.password.new'
   if ((req.body.password === '') || req.body.password.length < 5) {
 
     req.flash('error', 'Password too weak. Please use at least 5 characters.')
-    return res.render('forgot/password/new', {title: "Setnewpassword | OneAuth", key: req.body.key})
+    return res.render('forgot/password/new', {
+        pageTitle: "Set new Password",
+        key: req.body.key})
   }
 
   if (req.body.password !== req.body.passwordagain) {
 
     req.flash('error', 'Password does not match.')
-    return res.render('forgot/password/new', {title: "Setnewpassword | OneAuth", key: req.body.key})
+    return res.render('forgot/password/new', {
+        pageTitle: "Set new Password",
+        key: req.body.key
+    })
   }
 
   models.Resetpassword.findOne({where: {key: req.body.key}})
@@ -206,7 +211,10 @@ router.post('/password/new', makeGaEvent('submit', 'form', 'forgot.password.new'
       Raven.captureException(err)
       debug(err)
       req.flash('error', 'There was some problem setting your password. Please try again.')
-      return res.render('forgot/password/new', {title: "Setnewpassword | OneAuth", key: req.params.key})
+      return res.render('forgot/password/new', {
+          pageTitle: "Set new Password",
+          key: req.params.key
+      })
     })
 })
 
