@@ -16,7 +16,7 @@ const {
   findAllColleges,
   upsertDemographic
 } = require("../../../controllers/demographics");
-
+const { parseNumber, validateNumber } = require('../../../utils/mobile_validator')
 
 router.get('/',
   cel.ensureLoggedIn('/login'),
@@ -113,6 +113,11 @@ router.post('/edit',
     }
 
     if(Number.isNaN(+(req.body.mobile_number)) || (req.body.mobile_number.length !== 10)){
+        req.flash('error', 'Contact number is not a valid number')
+        return res.redirect('/users/me/edit')
+    }
+
+    if(!(validateNumber(parseNumber(req.body.mobile_number)))){
         req.flash('error', 'Contact number is not a valid number')
         return res.redirect('/users/me/edit')
     }
