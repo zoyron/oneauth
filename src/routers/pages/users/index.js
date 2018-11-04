@@ -65,16 +65,17 @@ router.post('/:id/edit',
     async function (req, res, next) {
 
       let number = parseNumber(req.body.mobile_number)
-      let mobile_number;
+      let mobile_number = ''
 
-      if (validateNumber(number)) {
-          mobile_number = number
-      } else {
-          req.flash('error', 'Please enter a valid number!')
-          res.redirect('../' + req.params.id);
-      }
+      try {
 
-        try {
+          if (validateNumber(number)) {
+              mobile_number = number.values_[5]
+          } else {
+              req.flash('error', 'Please enter a valid number!')
+              res.redirect('../' + req.params.id + '/edit');
+          }
+
             await updateUserById(req.params.id,{
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
@@ -84,10 +85,10 @@ router.post('/:id/edit',
                 role: req.body.role !== 'unchanged' ? req.body.role : undefined
             })
             return res.redirect('../' + req.params.id);
-        } catch (error) {
+        } catch (err) {
             Raven.captureException(err)
             req.flash('error','Could not update User')
-            res.redirect('user/id')
+            res.redirect('../' + req.params.id)
         }
     }
 )
