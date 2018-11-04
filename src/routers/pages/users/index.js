@@ -73,7 +73,7 @@ router.post('/:id/edit',
               mobile_number = number.values_[5]
           } else {
               req.flash('error', 'Please enter a valid number!')
-              res.redirect('../' + req.params.id + '/edit');
+              return res.redirect('../' + req.params.id + '/edit');
           }
 
             await updateUserById(req.params.id,{
