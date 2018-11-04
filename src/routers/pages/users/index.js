@@ -70,7 +70,8 @@ router.post('/:id/edit',
       if (validateNumber(number)) {
           mobile_number = number
       } else {
-          mobile_number = null
+          req.flash('error', 'Please enter a valid number!')
+          res.redirect('../' + req.params.id);
       }
 
         try {
