@@ -16,6 +16,7 @@ const {
 const {
     createVerifyEmailEntry
 } = require('../controllers/verify_emails')
+const { parseNumber, validateNumber } = require('../utils/mobile_validator')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
@@ -49,6 +50,11 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         let user = await findUserByParams({username: req.body.username})
         if (user) {
             req.flash('error', 'Username already exists. Please try again.')
+            return res.redirect('/signup')
+        }
+
+        if(!(validateNumber(parseNumber(req.body.mobile_number)))){
+            req.flash('error', 'Please provide a Valid Contact Number.')
             return res.redirect('/signup')
         }
 
