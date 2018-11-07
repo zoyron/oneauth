@@ -128,6 +128,7 @@ app.use('/', pagerouter)
 app.get('*', (req, res) => res.render('404'));
 
 app.use(Raven.errorHandler())
+app.use((err, req, res, next) => { res.status(500).render('exception', { message: err.message }) })
 
 if(process.env.ONEAUTH_DEV === 'localhost'){
     Raven.captureException = (E) => console.error (E)
