@@ -22,11 +22,17 @@ module.exports = new LmsStrategy({
         label: 'lms',
         value: profileJson.id
     })
-    Raven.setContext({extra: {file: 'lmsstrategy'}})
-    try{
-        await models.UserLms.findCreateFind({
+    Raven.setContext({
+        extra: {
+            file: 'lmsstrategy'
+        }
+    })
+    try {
+        const userLms = await models.UserLms.findCreateFind({
             include: [models.User],
-            where: {id: profileJson.id},
+            where: {
+                id: profileJson.id
+            },
             defaults: {
                 id: profileJson.id,
                 roll_number: profileJson.roll_number,
@@ -43,13 +49,17 @@ module.exports = new LmsStrategy({
             }
         })
         if (!userLms) {
-            return cb(null, false, {message: 'Authentication Failed'})
+            return cb(null, false, {
+                message: 'Authentication Failed'
+            })
         }
 
         return cb(null, userLms.user.get())
 
-    }catch(err){
+    } catch (err) {
         Raven.captureException(err)
-        return cb(null, false, {message: 'Could not create account'})
+        return cb(null, false, {
+            message: 'Could not create account'
+        })
     }
 })
