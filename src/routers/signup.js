@@ -101,10 +101,11 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             'Please verify your email using the link we sent you.')
 
         // Login after signup automatically
-        passport.authenticate('local')(req, res, (err) => {
-            if (err) { throw err }
-            res.redirect('/users/me')
-        })
+        passport.authenticate('local', {
+            failureRedirect: '/login',
+            successReturnToOrRedirect: '/users/me',
+            failureFlash: true
+        })(req, res)
 
 
 
