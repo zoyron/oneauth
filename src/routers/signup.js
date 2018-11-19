@@ -9,6 +9,7 @@ const models = require('../db/models').models
 const passutils = require('../utils/password')
 const makeGaEvent = require('../utils/ga').makeGaEvent
 const mail = require('../utils/email')
+const passport = require('passport')
 const {
     findUserByParams,
     createUserLocal
@@ -99,7 +100,13 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             '<b>You can use your account only after verifying you email id.</b> ' +
             'Please verify your email using the link we sent you.')
 
-        res.redirect('/login')
+        // Login after signup automatically
+        passport.authenticate('local')(req, res, (err) => {
+            if (err) { throw err }
+            res.redirect('/users/me')
+        })
+
+
 
     } catch (err) {
         Raven.captureException(err)
