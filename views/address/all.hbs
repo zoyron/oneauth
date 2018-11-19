@@ -8,7 +8,7 @@
         <div class="button-solid align-self-start">
           <a class="white" href="/address/add">
             <button>+ Add New Address</button>
-          </a>  
+          </a>
         </div>
       </div>
       <div class="attributes">
@@ -18,7 +18,7 @@
               <a href="/address/{{address.id}}">
                 <div class="address-row heading red">{{address.label}}</div>
                   <div class="address-row heading">
-                      {{address.first_name}} {{address.last_name}} {{address.email}} | {{address.mobile_number}}
+                      {{address.first_name}} {{address.last_name}} {{address.email}} | ({{address.dial_code}}) {{address.mobile_number}}
                       {{#if address.whatsapp_number}}
                         | {{address.whatsapp_number}}
                       {{/if}}
@@ -32,7 +32,7 @@
                   <div class="button-dashed">
                     <a class="red" href="/address/{{address.id}}/edit">
                       <button>Edit Address</button>
-                    </a>  
+                    </a>
                   </div>
                 </div>
               </a>

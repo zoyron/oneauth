@@ -13,7 +13,7 @@ const {
 } = require('../../controllers/demographics')
 
 router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
-    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId'])) {
+    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId', 'dial_code'])) {
         res.send(400)
     } else {
         let returnTo = false
@@ -33,7 +33,10 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
         }
 
         try {
-            await findOrCreateDemographic(req.user.id)
+            const demographics = await findOrCreateDemographic(req.user.id)
+
+            console.log(demographics)
+
             const options = {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
@@ -46,12 +49,16 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
                 city: req.body.city,
                 stateId: req.body.stateId,
                 countryId: req.body.countryId,
+                dial_code: req.body.dial_code,
                 demographicId: demographics.id,
                 whatsapp_number: req.body.whatsapp_number || null,
                 // if no addresses, then first one added is primary
-                primary: !demographics.get().addresses
+                primary: !demographics.addresses
             }
             const address = await createAddress(options)
+
+            console.log(address)
+
             if (returnTo) {
                 res.redirect(returnTo)
             } else {
@@ -85,7 +92,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
                 await updateAddressbyDemoId(demoId, {primary: false})
             }
 
-            await updateAddressbyAddrId(addrId, {
+            const updated = await updateAddressbyAddrId(addrId, {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
@@ -97,9 +104,13 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
                 city: req.body.city,
                 stateId: req.body.stateId,
                 countryId: req.body.countryId,
+                dial_code: req.body.dial_code,
                 whatsapp_number: req.body.whatsapp_number || null,
                 primary: req.body.primary === 'on'
             })
+
+            console.log(updated)
+
             if (req.body.returnTo) {
                 return res.redirect(req.body.returnTo)
             } else {

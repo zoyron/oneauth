@@ -36,6 +36,10 @@ module.exports = {
         id: {
             type: Sequelize.DataTypes.STRING(2),
             primaryKey: true
+        },
+        dial_code: {
+            type: Sequelize.DataTypes.STRING(5),
+            allowNull: false
         }
     },
 

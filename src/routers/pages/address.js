@@ -2,10 +2,10 @@ const router = require('express').Router()
 const cel = require('connect-ensure-login')
 const Raven = require('raven')
 
-const { 
-    findAddress, 
-    findAllAddresses, 
-    findAllStates, 
+const {
+    findAddress,
+    findAllAddresses,
+    findAllStates,
     findAllCountries
 } = require('../../controllers/demographics');
 
@@ -43,7 +43,7 @@ router.get('/:id',
     cel.ensureLoggedIn('/login'),
     async function (req, res, next) {
         try {
-            const address = await findAddress(req.params.id,req.user.id );    
+            const address = await findAddress(req.params.id,req.user.id );
             if (!address) {
                 req.flash('error', 'Address not found')
                 return res.redirect('.')
@@ -66,7 +66,7 @@ router.get('/:id/edit',
                 findAddress(req.params.id,req.user.id ),
                 findAllStates(),
                 findAllCountries()
-            ]) 
+            ])
             if (!address) {
                 req.flash('error', 'Address not found')
                 return res.redirect('.')
