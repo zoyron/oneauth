@@ -6,7 +6,12 @@ const makeGaEvent = require('../../utils/ga').makeGaEvent
 const { authLimiter } = require('../../middlewares/ratelimit')
 
 router.use(authLimiter)
-router.use('/', makeGaEvent('attempt', 'login', 'local'), require('./local'))
+router.use('/',
+    // Commenting it out as we do this event inside the strategy
+    // to differentiate local vs lms
+    // makeGaEvent('attempt', 'login', 'local'),
+    require('./local')
+)
 router.use('/facebook', makeGaEvent('attempt', 'login', 'facebook'), require('./facebook'))
 router.use('/twitter', makeGaEvent('attempt', 'login', 'twitter'), require('./twitter'))
 router.use('/github', makeGaEvent('attempt', 'login', 'github'), require('./github'))

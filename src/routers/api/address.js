@@ -33,10 +33,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
         }
 
         try {
-            const demographics = await findOrCreateDemographic(req.user.id)
-
-            console.log(demographics)
-
+            const [demographics, created] = await findOrCreateDemographic(req.user.id)
             const options = {
                 label: req.body.label || null,
                 first_name: req.body.first_name,

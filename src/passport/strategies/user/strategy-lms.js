@@ -12,14 +12,27 @@ const secrets = config.SECRETS
 module.exports = new LmsStrategy({
     instituteId: secrets.LMS_INSTITUTE_ID,
     applicationId: secrets.LMS_APPLICATION_ID,
-    deviceId: secrets.LMS_DEVICE_ID
-}, async function (accessToken, profile, cb) {
+    deviceId: secrets.LMS_DEVICE_ID,
+    passReqToCallback: true,
+}, async function (req, accessToken, profile, cb) {
     let profileJson = JSON.parse(profile)
-    Raven.setContext({extra: {file: 'lmsstrategy'}})
-    try{
-        await models.UserLms.findCreateFind({
+    req.ga.event({
+        category: 'login',
+        action: 'attempt',
+        label: 'lms',
+        value: profileJson.id
+    })
+    Raven.setContext({
+        extra: {
+            file: 'lmsstrategy'
+        }
+    })
+    try {
+        const userLms = await models.UserLms.findCreateFind({
             include: [models.User],
-            where: {id: profileJson.id},
+            where: {
+                id: profileJson.id
+            },
             defaults: {
                 id: profileJson.id,
                 roll_number: profileJson.roll_number,
@@ -36,13 +49,17 @@ module.exports = new LmsStrategy({
             }
         })
         if (!userLms) {
-            return cb(null, false, {message: 'Authentication Failed'})
+            return cb(null, false, {
+                message: 'Authentication Failed'
+            })
         }
 
         return cb(null, userLms.user.get())
 
-    }catch(err){
+    } catch (err) {
         Raven.captureException(err)
-        return cb(null, false, {message: 'Could not create account'})
+        return cb(null, false, {
+            message: 'Could not create account'
+        })
     }
 })
