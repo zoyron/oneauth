@@ -34,6 +34,9 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
 
         try {
             const [demographics, created] = await findOrCreateDemographic(req.user.id)
+
+            console.log(req.body.dial_code)
+
             const options = {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
@@ -54,7 +57,9 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
             }
             const address = await createAddress(options)
 
+            console.log(address.dataValues.dial_code)
             console.log(address)
+
 
             if (returnTo) {
                 res.redirect(returnTo)
