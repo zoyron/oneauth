@@ -26,6 +26,10 @@ router.get('/',
 router.get('/add',
     cel.ensureLoggedIn('/login'),
     async function (req, res, next) {
+        if (req.query && req.query.returnTo) {
+            req.session.returnTo = req.query.returnTo
+            res.locals.returnTo = req.query.returnTo
+        }
         try {
             const [states, countries] = await Promise.all([
                 findAllStates(),

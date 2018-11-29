@@ -5,7 +5,7 @@
 
       <form action="/api/address" method="POST">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <input type="hidden" name="returnTo" id="redirect-input" />
+        <input type="hidden" name="returnTo" id="redirect-input" value="{{returnTo}}" />
 
         <div class="attributes">
             <div class="row no-gutters align-items-center justify-content-between detail-row">
