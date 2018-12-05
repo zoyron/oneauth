@@ -14,5 +14,6 @@ function validateNumber(number) {
 
 module.exports = {
     parseNumber,
-    validateNumber
+    validateNumber,
+    parseNumberByCountry
 }

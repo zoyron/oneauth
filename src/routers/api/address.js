@@ -40,7 +40,6 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
 
         try {
             const [demographics, created] = await findOrCreateDemographic(req.user.id)
-
             const options = {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
@@ -65,7 +64,6 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
                 req.flash('error', 'This number does not exist in your country.')
                 return res.redirect('/address/add')
             }
-
             const address = await createAddress(options)
 
             if (returnTo) {
@@ -82,7 +80,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
 })
 
 router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
-    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId'])) {
+    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId', 'dial_code'])) {
         return res.send(400)
     }
     let addrId = parseInt(req.params.id)
