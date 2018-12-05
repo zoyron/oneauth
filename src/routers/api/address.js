@@ -105,7 +105,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
                 return res.redirect('/address/add')
             }
 
-            const updated = await updateAddressbyAddrId(addrId, {
+            await updateAddressbyAddrId(addrId, {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
