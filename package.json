@@ -9,7 +9,7 @@
     "test:report": "nyc npm test",
     "precodecov": "npm run test:report",
     "codecov": "codecov",
-    "start": "nodemon src/server.js",
+    "start": "node src/server.js",
     "start:dev": "cross-env ONEAUTH_DEV=localhost npm start"
   },
   "files": [
