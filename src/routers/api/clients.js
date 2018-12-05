@@ -3,7 +3,7 @@
  *
  * This is the /api/v1/clients path
  */
-const Raven = require('raven') 
+const Raven = require('raven')
 const router = require('express').Router()
 const cel = require('connect-ensure-login')
 const { isURL } = require('../../utils/urlutils')
