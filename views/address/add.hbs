@@ -85,7 +85,9 @@
               <div class="label-input col-md-4 col-sm-3">Country Code</div>
               <select name="dial_code" required class="input-text col-md-8 col-sm-8">
                 {{#each countries}}
-                    <option class="dropdown-li" value="{{dial_code}}" {{#selected}}selected="selected"{{/selected}}>{{dial_code}}</option>
+                    <option class="dropdown-li" value="{{dial_code}}" {{#selected}}selected="selected"{{/selected}}>
+                      {{name}} ({{dial_code}})
+                    </option>
                 {{/each}}
               </select>
             </div>
