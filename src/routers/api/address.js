@@ -3,6 +3,7 @@ const {db} = require('../../db/models')
 const cel = require('connect-ensure-login')
 const Raven = require('raven')
 const {hasNull} = require('../../utils/nullCheck')
+const { parseNumberByCountry, validateNumber } = require('../../utils/mobile_validator')
 
 const {
     findOrCreateDemographic,
@@ -13,7 +14,7 @@ const {
 } = require('../../controllers/demographics')
 
 router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
-    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId'])) {
+    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId', 'dial_code'])) {
         res.send(400)
     } else {
         let returnTo = false
@@ -32,6 +33,11 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
             return res.redirect('/address/add')
         }
 
+        if(!req.body.dial_code) {
+            req.flash('error', 'Please provide your country code.')
+            return res.redirect('/address/add')
+        }
+
         try {
             const [demographics, created] = await findOrCreateDemographic(req.user.id)
             const options = {
@@ -46,12 +52,20 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
                 city: req.body.city,
                 stateId: req.body.stateId,
                 countryId: req.body.countryId,
+                dial_code: req.body.dial_code,
                 demographicId: demographics.id,
                 whatsapp_number: req.body.whatsapp_number || null,
                 // if no addresses, then first one added is primary
-                primary: !demographics.get().addresses
+                primary: !demographics.addresses
+            }
+
+            let number = options.dial_code + options.mobile_number
+             if (!validateNumber(parseNumberByCountry(number,req.body.countryId))) {
+                req.flash('error', 'This number does not exist in your country.')
+                return res.redirect('/address/add')
             }
             const address = await createAddress(options)
+
             if (returnTo) {
                 res.redirect(returnTo)
             } else {
@@ -66,7 +80,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
 })
 
 router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
-    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId'])) {
+    if (hasNull(req.body, ['first_name', 'last_name', 'number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId', 'countryId', 'dial_code'])) {
         return res.send(400)
     }
     let addrId = parseInt(req.params.id)
@@ -85,6 +99,12 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
                 await updateAddressbyDemoId(demoId, {primary: false})
             }
 
+            let number = req.body.dial_code + options.mobile_number
+            if (!validateNumber(parseNumberByCountry(number,req.body.countryId))) {
+                req.flash('error', 'This number does not exist in your country.')
+                return res.redirect('/address/add')
+            }
+
             await updateAddressbyAddrId(addrId, {
                 label: req.body.label || null,
                 first_name: req.body.first_name,
@@ -97,9 +117,11 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
                 city: req.body.city,
                 stateId: req.body.stateId,
                 countryId: req.body.countryId,
+                dial_code: req.body.dial_code,
                 whatsapp_number: req.body.whatsapp_number || null,
                 primary: req.body.primary === 'on'
             })
+
             if (req.body.returnTo) {
                 return res.redirect(req.body.returnTo)
             } else {
