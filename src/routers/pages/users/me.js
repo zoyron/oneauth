@@ -14,6 +14,7 @@ const { findAllClientsByUserId } = require('../../../controllers/clients');
 const {
   findAllBranches,
   findAllColleges,
+  findAllCountries,
   upsertDemographic
 } = require("../../../controllers/demographics");
 const { parseNumber, validateNumber } = require('../../../utils/mobile_validator')
@@ -52,7 +53,7 @@ router.get('/edit',
   cel.ensureLoggedIn('/login'),
   async function (req, res, next) {
     try {
-      const [user, colleges, branches] = await Promise.all([
+      const [user, colleges, branches, countries] = await Promise.all([
         findUserById(req.user.id,[
           {
             model: models.Demographic,
@@ -64,12 +65,13 @@ router.get('/edit',
           }
         ]),
         findAllColleges(),
-        findAllBranches()
+        findAllBranches(),
+        findAllCountries()
       ])
       if (!user) {
         res.redirect('/login')
       }
-      return res.render('user/me/edit', {user, colleges, branches})
+      return res.render('user/me/edit', {user, colleges, branches, countries})
     } catch (error) {
       Raven.captureException(error)
       res.flash('error','Error Fetching College and Branches Data.')

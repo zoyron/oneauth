@@ -7,13 +7,13 @@
 
             <form id="edit-form" enctype="multipart/form-data" method="POST">
                 <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                {{#if user.email}} 
+                {{#if user.email}}
                     {{#unless user.mobile_number}}
                         <div class="alert alert-danger" role="alert">
                             Please enter your mobile number to continue.
                         </div>
-                    {{/unless}} 
-                {{else}} 
+                    {{/unless}}
+                {{else}}
                     {{#if user.mobile_number}}
                         <div class="alert alert-danger" role="alert">
                             Please enter your email address to continue.
@@ -82,7 +82,15 @@
 
                     <div class="row no-gutters align-items-center justify-content-between detail-row">
                         <div class="label-input col-2">Contact Number</div>
-                        <input class="input-text col-9" type="text" name="mobile_number" id="mobile_number" value="{{user.mobile_number}}"/>
+                        <select name="dial_code" class="input-text col-3">
+                            {{#each countries}}
+                                <option class="dropdown-li" value="{{dial_code}}">
+                                    {{name}} ({{dial_code}})
+                                </option>
+                            {{/each}}
+                        </select>
+
+                        <input class="input-text col-5" type="text" name="mobile_number" id="mobile_number" value="{{user.mobile_number}}"/>
                     </div>
 
                     <div class="row no-gutters align-items-center justify-content-between detail-row">
