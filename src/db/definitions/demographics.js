@@ -40,7 +40,6 @@ module.exports = {
         },
         dial_code: {
             type: Sequelize.DataTypes.STRING(5),
-            unique: true
         }
     },
 

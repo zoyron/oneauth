@@ -4,6 +4,10 @@ function parseNumber(number) {
     return phoneUtil.parseAndKeepRawInput(number, 'IN');
 }
 
+function parseNumberEntireString(numberString) {
+    return phoneUtil.parseAndKeepRawInput(numberString);
+}
+
 function parseNumberByCountry(number, country) {
     return phoneUtil.parseAndKeepRawInput(number, country)
 }
@@ -14,6 +18,7 @@ function validateNumber(number) {
 
 module.exports = {
     parseNumber,
+    parseNumberEntireString,
     validateNumber,
     parseNumberByCountry
 }

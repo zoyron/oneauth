@@ -23,8 +23,30 @@
                 <option>FEMALE</option>
                 <option selected>UNDISCLOSED</option>
             </select>
-            <input type="text" class="input-text icon mail-bg" name="mobile_number" placeholder="Contact Number" required>
+            <div class="row">
+                <select name="dial_code" class="input-text col-4">
+                    {{#each countries}}
+                        {{#ifeq expected=dial_code val='+91'}}
+                            <option class="dropdown-li" value="{{dial_code}}" selected>
+                                {{name}} ({{dial_code}})
+                            </option>
+                        {{else}}
+                            <option class="dropdown-li" value="{{dial_code}}">
+                                {{name}} ({{dial_code}})
+                            </option>
+                        {{/ifeq}}
+                    {{/each}}
+                </select>
+                <input type="text" class="input-text col-8"
+                       name="mobile_number" placeholder="Contact Number" required>
+            </div>
 
+            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                <div class="h3 label-input col-2">Contact Number</div>
+
+
+                <input class="input-text col-5" type="text" name="mobile_number" id="mobile_number" value="{{user.mobile_number}}"/>
+            </div>
             <input type="email" class="input-text icon mail-bg" name="email" placeholder="Email Address" required>
 
             <input type="password" class="input-text icon fingerprint-bg" name="password" placeholder="Password" required>

@@ -14,9 +14,10 @@ const { findAllClientsByUserId } = require('../../../controllers/clients');
 const {
   findAllBranches,
   findAllColleges,
+  findAllCountries,
   upsertDemographic
 } = require("../../../controllers/demographics");
-const { parseNumber, validateNumber } = require('../../../utils/mobile_validator')
+const { parseNumberEntireString, validateNumber } = require('../../../utils/mobile_validator')
 
 router.get('/',
   cel.ensureLoggedIn('/login'),
@@ -52,7 +53,7 @@ router.get('/edit',
   cel.ensureLoggedIn('/login'),
   async function (req, res, next) {
     try {
-      const [user, colleges, branches] = await Promise.all([
+      const [user, colleges, branches, countries] = await Promise.all([
         findUserById(req.user.id,[
           {
             model: models.Demographic,
@@ -64,12 +65,20 @@ router.get('/edit',
           }
         ]),
         findAllColleges(),
-        findAllBranches()
+        findAllBranches(),
+        findAllCountries()
       ])
       if (!user) {
         res.redirect('/login')
       }
-      return res.render('user/me/edit', {user, colleges, branches})
+      const mobNoSplit = user.dataValues.mobile_number.split('-')
+      if (mobNoSplit.length > 1) {
+        user.dial_code = mobNoSplit[0]
+        user.mobile_number = mobNoSplit[1]
+      } else {
+      user.mobile_number = mobNoSplit[0]
+      }
+      return res.render('user/me/edit', {user, colleges, branches, countries})
     } catch (error) {
       Raven.captureException(error)
       res.flash('error','Error Fetching College and Branches Data.')
@@ -112,12 +121,9 @@ router.post('/edit',
       return res.redirect('/users/me/edit')
     }
 
-    if(Number.isNaN(+(req.body.mobile_number)) || (req.body.mobile_number.length !== 10)){
-        req.flash('error', 'Contact number is not a valid number')
-        return res.redirect('/users/me/edit')
-    }
-
-    if(!(validateNumber(parseNumber(req.body.mobile_number)))){
+    if(!(validateNumber(parseNumberEntireString(
+        req.body.dial_code + '-' + req.body.mobile_number
+    )))){
         req.flash('error', 'Contact number is not a valid number')
         return res.redirect('/users/me/edit')
     }
@@ -132,7 +138,9 @@ router.post('/edit',
       if(req.body.gender){
         user.gender = req.body.gender
       }
-      user.mobile_number = req.body.mobile_number
+
+      user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+
       if (!user.verifiedemail && req.body.email !== user.email) {
         user.email = req.body.email
       }
