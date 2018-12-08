@@ -17,7 +17,7 @@ const {
 const {
     createVerifyEmailEntry
 } = require('../controllers/verify_emails')
-const { parseNumber, validateNumber } = require('../utils/mobile_validator')
+const { parseNumberEntireString, validateNumber } = require('../utils/mobile_validator')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
@@ -54,7 +54,9 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             return res.redirect('/signup')
         }
 
-        if(!(validateNumber(parseNumber(req.body.mobile_number)))){
+        if(!(validateNumber(parseNumberEntireString(
+            req.body.dial_code + '-' + req.body.mobile_number
+        )))){
             req.flash('error', 'Please provide a Valid Contact Number.')
             return res.redirect('/signup')
         }
@@ -70,7 +72,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             username: req.body.username,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
-            mobile_number: req.body.mobile_number,
+            mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
             email: req.body.email,
             demographic: {
                 branchId: req.body.branchId,

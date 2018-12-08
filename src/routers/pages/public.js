@@ -8,7 +8,8 @@ const cel = require('connect-ensure-login')
 const router = require('express').Router()
 const {
     findAllBranches,
-    findAllColleges
+    findAllColleges,
+    findAllCountries
 } = require('../../controllers/demographics');
 
 router.get('/login', cel.ensureNotLoggedIn('/'), function (req, res, next) {
@@ -19,14 +20,16 @@ router.get('/login', cel.ensureNotLoggedIn('/'), function (req, res, next) {
 })
 router.get('/signup', cel.ensureNotLoggedIn('/'), async function (req, res, next) {
     try {
-        const [colleges, branches] = await Promise.all([
+        const [colleges, branches, countries] = await Promise.all([
             findAllColleges(),
-            findAllBranches()
+            findAllBranches(),
+            findAllCountries()
         ])
         res.render('signup', {
             pageTitle: "Signup",
-            colleges:colleges,
-            branches:branches
+            colleges,
+            branches,
+            countries
         })
     } catch (err) {
         Raven.captureException(err)
