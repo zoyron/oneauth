@@ -8,7 +8,7 @@ const {db, models: {
 (async () => {
     try {
         await College.bulkCreate([
-            {"name": "---OTHER / NOT LISTED / NO COLLEGE ---"},
+            {"name": "0---OTHER / NOT LISTED / NO COLLEGE ---0"},
             {"name":"Amity School Of Engineering & Technology (Noida)"},
             {"name":"Army Institute Of Technology (Pune)"},
             {"name":"Asia Pacific Institute of Information Technology (APIIT SD) (Panipat)"},

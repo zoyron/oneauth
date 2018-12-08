@@ -84,9 +84,15 @@
                         <div class="label-input col-2">Contact Number</div>
                         <select name="dial_code" class="input-text col-3">
                             {{#each countries}}
-                                <option class="dropdown-li" value="{{dial_code}}">
-                                    {{name}} ({{dial_code}})
-                                </option>
+                                {{#ifeq expected=dial_code val=../user.dial_code}}
+                                    <option class="dropdown-li" value="{{dial_code}}" selected>
+                                        {{name}} ({{dial_code}})
+                                    </option>
+                                {{else}}
+                                    <option class="dropdown-li" value="{{dial_code}}">
+                                        {{name}} ({{dial_code}})
+                                    </option>
+                                {{/ifeq}}
                             {{/each}}
                         </select>
 
