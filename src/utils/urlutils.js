@@ -4,6 +4,9 @@
 
 module.exports = {
     prefixHttp: function (url) {
+        if (url.startsWith('app://')) {
+            return url
+        }
         if (url.substr(0, 4) !== "http") {
             url = "http://" + url
         }
