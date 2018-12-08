@@ -3,7 +3,7 @@ const {db} = require('../../db/models')
 const cel = require('connect-ensure-login')
 const Raven = require('raven')
 const {hasNull} = require('../../utils/nullCheck')
-const { parseNumberByCountry, validateNumber } = require('../../utils/mobile_validator')
+const {parseNumberByCountry, validateNumber} = require('../../utils/mobile_validator')
 
 const {
     findOrCreateDemographic,
@@ -27,13 +27,16 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
         if (req.session && req.session.returnTo) {
             returnTo = req.query.returnTo
         }
+        if (returnTo) {
+            req.session.returnTo = returnTo
+        }
 
         if (!req.body.label) {
             req.flash('error', 'Please provide the label of the address.')
             return res.redirect('/address/add')
         }
 
-        if(!req.body.dial_code) {
+        if (!req.body.dial_code) {
             req.flash('error', 'Please provide your country code.')
             return res.redirect('/address/add')
         }
@@ -60,9 +63,9 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
             }
 
             let number = options.dial_code + options.mobile_number
-             if (!validateNumber(parseNumberByCountry(number,req.body.countryId))) {
+            if (!validateNumber(parseNumberByCountry(number, req.body.countryId))) {
                 req.flash('error', 'This number does not exist in your country.')
-                return res.redirect('/address/add')
+                return res.redirect('/address/add' + returnTo ? `?returnTo=${returnTo}` : '')
             }
             const address = await createAddress(options)
 
@@ -74,7 +77,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
         } catch (err) {
             Raven.captureException(err)
             req.flash('error', 'Error inserting Address.' + err.message)
-            return res.redirect('/address/add')
+            return res.redirect('/address/add' + returnTo ? `?returnTo=${returnTo}` : '')
         }
     }
 })
@@ -100,7 +103,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
             }
 
             let number = req.body.dial_code + options.mobile_number
-            if (!validateNumber(parseNumberByCountry(number,req.body.countryId))) {
+            if (!validateNumber(parseNumberByCountry(number, req.body.countryId))) {
                 req.flash('error', 'This number does not exist in your country.')
                 return res.redirect('/address/add')
             }
