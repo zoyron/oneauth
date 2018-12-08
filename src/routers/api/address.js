@@ -73,7 +73,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
             }
         } catch (err) {
             Raven.captureException(err)
-            req.flash('error', 'Error inserting Address')
+            req.flash('error', 'Error inserting Address.' + err.message)
             return res.redirect('/address/add')
         }
     }
