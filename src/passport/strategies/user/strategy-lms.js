@@ -48,7 +48,7 @@ module.exports = new LmsStrategy({
                 }
             }
         })
-        if (!userLms) {
+        if (!userLms || !(userLms.user)) {
             return cb(null, false, {
                 message: 'Authentication Failed'
             })
