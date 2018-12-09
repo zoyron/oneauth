@@ -3,27 +3,36 @@ const cel = require('connect-ensure-login')
 const router = require('express').Router()
 
 const models = require('../../../db/models').models
-const {hasNull} = require('../../../utils/nullCheck')
+const {
+  hasNull
+} = require('../../../utils/nullCheck')
 const passutils = require('../../../utils/password')
-const { deleteMinio } = require('../../../utils/multer')
+const {
+  deleteMinio
+} = require('../../../utils/multer')
 
 const {
   findUserById,
 } = require('../../../controllers/user');
-const { findAllClientsByUserId } = require('../../../controllers/clients');
+const {
+  findAllClientsByUserId
+} = require('../../../controllers/clients');
 const {
   findAllBranches,
   findAllColleges,
   findAllCountries,
   upsertDemographic
 } = require("../../../controllers/demographics");
-const { parseNumberEntireString, validateNumber } = require('../../../utils/mobile_validator')
+const {
+  parseNumberEntireString,
+  validateNumber
+} = require('../../../utils/mobile_validator')
 
 router.get('/',
   cel.ensureLoggedIn('/login'),
   async function (req, res, next) {
     try {
-      const user = await findUserById(req.user.id,[
+      const user = await findUserById(req.user.id, [
         models.UserGithub,
         models.UserGoogle,
         models.UserFacebook,
@@ -42,10 +51,14 @@ router.get('/',
       if (!user) {
         res.redirect('/login')
       }
-      return res.render('user/me', {user: user})
+      return res.render('user/me', {
+        user: user
+      })
     } catch (error) {
       Raven.captureException(error)
-      res.status(500).json({error: error})
+      res.status(500).json({
+        error: error
+      })
     }
   })
 
@@ -54,16 +67,14 @@ router.get('/edit',
   async function (req, res, next) {
     try {
       const [user, colleges, branches, countries] = await Promise.all([
-        findUserById(req.user.id,[
-          {
-            model: models.Demographic,
-            include: [
-              models.College,
-              models.Branch,
-              models.Company,
-            ]
-          }
-        ]),
+        findUserById(req.user.id, [{
+          model: models.Demographic,
+          include: [
+            models.College,
+            models.Branch,
+            models.Company,
+          ]
+        }]),
         findAllColleges(),
         findAllBranches(),
         findAllCountries()
@@ -71,17 +82,25 @@ router.get('/edit',
       if (!user) {
         res.redirect('/login')
       }
-      const mobNoSplit = user.dataValues.mobile_number.split('-')
-      if (mobNoSplit.length > 1) {
-        user.dial_code = mobNoSplit[0]
-        user.mobile_number = mobNoSplit[1]
-      } else {
-      user.mobile_number = mobNoSplit[0]
+      if (user.dataValues.mobile_number) {
+        const mobNoSplit = user.dataValues.mobile_number.split('-')
+        if (mobNoSplit.length > 1) {
+          user.dial_code = mobNoSplit[0]
+          user.mobile_number = mobNoSplit[1]
+        } else {
+          user.mobile_number = mobNoSplit[0]
+        }
+
       }
-      return res.render('user/me/edit', {user, colleges, branches, countries})
+      return res.render('user/me/edit', {
+        user,
+        colleges,
+        branches,
+        countries
+      })
     } catch (error) {
       Raven.captureException(error)
-      res.flash('error','Error Fetching College and Branches Data.')
+      res.flash('error', 'Error Fetching College and Branches Data.')
       res.redirect('/users/me')
     }
 
@@ -94,13 +113,13 @@ router.post('/edit',
     let returnTo = '/users/me'
 
     if (req.query && req.query.returnTo) {
-        returnTo = req.query.returnTo
+      returnTo = req.query.returnTo
     }
     if (req.body && req.body.returnTo) {
-        returnTo = req.query.returnTo
+      returnTo = req.query.returnTo
     }
     if (req.session && req.session.returnTo) {
-        returnTo = req.query.returnTo
+      returnTo = req.query.returnTo
     }
 
 
@@ -116,26 +135,26 @@ router.post('/edit',
       return res.redirect('/')
     }
 
-    if(req.body.mobile_number.trim() === ''){
+    if (req.body.mobile_number.trim() === '') {
       req.flash('error', 'Contact number cannot be empty')
       return res.redirect('/users/me/edit')
     }
 
-    if(!(validateNumber(parseNumberEntireString(
+    if (!(validateNumber(parseNumberEntireString(
         req.body.dial_code + '-' + req.body.mobile_number
-    )))){
-        req.flash('error', 'Contact number is not a valid number')
-        return res.redirect('/users/me/edit')
+      )))) {
+      req.flash('error', 'Contact number is not a valid number')
+      return res.redirect('/users/me/edit')
     }
 
     try {
-      const user = await findUserById(req.user.id,[models.Demographic])
+      const user = await findUserById(req.user.id, [models.Demographic])
       // user might have demographic, if not make empty
       const demographic = user.demographic || {};
 
       user.firstname = req.body.firstname
       user.lastname = req.body.lastname
-      if(req.body.gender){
+      if (req.body.gender) {
         user.gender = req.body.gender
       }
 
@@ -151,7 +170,7 @@ router.post('/edit',
       }
       if (req.file) {
         user.photo = req.file.location
-      } else if(req.body.avatarselect) {
+      } else if (req.body.avatarselect) {
         user.photo = `https://minio.cb.lk/img/avatar-${req.body.avatarselect}.svg`
       }
 
@@ -173,7 +192,7 @@ router.post('/edit',
         demographic.collegeId = +req.body.collegeId
       }
 
-      await upsertDemographic (
+      await upsertDemographic(
         demographic.id,
         demographic.userId,
         demographic.collegeId,
@@ -207,10 +226,12 @@ router.get('/clients',
   async function (req, res, next) {
     try {
       const clients = await findAllClientsByUserId(req.user.id);
-      return res.render('client/all', {clients: clients})
+      return res.render('client/all', {
+        clients: clients
+      })
     } catch (error) {
       Raven.captureException(err)
-      req.flash('error','Could not find any clients')
+      req.flash('error', 'Could not find any clients')
       res.redirect('/users/me')
     }
   }
