@@ -37,16 +37,10 @@
                         {{/ifeq}}
                     {{/each}}
                 </select>
-                <input type="text" class="input-text col-8"
-                       name="mobile_number" placeholder="Contact Number" required>
+                <input class="input-text col-8" type="text"
+                    name="mobile_number" id="mobile_number" value="{{user.mobile_number}}"/>
             </div>
 
-            <div class="row no-gutters align-items-center justify-content-between detail-row">
-                <div class="h3 label-input col-2">Contact Number</div>
-
-
-                <input class="input-text col-5" type="text" name="mobile_number" id="mobile_number" value="{{user.mobile_number}}"/>
-            </div>
             <input type="email" class="input-text icon mail-bg" name="email" placeholder="Email Address" required>
 
             <input type="password" class="input-text icon fingerprint-bg" name="password" placeholder="Password" required>
