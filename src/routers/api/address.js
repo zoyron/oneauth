@@ -102,7 +102,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
                 await updateAddressbyDemoId(demoId, {primary: false})
             }
 
-            let number = req.body.dial_code + options.mobile_number
+            let number = req.body.dial_code + req.body.mobile_number
             if (!validateNumber(parseNumberByCountry(number, req.body.countryId))) {
                 req.flash('error', 'This number does not exist in your country.')
                 return res.redirect('/address/add')
