@@ -18,6 +18,9 @@ const {
   findAllClientsByUserId
 } = require('../../../controllers/clients');
 const {
+  findAllOrganisationsByUserId
+} = require('../../../controllers/organisation');
+const {
   findAllBranches,
   findAllColleges,
   findAllCountries,
@@ -230,9 +233,25 @@ router.get('/clients',
         clients: clients
       })
     } catch (error) {
-      Raven.captureException(err)
+      Raven.captureException(error)
       req.flash('error', 'Could not find any clients')
       res.redirect('/users/me')
+    }
+  }
+)
+
+router.get('/organisations',
+  cel.ensureLoggedIn('/login'),
+  async function (req, res, next) {
+    try {
+      const orgs = await findAllOrganisationsByUserId(req.user.id)
+      return res.render('organisation/all', {
+        organisations: organisations
+      })
+    } catch (error) {
+        Raven.captureException(error)
+        req.flash('error', 'Could not find any organisations')
+        res.redirect('/users/me')
     }
   }
 )
