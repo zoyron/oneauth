@@ -111,12 +111,9 @@ const Organisation = db.define('organisation', {
     website: Sequelize.DataTypes.STRING
 })
 
-const OrgAdmin = db.define('orgadmin', {})
-
-const OrgMember = db.define('orgmember', {
+const OrgAdmin = db.define('orgadmin', {
     orgId: Sequelize.DataTypes.BIGINT,
-    userId: Sequelize.DataTypes.BIGINT,
-    email: Sequelize.DataTypes.STRING
+    userId: Sequelize.DataTypes.BIGINT
 })
 
 User.belongsToMany(Organisation,{
@@ -131,6 +128,12 @@ Organisation.belongsToMany(User, {
         model: OrgAdmin,
         unique: false
     }
+})
+
+const OrgMember = db.define('orgmember', {
+    orgId: Sequelize.DataTypes.BIGINT,
+    userId: Sequelize.DataTypes.BIGINT,
+    email: Sequelize.DataTypes.STRING
 })
 
 User.belongsToMany(Organisation, {
