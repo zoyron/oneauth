@@ -103,6 +103,50 @@ const Client = db.define('client', {
 Client.belongsTo(User)
 User.hasMany(Client)
 
+const Organisation = db.define('organisation', {
+    id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true},
+    name: {type: Sequelize.DataTypes.STRING, allowNull: false},
+    full_name: {type: Sequelize.DataTypes.STRING, allowNull: false},
+    domain: Sequelize.DataTypes.ARRAY(Sequelize.DataTypes.STRING),
+    website: Sequelize.DataTypes.STRING
+})
+
+const OrgAdmin = db.define('orgadmin', {})
+
+const OrgMember = db.define('orgmember', {
+    orgId: Sequelize.DataTypes.BIGINT,
+    userId: Sequelize.DataTypes.BIGINT,
+    email: Sequelize.DataTypes.STRING
+})
+
+User.belongsToMany(Organisation,{
+    through: {
+        model: OrgAdmin,
+        unique: false
+    }
+})
+
+Organisation.belongsToMany(User, {
+    through: {
+        model: OrgAdmin,
+        unique: false
+    }
+})
+
+User.belongsToMany(Organisation, {
+    through: {
+        model: OrgMember,
+        unique: false
+    }
+})
+
+Organisation.belongsToMany(User, {
+    through: {
+        model: OrgMember,
+        unique: false
+    }
+})
+
 const GrantCode = db.define('grantcode', {
     code: {type: Sequelize.DataTypes.STRING, primaryKey: true}
 })
@@ -192,7 +236,7 @@ if (!process.env.ONEAUTH_DB_NO_SYNC) {
 module.exports = {
     models: {
         User, UserLocal, UserFacebook, UserTwitter, UserGithub, UserGoogle,
-        UserLinkedin, UserLms, Client, GrantCode, AuthToken, Resetpassword, Verifyemail,
+        UserLinkedin, UserLms, Client, Organisation, OrgAdmin, OrgMember, GrantCode, AuthToken, Resetpassword, Verifyemail,
         Demographic, Address, College, Company, Branch, State, Country, EventSubscription
     },
     db
