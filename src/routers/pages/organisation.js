@@ -46,7 +46,7 @@ router.get('/:id',
         }
 })
 
-router.get(':id/edit',
+router.get('/:id/edit',
     cel.ensureLoggedIn('/login'),
     async function(req, res, next) {
         try {
@@ -62,7 +62,7 @@ router.get(':id/edit',
         }
 })
 
-router.get(':id/admin',
+router.get('/:id/admin',
     cel.ensureLoggedIn('/login'),
     async function(req, res, next) {
         try {
@@ -78,7 +78,7 @@ router.get(':id/admin',
         }
 })
 
-router.get(':id/member',
+router.get('/:id/member',
     cel.ensureLoggedIn('/login'),
     async function(req, res, next) {
         try {

@@ -44,7 +44,7 @@ function updateOrganisation(options, orgId) {
         name: options.name,
         full_name: options.full_name,
         domain: options.orgDomains,
-        website: org.website
+        website: options.website
     }
     return Organisation.update(update, {
         where: { id: orgId }

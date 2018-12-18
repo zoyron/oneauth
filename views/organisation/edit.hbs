@@ -4,7 +4,7 @@
     <div class="card">
         <h1 class="heading-u-red">Edit Details for {{organisation.name}}</h1>
         <div class="attributes d-flex flex-column">
-            <form method="post" action="/api/clients/edit/{{organisation.id}}">
+            <form method="post" action="/api/organisations/edit/{{organisation.id}}">
                 <input type="hidden" name="_csrf" value="{{csrfToken}}">
                 {{> error-snippet}}
                 <div class="row justify-content-between">

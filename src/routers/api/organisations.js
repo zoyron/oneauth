@@ -37,7 +37,7 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
             let options = {
                 name: req.body.name,
                 full_name: req.body.full_name,
-                domain: req.body.domain,
+                orgDomains: req.body.domain.replace(/ /g, '').split(';'),
                 website: req.body.website
             }
             await updateOrganisation(options, orgId)

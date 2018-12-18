@@ -18,7 +18,7 @@ const {
   findAllClientsByUserId
 } = require('../../../controllers/clients');
 const {
-  findAllOrganisationsByUserId
+  findAllOrganisations
 } = require('../../../controllers/organisation');
 const {
   findAllBranches,
@@ -244,7 +244,7 @@ router.get('/organisations',
   cel.ensureLoggedIn('/login'),
   async function (req, res, next) {
     try {
-      const organisations = await findAllOrganisationsByUserId(req.user.id)
+      const organisations = await findAllOrganisations()
       return res.render('organisation/all', {
         organisations: organisations
       })
