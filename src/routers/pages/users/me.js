@@ -244,7 +244,7 @@ router.get('/organisations',
   cel.ensureLoggedIn('/login'),
   async function (req, res, next) {
     try {
-      const orgs = await findAllOrganisationsByUserId(req.user.id)
+      const organisations = await findAllOrganisationsByUserId(req.user.id)
       return res.render('organisation/all', {
         organisations: organisations
       })

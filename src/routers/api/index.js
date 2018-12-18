@@ -21,5 +21,6 @@ router.use(apiLimiter)
 router.use('/users', require('./users'))
 router.use('/clients', require('./clients'))
 router.use('/address', require('./address'))
+router.use('/organisations', require('./organisations'))
 
 module.exports = router

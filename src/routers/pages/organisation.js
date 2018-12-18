@@ -3,13 +3,13 @@ const router = require('express').Router()
 const cel = require('connect-ensure-login')
 const acl = require('../../middlewares/acl')
 
-const = {
+const {
   findAllOrganisations,
   findOrganisationById,
   updateOrganisation
 } = require('../../controllers/organisation')
 
-const = {
+const {
   findAllUsers
 } = require('../../controllers/user')
 
@@ -38,9 +38,6 @@ router.get('/:id',
             if (!organisation) {
               return res.send("Invalid Organisation Id")
             }
-            if (organisation.userId != req.user.id) {
-              return res.send("Unauthorized user")
-            }
             return res.render('organisation/id', {organisation: organisation})
         } catch (error) {
             Raven.captureException(error)
@@ -56,9 +53,6 @@ router.get(':id/edit',
             const organisation = await findOrganisationById(req.params.id)
             if (!organisation) {
               return res.send("Invalid organisation Id")
-            }
-            if (organisation.userId != req.user.id) {
-              return res.send("Unauthorized user")
             }
             return res.render('organisation/edit', {organisation: organisation})
         } catch (error) {
@@ -76,10 +70,6 @@ router.get(':id/admin',
                   findAllUsers(),
                   findOrganisationById(req.params.id)
             ])
-
-            if (organisation.userId != req.user.id) {
-              return res.send("Unauthorized user")
-            }
             return res.render('organisation/admin', {users, organisation})
         } catch (error) {
             Raven.captureException(error)
@@ -96,10 +86,6 @@ router.get(':id/member',
                   findAllUsers(),
                   findOrganisationById(req.params.id)
             ])
-
-            if (organisation.userId != req.user.id) {
-              return res.send("Unauthorized user")
-            }
             return res.render('organisation/member', {users, organisation})
         } catch (error) {
             Raven.captureException(error)
@@ -107,3 +93,5 @@ router.get(':id/member',
             res.redirect('users/me/organisations')
         }
 })
+
+module.exports = router

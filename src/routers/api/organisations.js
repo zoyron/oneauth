@@ -16,7 +16,7 @@ router.post('/add', cel.ensureLoggedIn('/login'),
       let options = {
           name: req.body.name,
           full_name: req.body.full_name,
-          domain: req.body.domain,
+          orgDomains: req.body.domain.replace(/ /g, '').split(';'),
           website: req.body.website
       }
 
@@ -79,3 +79,5 @@ router.post('/:orgId/add_member/:userId', cel.ensureLoggedIn('/login'),
             res.redirect('/organisations/' + orgId)
         }
 })
+
+module.exports = router

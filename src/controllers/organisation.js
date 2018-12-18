@@ -1,6 +1,6 @@
 const generator = require("../utils/generator")
 const urlutils = require("../utils/urlutils");
-const { Organisation, OrgAdmin, OrgMember } = require("../db/models").models
+const { Organisation, OrgAdmin, OrgMember, User } = require("../db/models").models
 
 function findOrganisationById(id) {
     return Organisation.findOne({
@@ -9,7 +9,7 @@ function findOrganisationById(id) {
 }
 
 function findAllOrganisationsByUserId(userId) {
-    return User.findAll(userId, {
+    return User.findById(userId, {
         include: Organisation
     }).then(user => user.organisations)
 }
@@ -30,7 +30,7 @@ async function createOrganisation(options, userId) {
         website: options.website
     })
     await OrgAdmin.create({
-        orgId: organisation.id,
+        organisationId: organisation.id,
         userId: userId
     })
     return organisation
