@@ -10,7 +10,7 @@ function findOrganisationById(id) {
 
 function findAllOrganisationsByUserId(userId) {
     return User.findById(userId, {
-        include: Organisation
+        include: [{model:Organisation}]
     }).then(user => user.organisations)
 }
 

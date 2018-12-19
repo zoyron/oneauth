@@ -5,6 +5,7 @@ const acl = require('../../middlewares/acl')
 
 const {
   findAllOrganisations,
+  findAllOrganisationsByUserId,
   findOrganisationById,
   updateOrganisation
 } = require('../../controllers/organisation')
@@ -13,9 +14,13 @@ const {
   findAllUsers
 } = require('../../controllers/user')
 
-router.get('/', acl.ensureAdmin, async function(req, res, next) {
+router.get('/', cel.ensureLoggedIn('/login'), async function(req, res, next) {
     try {
-      const organisations = await findAllOrganisations()
+      if (req.user.role == 'admin') {
+        const organisations = await findAllOrganisations()
+      } else {
+          const organisations = await findAllOrganisationsByUserId(req.user.id)
+      }
       return res.render('/organisation/all', {organisations: organisations})
     } catch (error) {
         Raven.captureException(error)
