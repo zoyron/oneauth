@@ -77,11 +77,11 @@ router.get('/:id/admin',
                   findOrganisationById(req.params.id),
                   findAllAdmins(req.params.id)
             ])
-            return res.render('organisation/admin', {organisation, admins})
+            return res.render('organisation/admin/all', {organisation, admins})
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error fetching Organisation details')
-            res.redirect('/users/me/organisations')
+            res.redirect('/organisations/' + organisation.id)
         }
 })
 
@@ -93,11 +93,11 @@ router.get('/:id/member',
                   findOrganisationById(req.params.id),
                   findAllMembers(req.params.id)
             ])
-            return res.render('organisation/member', {organisation, members})
+            return res.render('organisation/member/all', {organisation, members})
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error fetching Organisation details')
-            res.redirect('/users/me/organisations')
+            res.redirect('/organisations/' + organisation.id)
         }
 })
 
@@ -109,11 +109,11 @@ router.get('/:id/admin/add',
                   findOrganisationById(req.params.id),
                   findAllUsers()
             ])
-            return res.render('organisation/add_admin', {organisation, users})
+            return res.render('organisation/admin/add', {organisation, users})
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error adding Admin')
-            res.redirect('/users/me/organisations')
+            res.redirect('/organisations/' + organisation.id)
         }
 })
 
@@ -125,11 +125,11 @@ router.get('/:id/member/add',
                   findOrganisationById(req.params.id),
                   findAllUsers()
             ])
-            return res.render('organisation/add_member', {organisation, users})
+            return res.render('organisation/member/add', {organisation, users})
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error adding Member')
-            res.redirect('/users/me/organisations')
+            res.redirect('/organisations/' + organisation.id)
         }
 })
 
