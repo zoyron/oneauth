@@ -7,7 +7,9 @@ const {
   findAllOrganisations,
   findAllOrganisationsByUserId,
   findOrganisationById,
-  updateOrganisation
+  updateOrganisation,
+  findAllAdmins,
+  findAllMembers
 } = require('../../controllers/organisation')
 
 const {
@@ -47,7 +49,7 @@ router.get('/:id',
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error Getting Organisation')
-            res.redirect('users/me/organisations')
+            res.redirect('/users/me/organisations')
         }
 })
 
@@ -63,7 +65,7 @@ router.get('/:id/edit',
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error Getting Organisation')
-            res.redirect('users/me/organisations')
+            res.redirect('/users/me/organisations')
         }
 })
 
@@ -71,15 +73,15 @@ router.get('/:id/admin',
     cel.ensureLoggedIn('/login'),
     async function(req, res, next) {
         try {
-            const [users, organisation] = await Promise.all([
-                  findAllUsers(),
-                  findOrganisationById(req.params.id)
+            const [organisation, admins] = await Promise.all([
+                  findOrganisationById(req.params.id),
+                  findAllAdmins(req.params.id)
             ])
-            return res.render('organisation/admin', {users, organisation})
+            return res.render('organisation/admin', {organisation, admins})
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error fetching Organisation details')
-            res.redirect('users/me/organisations')
+            res.redirect('/users/me/organisations')
         }
 })
 
@@ -87,15 +89,15 @@ router.get('/:id/member',
     cel.ensureLoggedIn('/login'),
     async function(req, res, next) {
         try {
-            const [users, organisation] = await Promise.all([
-                  findAllUsers(),
-                  findOrganisationById(req.params.id)
+            const [organisation, members] = await Promise.all([
+                  findOrganisationById(req.params.id),
+                  findAllMembers(req.params.id)
             ])
-            return res.render('organisation/member', {users, organisation})
+            return res.render('organisation/member', {organisation, members})
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error fetching Organisation details')
-            res.redirect('users/me/organisations')
+            res.redirect('/users/me/organisations')
         }
 })
 

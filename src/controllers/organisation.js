@@ -1,6 +1,7 @@
 const generator = require("../utils/generator")
 const urlutils = require("../utils/urlutils");
 const { Organisation, OrgAdmin, OrgMember, User } = require("../db/models").models
+const { findUserById } = require('./user')
 
 function findOrganisationById(id) {
     return Organisation.findOne({
@@ -66,6 +67,39 @@ function addOrgMember(email, orgId, userId) {
   })
 }
 
+async function findAllAdmins(id) {
+  const orgadmin = await OrgAdmin.findAll({
+    where: {organisationId: id}
+  })
+  let orgadmins = orgadmin.reduce(async (admins, admin) => {
+    let user = await findUserById(admin.userId)
+    let Admin = {
+      name: user.firstname + ' ' + user.lastname,
+      email: user.email,
+      contact: user.mobile_number
+    }
+    admins.push(Admin)
+    return admins
+  }, [])
+  return orgadmins
+}
+
+async function findAllMembers(orgId) {
+  const orgmem = await OrgMember.findAll({
+    where: { orgId }
+  })
+  let orgmems = orgmem.reduce(async (members, member) => {
+    let user = await findUserById(member.userId)
+    let Member = {
+      name: user.firstname + ' ' + user.lastname,
+      email: user.email
+    }
+    members.push(Member)
+    return members
+  }, [])
+  return orgmems
+}
+
 module.exports = {
   findOrganisationById,
   findAllOrganisationsByUserId,
@@ -73,5 +107,7 @@ module.exports = {
   createOrganisation,
   updateOrganisation,
   addOrgAdmin,
-  addOrgMember
+  addOrgMember,
+  findAllAdmins,
+  findAllMembers
 }
