@@ -9,7 +9,7 @@ const {
   findOrganisationById,
   updateOrganisation,
   findAllAdmins,
-  findAllMembers
+  findAllMembers,
 } = require('../../controllers/organisation')
 
 const {
@@ -97,6 +97,38 @@ router.get('/:id/member',
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Error fetching Organisation details')
+            res.redirect('/users/me/organisations')
+        }
+})
+
+router.get('/:id/admin/add',
+    cel.ensureLoggedIn('/login'),
+    async function(req, res, next) {
+        try {
+            const [organisation, users] = await Promise.all([
+                  findOrganisationById(req.params.id),
+                  findAllUsers()
+            ])
+            return res.render('organisation/add_admin', {organisation, users})
+        } catch (error) {
+            Raven.captureException(error)
+            req.flash('error', 'Error adding Admin')
+            res.redirect('/users/me/organisations')
+        }
+})
+
+router.get('/:id/member/add',
+    cel.ensureLoggedIn('/login'),
+    async function(req, res, next) {
+        try {
+            const [organisation, users] = await Promise.all([
+                  findOrganisationById(req.params.id),
+                  findAllUsers()
+            ])
+            return res.render('organisation/add_member', {organisation, users})
+        } catch (error) {
+            Raven.captureException(error)
+            req.flash('error', 'Error adding Member')
             res.redirect('/users/me/organisations')
         }
 })

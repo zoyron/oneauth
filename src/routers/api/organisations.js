@@ -50,12 +50,12 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
         }
 })
 
-router.post('/:orgId/add_admin/:userId', cel.ensureLoggedIn('/login'),
-    async function() {
+router.post('/:id/add_admin', cel.ensureLoggedIn('/login'),
+    async function(req, res) {
         try {
-            let orgId = parseInt(req.params.orgId)
-            let userId = parseInt(req.params.userId)
-
+            let orgId = parseInt(req.params.id)
+            let userId = req.body.userId
+            
             await addOrgAdmin(orgId, userId)
             res.redirect('/organisations/' + orgId)
         } catch (error) {
@@ -65,13 +65,14 @@ router.post('/:orgId/add_admin/:userId', cel.ensureLoggedIn('/login'),
         }
 })
 
-router.post('/:orgId/add_member/:userId', cel.ensureLoggedIn('/login'),
-    async function() {
+router.post('/:id/add_member', cel.ensureLoggedIn('/login'),
+    async function(req, res) {
         try {
-            let orgId = parseInt(req.params.orgId)
-            let userId = parseInt(req.params.userId)
+            let orgId = req.params.id
+            let userId = req.body.userId
+            let email = req.body.email
 
-            await addOrgMember(orgId, userId)
+            await addOrgMember(email, orgId, userId)
             res.redirect('/organisations/' + orgId)
         } catch (error) {
             Raven.captureException(error)
