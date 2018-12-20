@@ -10,6 +10,7 @@ const {
     addOrgMember
 } = require('../../controllers/organisation')
 
+const { findUserById } = require('../../controllers/user')
 
 router.post('/add', cel.ensureLoggedIn('/login'),
     async function(req, res) {
@@ -55,7 +56,7 @@ router.post('/:id/add_admin', cel.ensureLoggedIn('/login'),
         try {
             let orgId = parseInt(req.params.id)
             let userId = req.body.userId
-            
+
             await addOrgAdmin(orgId, userId)
             res.redirect('/organisations/' + orgId)
         } catch (error) {
@@ -70,7 +71,9 @@ router.post('/:id/add_member', cel.ensureLoggedIn('/login'),
         try {
             let orgId = req.params.id
             let userId = req.body.userId
-            let email = req.body.email
+
+            const user = await findUserById(userId)
+            let email = user.email
 
             await addOrgMember(email, orgId, userId)
             res.redirect('/organisations/' + orgId)
