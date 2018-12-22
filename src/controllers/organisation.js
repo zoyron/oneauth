@@ -3,16 +3,17 @@ const urlutils = require("../utils/urlutils");
 const { Organisation, OrgAdmin, OrgMember, User } = require("../db/models").models
 const { findUserById } = require('./user')
 
-function findOrganisationById(id) {
+function findOrganisationById(id, includes) {
     return Organisation.findOne({
-        where: { id }
+        where: { id },
+        include: includes
     })
 }
 
 function findAllOrganisationsByUserId(userId) {
     return User.findById(userId, {
         include: [{model:Organisation}]
-    }).then(user => user.organisations)
+    }).then(user => {return user.organisations})
 }
 
 function findAllOrganisations() {
@@ -55,7 +56,7 @@ function updateOrganisation(options, orgId) {
 function addOrgAdmin(orgId, userId) {
   return OrgAdmin.create({
       userId: userId,
-      orgId: orgId
+      organisationId: orgId
   })
 }
 
@@ -68,36 +69,37 @@ function addOrgMember(email, orgId, userId) {
 }
 
 async function findAllAdmins(id) {
-  const orgadmin = await OrgAdmin.findAll({
-    where: {organisationId: id}
-  })
-  let orgadmins = orgadmin.reduce(async (admins, admin) => {
-    let user = await findUserById(admin.userId)
-    let Admin = {
-      name: user.firstname + ' ' + user.lastname,
-      email: user.email,
-      contact: user.mobile_number
+    const orgadmin = await OrgAdmin.findAll({
+      where: {organisationId: id}
+    })
+    let admins = []
+
+    for (let admin of orgadmin) {
+        let user = await findUserById(admin.userId)
+        let Admin = {
+          name: user.firstname + ' ' + user.lastname,
+          email: user.email
+        }
+        admins.push(Admin)
     }
-    admins.push(Admin)
     return admins
-  }, [])
-  return orgadmins
 }
 
-async function findAllMembers(orgId) {
-  const orgmem = await OrgMember.findAll({
-    where: { orgId }
-  })
-  let orgmems = orgmem.reduce(async (members, member) => {
-    let user = await findUserById(member.userId)
-    let Member = {
-      name: user.firstname + ' ' + user.lastname,
-      email: user.email
+async function findAllMembers(id) {
+    const orgmember = await OrgMember.findAll({
+      where: {organisationId: id}
+    })
+    let members = []
+
+    for (let member of orgmember) {
+        let user = await findUserById(member.userId)
+        let Member = {
+          name: user.firstname + ' ' + user.lastname,
+          email: user.email
+        }
+        members.push(Member)
     }
-    members.push(Member)
     return members
-  }, [])
-  return orgmems
 }
 
 module.exports = {
