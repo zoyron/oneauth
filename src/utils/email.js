@@ -28,7 +28,7 @@ const welcomeEmail = function (user) {
             //  console.log('mail sent');
         })
         .catch(error => {
-            //  Raven.captureException(error);
+             Raven.captureException(error);
             console.error(error.toString())
 
         })

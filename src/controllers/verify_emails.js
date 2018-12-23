@@ -3,6 +3,7 @@
  */
 
 const uid = require('uid2')
+const Raven = require('raven')
 
 const {
     Verifyemail,
@@ -29,6 +30,11 @@ async function createVerifyEmailEntry (user, sendEmail = false, returnTo) {
 
     if (sendEmail) {
         mail.verifyEmail(user.dataValues, verifyEntry.key)
+            .then(() => {
+                // console.log('Mail sent')
+            }).catch((err) => {
+                Raven.captureException(err)
+            })
     }
 
     return verifyEntry

@@ -81,7 +81,9 @@ router.post('/password', makeGaEvent('submit', 'form', 'resetpassword'), functio
                 include: [models.User]
             }).then((entry) =>
                 mail.forgotPassEmail(user.dataValues, entry.key)
-            )
+            ).catch((err) => {
+                Raven.captureException(err)
+            })
         ))
     ).then((dataValues) => {
 
