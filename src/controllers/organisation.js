@@ -53,14 +53,14 @@ function updateOrganisation(options, orgId) {
     })
 }
 
-function addOrgAdmin(orgId, userId) {
+function addAdminToOrg(orgId, userId) {
   return OrgAdmin.create({
       userId: userId,
       organisationId: orgId
   })
 }
 
-function addOrgMember(email, orgId, userId) {
+function addMemberToOrg(email, orgId, userId) {
   return OrgMember.create({
       userId: userId,
       orgId: orgId,
@@ -108,8 +108,8 @@ module.exports = {
   findAllOrganisations,
   createOrganisation,
   updateOrganisation,
-  addOrgAdmin,
-  addOrgMember,
+  addAdminToOrg,
+  addMemberToOrg,
   findAllAdmins,
   findAllMembers
 }

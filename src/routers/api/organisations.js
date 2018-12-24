@@ -5,8 +5,8 @@ const cel = require('connect-ensure-login')
 const {
     createOrganisation,
     updateOrganisation,
-    addOrgAdmin,
-    addOrgMember
+    addAdminToOrg,
+    addMemberToOrg
 } = require('../../controllers/organisation')
 
 const { findUserById } = require('../../controllers/user')
@@ -56,7 +56,7 @@ router.post('/:id/add_admin', cel.ensureLoggedIn('/login'),
             let orgId = parseInt(req.params.id)
             let userId = req.body.userId
 
-            await addOrgAdmin(orgId, userId)
+            await addAdminToOrg(orgId, userId)
             res.redirect('/organisations/' + orgId)
         } catch (error) {
             Raven.captureException(error)
@@ -74,7 +74,7 @@ router.post('/:id/add_member', cel.ensureLoggedIn('/login'),
             const user = await findUserById(userId)
             let email = user.email
 
-            await addOrgMember(email, orgId, userId)
+            await addMemberToOrg(email, orgId, userId)
             res.redirect('/organisations/' + orgId)
         } catch (error) {
             Raven.captureException(error)

@@ -104,7 +104,7 @@ Client.belongsTo(User)
 User.hasMany(Client)
 
 const Organisation = db.define('organisation', {
-    id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true},
+    id: {type: Sequelize.DataTypes.INTEGER, primaryKey: true},
     name: {type: Sequelize.DataTypes.STRING, allowNull: false},
     full_name: {type: Sequelize.DataTypes.STRING, allowNull: false},
     domain: Sequelize.DataTypes.ARRAY(Sequelize.DataTypes.STRING),
@@ -112,7 +112,7 @@ const Organisation = db.define('organisation', {
 })
 
 const OrgAdmin = db.define('orgadmin', {
-    organisationId: Sequelize.DataTypes.BIGINT,
+    organisationId: Sequelize.DataTypes.INTEGER,
     userId: Sequelize.DataTypes.BIGINT
 })
 
@@ -131,7 +131,7 @@ Organisation.belongsToMany(User, {
 })
 
 const OrgMember = db.define('orgmember', {
-    organisationId: Sequelize.DataTypes.BIGINT,
+    organisationId: Sequelize.DataTypes.INTEGER,
     userId: Sequelize.DataTypes.BIGINT,
     email: Sequelize.DataTypes.STRING
 })
