@@ -1,13 +1,11 @@
 const Raven = require('raven')
 const router = require('express').Router()
 const cel = require('connect-ensure-login')
-const acl = require('../../middlewares/acl')
 
 const {
   findAllOrganisations,
   findAllOrganisationsByUserId,
   findOrganisationById,
-  updateOrganisation,
   findAllAdmins,
   findAllMembers,
 } = require('../../controllers/organisation')
