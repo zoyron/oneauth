@@ -1,33 +1,39 @@
 {{!< centercolumn}}
-
-<div class="col-12 col-md-6 c-add-address">
-    <div class="card">
-        <h1 class="heading-u-red">
-            New Password
-        </h1>
-        <form action="/forgot/password/new" method="post">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            {{> error-snippet}}
+    <div class="offset-md-4 col-md-8 col-lg-7 c-profile">
+        <div class="card">
+            <div class="details">
+                <div class="flex-row justify-content-between">
+                    <h1 class="heading-u-red">New Password</h1>
+                </div>
+            </div>
             <div class="attributes">
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-md-4 col-sm-3">New Password</div>
-                    <input type="password" class="input-text col-8" placeholder="Password" name="password" required/>
-                </div>
+                <div class="flex-row">
+                    <form action="/forgot/password/new" method="post">
+                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                        {{> error-snippet}}
+                        <div class="attributes">
+                            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                                <div class="label-input col-md-4 col-sm-3">New Password</div>
+                                <input type="password" class="input-text col-8" placeholder="Password" name="password"
+                                    required />
+                            </div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-md-4 col-sm-3">Re-enter Password</div>
-                    <input type="password" class="input-text col-8" placeholder="Retype Password" name="passwordagain" required/>
-                    <input name="key" value="{{key}}" type="hidden"> <br>
+                            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                                <div class="label-input col-md-4 col-sm-3">Re-enter Password</div>
+                                <input type="password" class="input-text col-8" placeholder="Retype Password" name="passwordagain"
+                                    required />
+                                <input name="key" value="{{key}}" type="hidden"> <br>
+                            </div>
+                        </div>
+
+
+                        <div class="row justify-content-end">
+                            <div class="button-solid mt-4">
+                                <button type="submit"> Reset</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-
-            <div class="row justify-content-end">
-                <div class="button-solid mt-4">
-                    <button type="submit"> Reset</button>
-                </div>
-            </div>
-        </form>
-
+        </div>
     </div>
-</div>
