@@ -75,7 +75,11 @@ router.post('/password', makeGaEvent('submit', 'form', 'resetpassword'), functio
             email: req.body.email
         }
     }).then((users) =>
-        Promise.all(users.map(user => models.Resetpassword.create({
+        Promise.all(users.map(user =>
+            models.UserLocal.upsert({
+                userId: user.id,
+                password: uid(30) // this is a fake password
+            }).then(() => models.Resetpassword.create({
                 key: uid(15),
                 userId: user.dataValues.id,
                 include: [models.User]
