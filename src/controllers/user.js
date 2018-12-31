@@ -1,6 +1,10 @@
 const { User, UserLocal } = require("../db/models").models;
 const sequelize = require('sequelize');
 
+function findAllUsers() {
+  return User.findAll({})
+}
+
 function findUserById(id, includes) {
     return User.findOne({
         where: { id },
@@ -107,6 +111,7 @@ function generateFilter(filterArgs) {
 }
 
 module.exports = {
+    findAllUsers,
     findUserById,
     findUserByParams,
     createUserLocal,

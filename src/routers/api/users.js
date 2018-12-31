@@ -71,6 +71,9 @@ router.get('/me',
                         case 'demographic':
                             includes.push({ model: models.Demographic, include: [models.College] })
                             break
+                        case 'organisation':
+                            includes.push({ model: models.Organisation })
+                            break
                     }
                 }
             }

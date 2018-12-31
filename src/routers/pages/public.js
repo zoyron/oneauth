@@ -58,5 +58,9 @@ router.get('/client/add', cel.ensureLoggedIn('/login'), function (req, res, next
         res.render('client/add', {pageTitle: "Add New Client"})
     })
 
+router.get('/organisation/add', cel.ensureLoggedIn('/login'), function (req, res, next) {
+        res.render('/organisation/add', {pageTitle: "Add New Organisation"})
+    })
+
 
 module.exports = router

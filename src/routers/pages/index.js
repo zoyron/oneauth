@@ -8,6 +8,7 @@ const publicroute = require('./public')
     , addressroute = require('./address')
     , forgotroute = require('./forgot')
     , approute = require('./apps')
+    , orgroute = require('./organisation')
 const makeGaEvent = require('../../utils/ga').makeGaEvent
 const { pageLimiter } = require('../../middlewares/ratelimit')
 
@@ -30,6 +31,7 @@ router.use('/clients', makeGaEvent('view', 'page', '/clients'), clientroute)
 router.use('/address', makeGaEvent('view', 'page', '/address'), addressroute)
 router.use('/forgot', makeGaEvent('view', 'page', '/forgot'), forgotroute)
 router.use('/apps', makeGaEvent('view', 'page', '/apps'), approute)
+router.use('/organisations', makeGaEvent('view', 'page', '/organisations'), orgroute)
 
 
 module.exports = router

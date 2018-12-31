@@ -1,0 +1,54 @@
+{{!< centercolumn}}
+
+<div class="offset-md-4 col-md-8 c-client-page">
+    <div class="card">
+        <div class="flex-row justify-content-between">
+            <h1 class="heading-u-red">My Organisations</h1>
+            <div class="button-solid align-self-start">
+                <a class="white" href="/organisations/add">
+                    <button>+ Add New Organisation</button>
+                </a>
+            </div>
+        </div>
+        <div class="attributes">
+            <div class="row justify-content-between">
+                {{#each organisations as |org|}}
+                    <div class="border-card">
+                        <div class="client-row heading">
+                            <a href="/organisations/{{org.id}}">
+                                {{org.name}}
+                            </a>
+                        </div>
+                        <div class="client-row">
+                            <span>Id:</span>
+                            <span class="grey">{{org.id}}</span>
+                        </div>
+                        <div class="client-row">
+                            <span>Full Name:</span>
+                            <span class="grey">{{org.full_name}}</span>
+                        </div>
+                        <div class="client-row">
+                            <span>Domain:</span>
+                            <span class="grey">{{org.domain}}</span>
+                        </div>
+                        <div class="client-row">
+                            <span>Website:</span>
+                            <span class="grey">{{org.website}}</span>
+                        </div>
+                        <div class="row justify-content-end button-row">
+                            <div class="button-dashed">
+                                <a class="red" href="/organisations/{{org.id}}/edit">
+                                    <button>Edit Organisation</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="border-card">
+                        <div class="client-row heading">You have registered no organisations yet</div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

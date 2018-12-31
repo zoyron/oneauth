@@ -1,0 +1,37 @@
+{{!< centercolumn}}
+<div class="offset-md-4 col-md-8 c-client-add">
+    <div class="card">
+        <h1 class="heading-u-red">Admins for {{organisation.full_name}}</h1>
+            <div class="attributes d-flex flex-column">
+
+                  {{#each admins as |admin|}}
+                  <div class="row justify-content-between">
+                      <div class="row no-gutters align-items-center justify-content-between detail-row">
+                          <div class="label-input col-md-4 col-sm-3">Name</div>
+                          <input type="text" class="input-text col-8" value="{{admin.name}}" disabled/>
+                      </div>
+
+                      <div class="row no-gutters align-items-center justify-content-between detail-row">
+                          <div class="label-input col-md-4 col-sm-3">Email</div>
+                          <input type="text" class="input-text col-8" value="{{admin.email}}" disabled/>
+                      </div>
+                  </div>
+                  {{/each}}
+
+                <br>
+                <div class="row justify-content-end mt-5">
+                  <div class="reset-button mr-5">
+                    <a class="grey" href="/organisations/{{organisation.id}}">
+                      <button>BACK </button>
+                    </a>
+                  </div>
+
+                  <div class="button-solid">
+                    <a class="white" href="/organisations/{{organisation.id}}/admin/add">
+                      <button>ADD ADMIN</button>
+                    </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+</div>
