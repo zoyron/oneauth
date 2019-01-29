@@ -14,6 +14,9 @@ const debug = require('debug')('mobileVerification:routes:verifymobile')
 
 route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
 
+
+    console.log(res.locals);
+
     try {
 
         const user = await findUserById(req.user.id)
@@ -23,7 +26,7 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
             res.redirect('/login')
         }
 
-        const key = Math.floor(Math.random() * 1000000) //creates a 6 digit random number.
+        const key = Math.floor(100000 + Math.random() * 900000); //creates a 6 digit random number.
 
         var options = {
             method: 'POST',
@@ -33,7 +36,7 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
                 password: secrets.MOBILE_VERIFY_PASS,
                 sender: 'CDGBLK',
                 text: 'Your OTP for verification is ' + key,
-                PhoneNumber: user.mobile_number
+                //PhoneNumber: user.mobile_number.slice(4,14)
             }
         }
 
@@ -42,11 +45,10 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
             if (error) {
                 throw new Error(error)
             }
-
             debug(body)
         })
 
-        await models.Verifymobile.upsert({
+        await models.VerifyMobile.upsert({
             mobile_number: user.dataValues.mobile_number,
             key: key,
             userId: req.user.id,
@@ -83,13 +85,14 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
             return res.redirect('/users/me')
         }
 
-        const key = await models.Verifymobile.findOne({
+        const key = await models.VerifyMobile.findOne({
             where: {
-                userId: req.user.id
-            }
-        })
+                userId: req.user.id,
+            },
+            order: [['createdAt', 'DESC']]
+        });
 
-        if (key.dataValues.key === req.body.otp) {
+        if (key.get('key') === req.body.otp) {
             await models.User.update({verifiedmobile: req.body.mobile_number}, {
                 where: {
                     id: req.user.id
@@ -97,8 +100,12 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
             })
 
         } else {
-            req.flash('error', 'You have entered an incorrect OTP.')
-            return res.redirect('/verifymobile')
+            req.flash('error', 'You have entered an incorrect OTP.');
+            // console.log('===========================================', req.session)
+            // console.log('Flash Messages', res.locals.messages);
+            // return setTimeout(() => res.redirect('/verifymobile'), 5000)
+            //req.locals.messages.otp_error = 'You have entered an incorrect OTP.';
+            return res.redirect('/verifymobile');
         }
 
         req.flash('info', 'Your mobile number is verified. Thank you.')
@@ -110,6 +117,7 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
         res.redirect('/users/me')
     }
 
-})
+
+});
 
 module.exports = route
