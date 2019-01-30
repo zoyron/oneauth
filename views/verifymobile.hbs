@@ -1,12 +1,6 @@
 {{!< centercolumn}}
 
 
-{{#if messages.otp_error}}
-    <div class="alert alert-danger" role="alert">
-        {{messages.otp_error}}
-    </div>
-{{/if}}
-
 
 
 <div class="card">
@@ -14,6 +8,7 @@
 
     <form id="edit-form" method="post" action="/verifymobile/verify">
         <div class="attributes">
+            {{> error-snippet}}
             <div class="row no-gutters align-items-center justify-content-between detail-row">
                 <div class="label-input col-2">Mobile Number</div>
                 <input type="text" readonly class="input-text col-9" name="mobile_number"

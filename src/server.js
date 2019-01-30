@@ -105,15 +105,8 @@ app.use(session({
         maxAge: 86400000,
     }
 }))
-app.use(flash())
-app.use((req, res, next) => {
-    res.locals.messages = req.session.flash
-    delete req.session.flash
-    next()
-});
-
 app.use(saveIp)
-
+app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(setuserContext)
@@ -129,17 +122,13 @@ app.use((req, res, next) => {
     res.locals.csrfToken = ""; // req.csrfToken() // Inject csrf to hbs views
     next()
 })
-
+app.use('/verifymobile', verifymobilerouter)
 app.use('/logout', logoutrouter)
 app.use('/signup', signuprouter)
 app.use('/login', loginrouter)
 app.use(redirectToEditProfile);
 app.use('/disconnect', disconnectrouter)
 app.use('/connect', connectrouter)
-app.use('/verifyemail', verifyemailrouter)
-app.use('/verifymobile', verifymobilerouter)
-app.use('/api', apirouter)
-app.use('/oauth', oauthrouter)
 app.use('/', pagerouter)
 app.get('*', (req, res) => res.render('404'));
 

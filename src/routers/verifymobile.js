@@ -15,8 +15,6 @@ const debug = require('debug')('mobileVerification:routes:verifymobile')
 route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
 
 
-    console.log(res.locals);
-
     try {
 
         const user = await findUserById(req.user.id)
@@ -36,17 +34,24 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
                 password: secrets.MOBILE_VERIFY_PASS,
                 sender: 'CDGBLK',
                 text: 'Your OTP for verification is ' + key,
-                //PhoneNumber: user.mobile_number.slice(4,14)
+                PhoneNumber: user.mobile_number.replace("+", "").replace("-", "")
             }
         }
 
-        request(options, function (error, response, body) {
-
-            if (error) {
-                throw new Error(error)
+        const otpExists = await models.VerifyMobile.findOne({
+            where: {
+                mobile_number: user.dataValues.mobile_number,
             }
-            debug(body)
         })
+        if (!otpExists) {
+            request(options, function (error, response, body) {
+
+                if (error) {
+                    throw new Error(error)
+                }
+                debug(body)
+            })
+        }
 
         await models.VerifyMobile.upsert({
             mobile_number: user.dataValues.mobile_number,

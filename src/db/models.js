@@ -60,7 +60,8 @@ const Verifyemail = db.define('verifyemail', {
 
 const VerifyMobile = db.define('verifymobile', {
     id: {type: Sequelize.DataTypes.BIGINT, autoIncrement: true, primaryKey: true},
-    key: {type: Sequelize.DataTypes.STRING, unique: true, allowNull: false}
+    key: {type: Sequelize.DataTypes.STRING, unique: true, allowNull: false},
+    mobile_number: {type: Sequelize.DataTypes.STRING(15), allowNull: false},
 }, {
     paranoid: true
 })
