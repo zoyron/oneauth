@@ -32,7 +32,7 @@ const User = db.define('user', {
     username: {type: Sequelize.DataTypes.STRING, unique: true, allowNull: false},
     firstname: Sequelize.DataTypes.STRING,
     lastname: Sequelize.DataTypes.STRING,
-    gender: {type:Sequelize.DataTypes.ENUM('MALE','FEMALE','UNDISCLOSED'),default:'UNDISCLOSED'},
+    gender: {type: Sequelize.DataTypes.ENUM('MALE', 'FEMALE', 'UNDISCLOSED'), default: 'UNDISCLOSED'},
     photo: Sequelize.DataTypes.STRING,
     email: Sequelize.DataTypes.STRING,
     mobile_number: {type: Sequelize.DataTypes.STRING},
@@ -60,8 +60,8 @@ const Verifyemail = db.define('verifyemail', {
 
 const VerifyMobile = db.define('verifymobile', {
     id: {type: Sequelize.DataTypes.BIGINT, autoIncrement: true, primaryKey: true},
-    key: {type: Sequelize.DataTypes.STRING, unique: true, allowNull: false},
-    mobile_number: {type: Sequelize.DataTypes.STRING(15), allowNull: false},
+    key: {type: Sequelize.DataTypes.STRING, allowNull: false},
+    mobile_number: {type: Sequelize.DataTypes.STRING(15), unique: true, allowNull: false},
 }, {
     paranoid: true
 })
@@ -70,8 +70,8 @@ const UserLocal = db.define('userlocal', definitions.social.local)
 const UserFacebook = db.define('userfacebook', definitions.social.facebook)
 const UserTwitter = db.define('usertwitter', definitions.social.twitter)
 const UserGithub = db.define('usergithub', definitions.social.github)
-const UserGoogle = db.define('usergoogle',definitions.social.google)
-const UserLinkedin = db.define('userlinkedin',definitions.social.linkedin)
+const UserGoogle = db.define('usergoogle', definitions.social.google)
+const UserLinkedin = db.define('userlinkedin', definitions.social.linkedin)
 const UserLms = db.define('userlms', definitions.social.lms)
 
 UserLocal.belongsTo(User)
@@ -107,7 +107,7 @@ const Client = db.define('client', {
     callbackURL: Sequelize.DataTypes.ARRAY(Sequelize.DataTypes.STRING),
     webhookURL: {type: Sequelize.DataTypes.STRING, default: null},
     trusted: {type: Sequelize.DataTypes.BOOLEAN, default: false},
-    defaultURL: {type: Sequelize.DataTypes.STRING, allowNull:false, default: 'https://codingblocks.com/'},
+    defaultURL: {type: Sequelize.DataTypes.STRING, allowNull: false, default: 'https://codingblocks.com/'},
 })
 
 Client.belongsTo(User)
@@ -126,7 +126,7 @@ const OrgAdmin = db.define('orgadmin', {
     userId: Sequelize.DataTypes.BIGINT
 })
 
-User.belongsToMany(Organisation,{
+User.belongsToMany(Organisation, {
     through: {
         model: OrgAdmin,
         unique: false
@@ -230,10 +230,10 @@ Demographic.belongsTo(Branch)
 Branch.hasMany(Demographic)
 
 const EventSubscription = db.define('event_subscription', {
-  id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
-  clientId: {type: Sequelize.DataTypes.BIGINT, references: {model: 'clients', key: 'id'}},
-  model: {type: Sequelize.DataTypes.ENUM('user', 'client', 'address', 'demographic')},
-  type: {type: Sequelize.DataTypes.ENUM('create', 'update', 'delete')}
+    id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
+    clientId: {type: Sequelize.DataTypes.BIGINT, references: {model: 'clients', key: 'id'}},
+    model: {type: Sequelize.DataTypes.ENUM('user', 'client', 'address', 'demographic')},
+    type: {type: Sequelize.DataTypes.ENUM('create', 'update', 'delete')}
 })
 
 if (!process.env.ONEAUTH_DB_NO_SYNC) {
@@ -248,9 +248,31 @@ if (!process.env.ONEAUTH_DB_NO_SYNC) {
 
 module.exports = {
     models: {
-        User, UserLocal, UserFacebook, UserTwitter, UserGithub, UserGoogle,
-        UserLinkedin, UserLms, Client, Organisation, OrgAdmin, OrgMember, GrantCode, AuthToken, Resetpassword, Verifyemail,
-        Demographic, Address, College, Company, Branch, State, Country, EventSubscription,VerifyMobile
+        User,
+        UserLocal,
+        UserFacebook,
+        UserTwitter,
+        UserGithub,
+        UserGoogle,
+        UserLinkedin,
+        UserLms,
+        Client,
+        Organisation,
+        OrgAdmin,
+        OrgMember,
+        GrantCode,
+        AuthToken,
+        Resetpassword,
+        Verifyemail,
+        Demographic,
+        Address,
+        College,
+        Company,
+        Branch,
+        State,
+        Country,
+        EventSubscription,
+        VerifyMobile
     },
     db
 }

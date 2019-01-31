@@ -19,10 +19,19 @@
                 <input class="input-text col-9" type="password" name="otp" placeholder="Enter OTP" id="password"/>
             </div>
             <div class="flex-row justify-content-end button-div">
+
                 <div class="button-solid">
-                    <button type="submit">Verify</button>
+                    <button type="submit" form="second">Resend OTP</button>
+                </div>
+
+
+                <div class="button-solid">
+                    <button type="submit" onclick="" form="edit-form"> Verify</button>
                 </div>
             </div>
         </div>
     </form>
 </div>
+<form action="/verifymobile/resend_otp" method="POST" id="second">
+
+</form>
