@@ -16,8 +16,10 @@ passport.use(UserStrategies.fbStrategy)
 passport.use(UserStrategies.twitterStrategy)
 passport.use(UserStrategies.githubStrategy)
 passport.use(UserStrategies.googleStrategy)
-passport.use(UserStrategies.linkedinStrategy)
+passport.use(UserStrategies.linkedInStrategy)
 passport.use(UserStrategies.lmsStrategy)
+
+passport.use('otp_login_strategy',UserStrategies.otpLoginStrategy);  // passport.js named strategy
 
 passport.use(ClientStrategies.basicStrategy)
 passport.use(ClientStrategies.clientPasswordStrategy)

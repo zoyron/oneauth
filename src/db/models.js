@@ -66,6 +66,15 @@ const VerifyMobile = db.define('verifymobile', {
     paranoid: true
 })
 
+
+const OTPLoginUser = db.define('otp_login_user', {
+    id: {type: Sequelize.DataTypes.BIGINT, autoIncrement: true, primaryKey: true},
+    login_otp: {type: Sequelize.DataTypes.STRING, allowNull: false},
+    mobile_number: {type: Sequelize.DataTypes.STRING(15), unique: true, allowNull: false},
+}, {
+    paranoid: true
+});
+
 const UserLocal = db.define('userlocal', definitions.social.local)
 const UserFacebook = db.define('userfacebook', definitions.social.facebook)
 const UserTwitter = db.define('usertwitter', definitions.social.twitter)
