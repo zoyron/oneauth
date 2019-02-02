@@ -10,7 +10,7 @@ const request = require('request');
 const secrets = require('../../secrets');
 
 
-let createAndSendOTP = function (mobile_number, otp) {
+let createAndSendOTP = function (mobile_number, otp, otp_purpose) {
     return new Promise(function (resolve, reject) {
         let options = {
             method: 'POST',
@@ -19,7 +19,7 @@ let createAndSendOTP = function (mobile_number, otp) {
                 user: secrets.MOBILE_VERIFY_USERNAME,
                 password: secrets.MOBILE_VERIFY_PASS,
                 sender: 'CDGBLK',
-                text: 'Your OTP for verification is ' + otp,
+                text: `${otp} is the OTP for ${otp_purpose} valid for 10 mins. Please Do not share it with anyone.`,
                 PhoneNumber: mobile_number.replace("+", "").replace("-", "")
             }
         };

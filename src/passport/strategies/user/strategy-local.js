@@ -21,10 +21,11 @@ module.exports = new LocalStrategy({
         category: 'login',
         action: 'attempt',
         label: 'local'
-    })
+    });
 
-    Raven.setContext({extra: {file: 'localstrategy'}})
+    Raven.setContext({extra: {file: 'localstrategy'}});
     try {
+
         const userLocal = await models.UserLocal.findOne({
             include: [
                 {
@@ -37,21 +38,21 @@ module.exports = new LocalStrategy({
                     }
                 }
             ],
-        })
+        });
         if (!userLocal) {
             return cb(null, false, {message: 'Invalid Username or Unverified Email'})
         }
 
-        const match = await passutils.compare2hash(password, userLocal.password)
+        const match = await passutils.compare2hash(password, userLocal.password);
         if (match) {
             return cb(null, userLocal.user.get())
         } else {
-            return cb(null, false, {message: 'Invalid Password'})
+            return cb(null, false, {message: 'Invalid Password'});
         }
 
     } catch (err) {
-        Raven.captureException(err)
-        console.log(err)
+        Raven.captureException(err);
+        console.log(err);
         return cb(null, false, {message: 'Error connecting to user database'})
     }
-})
+});

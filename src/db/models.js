@@ -64,13 +64,13 @@ const VerifyMobile = db.define('verifymobile', {
     mobile_number: {type: Sequelize.DataTypes.STRING(15), unique: true, allowNull: false},
 }, {
     paranoid: true
-})
+});
 
 
 const OTPLoginUser = db.define('otp_login_user', {
     id: {type: Sequelize.DataTypes.BIGINT, autoIncrement: true, primaryKey: true},
     login_otp: {type: Sequelize.DataTypes.STRING, allowNull: false},
-    mobile_number: {type: Sequelize.DataTypes.STRING(15), unique: true, allowNull: false},
+    mobile_number: {type: Sequelize.DataTypes.STRING(15), unique: false, allowNull: false},
 }, {
     paranoid: true
 });
@@ -107,6 +107,7 @@ User.hasOne(UserLms, {foreignKey: {unique: true}})
 Resetpassword.belongsTo(User)
 Verifyemail.belongsTo(User)
 VerifyMobile.belongsTo(User)
+OTPLoginUser.belongsTo(User);
 
 const Client = db.define('client', {
     id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true},
@@ -281,7 +282,8 @@ module.exports = {
         State,
         Country,
         EventSubscription,
-        VerifyMobile
+        VerifyMobile,
+        OTPLoginUser
     },
     db
-}
+};

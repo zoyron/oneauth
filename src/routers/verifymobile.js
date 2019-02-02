@@ -43,7 +43,7 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res, next) => {
                 include: [models.User]
             });
 
-            createAndSendOTP(user.get('mobile_number'), key).then(function (body) {
+            createAndSendOTP(user.get('mobile_number'), key, 'Mobile Verification').then(function (body) {
                 debug(body);
             }).catch(function (error) {
                 throw new Error(error);
@@ -146,7 +146,7 @@ route.post('/resend_otp', cel.ensureLoggedIn('/login'), async (req, res, next) =
             include: [models.User]
         });
 
-        createAndSendOTP(user.mobile_number, key).then(function (body) {
+        createAndSendOTP(user.mobile_number, key, 'Mobile Verification').then(function (body) {
             debug(body);
         }).catch(function (error) {
             throw new Error(error);
