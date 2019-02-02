@@ -11,8 +11,12 @@ const Raven = require('raven');
 const request = require('request');
 const secrets = require('../../secrets');
 const debug = require('debug')('mobileVerification:routes:verifymobile');
+const sequelize = require('sequelize');
+const {createAndSendOTP} = require('../controllers/verify_otp');
 
-route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
+
+route.get('/', cel.ensureLoggedIn('/login'), async (req, res, next) => {
+
 
     try {
         const user = await findUserById(req.user.id);
@@ -21,42 +25,34 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res) => {
             res.redirect('/login')
         }
         const key = Math.floor(100000 + Math.random() * 900000); //creates a 6 digit random number.
-        let options = {
-            method: 'POST',
-            url: 'http://sms.smscollection.com/sendsmsv2.asp',
-            qs: {
-                user: secrets.MOBILE_VERIFY_USERNAME,
-                password: secrets.MOBILE_VERIFY_PASS,
-                sender: 'CDGBLK',
-                text: 'Your OTP for verification is ' + key,
-                //PhoneNumber: user.mobile_number.replace("+", "").replace("-", "")
-            }
-        };
 
-        const otpExists = await models.VerifyMobile.findOne({
+        const lastOTP = await models.VerifyMobile.findOne({  // Find the last OTP sent to this number.
             where: {
                 mobile_number: user.dataValues.mobile_number,
-            }
+            },
+            order: [['createdAt', 'DESC']]
         });
-        if (!otpExists) {
-            request(options, function (error, response, body) {
 
-                if (error) {
-                    throw new Error(error)
-                }
-                debug(body)
-            });
+        if (!lastOTP || new Date(lastOTP.dataValues.createdAt).getTime() < (new Date().getTime() - 10 * 60 * 1000)) {
 
-            await models.VerifyMobile.create({
+
+            await models.VerifyMobile.upsert({
                 mobile_number: user.dataValues.mobile_number,
                 key: key,
                 userId: req.user.id,
                 include: [models.User]
             });
-            return res.render('verifymobile', {user})
 
-        } else {
+            createAndSendOTP(user.get('mobile_number'), key).then(function (body) {
+                debug(body);
+            }).catch(function (error) {
+                throw new Error(error);
+            });
+
+
             return res.render('verifymobile', {user})
+        } else {
+            return res.render('verifymobile', {user});
         }
 
     } catch (err) {
@@ -71,7 +67,7 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
     try {
 
         if (req.body.otp.trim() === '') {
-            req.flash('error', 'OTP cannot be empty')
+            req.flash('error', 'OTP cannot be empty');
             return res.redirect('/verifymobile')
         }
 
@@ -79,7 +75,7 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
             where: {
                 verifiedmobile: req.body.mobile_number
             }
-        })
+        });
 
         if (user) {
             // Mobile Number already verified, take person to profile page
@@ -91,9 +87,10 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
             where: {
                 userId: req.user.id,
             },
+            order: [['createdAt', 'DESC']]
         });
 
-        if (key.get('key') === req.body.otp) {
+        if (key.get('key') === req.body.otp && !new Date(key.dataValues.createdAt).getTime() < (new Date().getTime() - 10 * 60 * 1000)) {
             await models.User.update({verifiedmobile: req.body.mobile_number}, {
                 where: {
                     id: req.user.id
@@ -104,10 +101,6 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
 
         } else {
             req.flash('error', 'You have entered an incorrect OTP.');
-            // console.log('===========================================', req.session)
-            // console.log('Flash Messages', res.locals.messages);
-            // return setTimeout(() => res.redirect('/verifymobile'), 5000)
-            //req.locals.messages.otp_error = 'You have entered an incorrect OTP.';
             return res.redirect('/verifymobile');
         }
 
@@ -140,24 +133,10 @@ route.post('/resend_otp', cel.ensureLoggedIn('/login'), async (req, res, next) =
         }
         const key = Math.floor(100000 + Math.random() * 900000); //creates a 6 digit random number.
 
-        let options = {
-            method: 'POST',
-            url: 'http://sms.smscollection.com/sendsmsv2.asp',
-            qs: {
-                user: secrets.MOBILE_VERIFY_USERNAME,
-                password: secrets.MOBILE_VERIFY_PASS,
-                sender: 'CDGBLK',
-                text: 'Your OTP for verification is ' + key,
-                //PhoneNumber: user.mobile_number.replace("+", "").replace("-", "")
+        await models.VerifyMobile.destroy({
+            where: {
+                userId: user.dataValues.id
             }
-        };
-
-        request(options, function (error, response, body) {
-
-            if (error) {
-                throw new Error(error)
-            }
-            debug(body)
         });
 
         await models.VerifyMobile.upsert({
@@ -166,11 +145,19 @@ route.post('/resend_otp', cel.ensureLoggedIn('/login'), async (req, res, next) =
             userId: req.user.id,
             include: [models.User]
         });
+
+        createAndSendOTP(user.mobile_number, key).then(function (body) {
+            debug(body);
+        }).catch(function (error) {
+            throw new Error(error);
+        });
+
         req.flash('info', 'OTP has been Resent');
         return res.render('verifymobile', {user})
 
 
-    } catch (err) {
+    } catch
+        (err) {
         Raven.captureException(err);
         req.flash('error', 'Could not verify mobile number.');
         res.redirect('/users/me')
