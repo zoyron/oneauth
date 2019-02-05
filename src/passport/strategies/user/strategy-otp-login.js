@@ -19,9 +19,9 @@ module.exports = new LocalStrategy({
     Raven.setContext({extra: {file: 'otp_login_strategy'}});
     try {
 
-        let user = await findUserByParams({mobile_number: mobile_number});
+        let user = await findUserByParams({verifiedmobile: mobile_number});
 
-        if (!user || !user.dataValues.verifiedmobile) {
+        if (!user) {
             return cb(null, false, {message: 'Invalid Username or Unverified Mobile Number'})
         }
 
@@ -37,6 +37,11 @@ module.exports = new LocalStrategy({
         }
 
         if (lastLoginOTP.get('login_otp') === otp && !new Date(lastLoginOTP.dataValues.createdAt).getTime() < (new Date().getTime() - 10 * 60 * 1000)) {
+
+            await lastLoginOTP.update({
+                used_at: new Date()
+            });
+
             return cb(null, user.get())
 
         } else {

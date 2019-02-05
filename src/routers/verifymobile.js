@@ -117,7 +117,7 @@ route.post('/verify', cel.ensureLoggedIn('/login'), async (req, res) => {
 });
 
 
-route.post('/resend_otp', cel.ensureLoggedIn('/login'), async (req, res, next) => {
+route.post('/resend', cel.ensureLoggedIn('/login'), async (req, res, next) => {
 
     try {
         const user = await findUserById(req.user.id);

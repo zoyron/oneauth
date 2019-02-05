@@ -71,6 +71,7 @@ const OTPLoginUser = db.define('otp_login_user', {
     id: {type: Sequelize.DataTypes.BIGINT, autoIncrement: true, primaryKey: true},
     login_otp: {type: Sequelize.DataTypes.STRING, allowNull: false},
     mobile_number: {type: Sequelize.DataTypes.STRING(15), unique: false, allowNull: false},
+    used_at: {type: Sequelize.DataTypes.DATE, allowNull: true}
 }, {
     paranoid: true
 });
