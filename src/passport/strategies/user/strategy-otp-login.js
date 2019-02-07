@@ -25,7 +25,7 @@ module.exports = new LocalStrategy({
             return cb(null, false, {message: 'Invalid Username or Unverified Mobile Number'})
         }
 
-        let lastLoginOTP = await models.OTPLoginUser.findOne({
+        let lastLoginOTP = await models.UserMobileOTP.findOne({
             where: {
                 mobile_number: mobile_number,
             },

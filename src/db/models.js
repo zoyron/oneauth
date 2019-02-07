@@ -67,7 +67,7 @@ const VerifyMobile = db.define('verifymobile', {
 });
 
 
-const OTPLoginUser = db.define('otp_login_user', {
+const UserMobileOTP = db.define('usermobileotp', {
     id: {type: Sequelize.DataTypes.BIGINT, autoIncrement: true, primaryKey: true},
     login_otp: {type: Sequelize.DataTypes.STRING, allowNull: false},
     mobile_number: {type: Sequelize.DataTypes.STRING(15), unique: false, allowNull: false},
@@ -108,7 +108,7 @@ User.hasOne(UserLms, {foreignKey: {unique: true}})
 Resetpassword.belongsTo(User)
 Verifyemail.belongsTo(User)
 VerifyMobile.belongsTo(User)
-OTPLoginUser.belongsTo(User);
+UserMobileOTP.belongsTo(User)
 
 const Client = db.define('client', {
     id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true},
@@ -284,7 +284,7 @@ module.exports = {
         Country,
         EventSubscription,
         VerifyMobile,
-        OTPLoginUser
+        UserMobileOTP
     },
     db
 };
