@@ -169,6 +169,7 @@ router.post('/edit',
       }
 
       user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+      user.verifiedmobile = null
 
       if (!user.verifiedemail && req.body.email !== user.email) {
         user.email = req.body.email
