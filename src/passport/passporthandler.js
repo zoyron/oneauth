@@ -8,16 +8,18 @@ const UserStrategies = require('./strategies/user')
     , ApiStrategies = require('./strategies/api')
     , debug = require('debug')('oauth:passporthandler')
 
-const { findUserById } = require('../controllers/user')
-const { findClientById } = require('../controllers/clients')
+const {findUserById} = require('../controllers/user')
+const {findClientById} = require('../controllers/clients')
 
 passport.use(UserStrategies.localStrategy)
 passport.use(UserStrategies.fbStrategy)
 passport.use(UserStrategies.twitterStrategy)
 passport.use(UserStrategies.githubStrategy)
 passport.use(UserStrategies.googleStrategy)
-passport.use(UserStrategies.linkedinStrategy)
+passport.use(UserStrategies.linkedInStrategy)
 passport.use(UserStrategies.lmsStrategy)
+
+passport.use('otp', UserStrategies.otpLoginStrategy);  // passport.js named strategy
 
 passport.use(ClientStrategies.basicStrategy)
 passport.use(ClientStrategies.clientPasswordStrategy)

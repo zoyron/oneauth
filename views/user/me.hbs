@@ -53,14 +53,14 @@
                     </div>
                 {{/unless}}
 
-                {{#if user.mobile_number}}
+                {{#unless user.mobile_number}}
                   <div id="profile-row-lastname" class="flex-row">
                       <div>Contact Number</div>
                       <div>
                           <span class="faded">{{user.mobile_number}}</span>
                       </div>
                   </div>
-                {{/if}}
+                {{/unless}}
 
                 <div id="profile-row-email" class="flex-row">
                     <div>Verified Email</div>
@@ -70,6 +70,18 @@
                                 <a class="grey" href="mailto:{{user.email}}">{{user.verifiedemail}}</a>
                             {{else}}
                                 <a class="grey" href="#">Not Verified</a>
+                            {{/if}}
+                        </span>
+                    </div>
+                </div>
+                <div id="profile-row-lastname" class="flex-row">
+                    <div>Verified Mobile Number</div>
+                    <div>
+                        <span class="faded">
+                            {{#if user.verifiedmobile}}
+                                <a class="grey">{{user.verifiedmobile}}</a>
+                            {{else}}
+                                <a class="grey" href="/verifymobile">Not Verified</a>
                             {{/if}}
                         </span>
                     </div>

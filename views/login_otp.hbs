@@ -1,0 +1,54 @@
+<div class="login-signup">
+    <div class="card c-login">
+        <h1 class="heading-u-red">
+            LOGIN: Step into the world of coding
+        </h1>
+
+        <form method="post" action="/login/otp">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            {{> error-snippet}}
+
+
+
+            <div class="input-btn">
+                <input type="text" class="input-text icon user-bg" readonly
+                       value= {{mobile_number}} name="username" required>
+            </div>
+
+            <div class="input-btn">
+                <input type="password" class="input-text icon fingerprint-bg"
+                       placeholder="Enter 6 Digit OTP" name="password" required>
+            </div>
+
+            <div class="row">
+                <div class="button-solid">
+                    <button type="submit"> LOGIN</button>
+                </div>
+
+                <div class="button-solid">
+                    <button type="submit" form="second"> Resend OTP</button>
+                </div>
+
+            </div>
+
+            <div>
+                <h4>OTP is valid only for 10 minutes.</h4>
+            </div>
+        </form>
+
+        <form method="post" action="/login/otp/resend" id="second">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+            <div class="input-btn">
+                <input type="hidden" class="input-text icon user-bg" readonly
+                       value= {{mobile_number}} name="username" required>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>
+
+
+
