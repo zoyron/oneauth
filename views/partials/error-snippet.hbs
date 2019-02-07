@@ -8,12 +8,22 @@
         {{{error}}}
     </div>
 {{/if}}
+{{#if info}}
+    <div class="alert alert-info" role="alert">
+        {{{messages.info}}}
+    </div>
+{{/if}}
 {{#if messages.info}}
     <div class="alert alert-info" role="alert">
         {{{messages.info}}}
     </div>
 {{/if}}
 {{#if messages.success}}
+    <div class="alert alert-success" role="alert">
+        {{{messages.success}}}
+    </div>
+{{/if}}
+{{#if success}}
     <div class="alert alert-success" role="alert">
         {{{messages.success}}}
     </div>

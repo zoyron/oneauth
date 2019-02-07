@@ -10,6 +10,10 @@ const passport = require('../../passport/passporthandler')
 
 const debug = require('debug')('login_using_otp:routes:login_otp')
 
+// We do not handle get requests on this path at all
+router.get('/', (req, res) => {
+    res.redirect('/login')
+})
 
 router.post('/', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
     try {
@@ -20,11 +24,14 @@ router.post('/', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
                     return next(err)
                 }
                 if (!user) {
+                    req.flash('error', 'Incorrect OTP')
                     return res.render('login_otp', {
                         pageTitle: "Login with OTP",
                         mobile_number: req.body.username,
-                        info: req.flash('error', 'Incorrect OTP'),
-                        error: req.flash('error')
+                        messages: {
+                            error: req.flash('error'),
+                            info: req.flash('info')
+                        }
                     })
                 }
                 req.login(user, function (err) {
@@ -67,12 +74,14 @@ router.post('/', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
                 }).catch(function (error) {
                 throw new Error(error)
             })
-
+            req.flash('info', 'We have sent you an OTP on your number')
             res.render('login_otp', {
                 pageTitle: "Login with OTP",
-                info: req.flash('info', 'We have sent you an OTP on your number'),
                 mobile_number: user.dataValues.mobile_number,
-                error: req.flash('error')
+                messages: {
+                    error: req.flash('error'),
+                    info: req.flash('info')
+                }
             })
 
         }
@@ -118,12 +127,14 @@ router.post('/resend', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
             }).catch(function (error) {
             throw new Error(error)
         })
-
+        req.flash('info', 'We have resent you an OTP on your number')
         res.render('login_otp', {
             pageTitle: "Login with OTP",
-            info: req.flash('info', 'We have resent you an OTP on your number'),
             mobile_number: user.dataValues.mobile_number,
-            error: req.flash('error')
+            messages: {
+                error: req.flash('error'),
+                info: req.flash('info')
+            }
         })
 
 
