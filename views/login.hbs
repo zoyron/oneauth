@@ -8,14 +8,16 @@
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
             {{> error-snippet}}
             <div class="input-btn">
-                <input type="text" class="input-text icon user-bg" placeholder="Username or Verfied Email ID" name="username" required>
+                <input type="text" class="input-text icon user-bg"
+                       placeholder="Username or Verfied Email ID or Verified Mobile No" name="username" required>
                 <a href="/forgot/username">
                     <button type="button" class="grey">Forgot?</button>
                 </a>
             </div>
 
             <div class="input-btn">
-                <input type="password" class="input-text icon fingerprint-bg" placeholder="Enter Password" name="password" required>
+                <input type="password" class="input-text icon fingerprint-bg"
+                       placeholder="Enter Password (Leave blank for OTP Login)" name="password">
                 <a href="/forgot/password">
                     <button type="button" class="grey">Forgot?</button>
                 </a>
@@ -26,7 +28,11 @@
 
             <div class="row">
                 <div class="button-solid">
-                    <button type="submit"> LOGIN NOW</button>
+                    <button type="submit"> LOGIN</button>
+                </div>
+
+                <div class="button-solid">
+                    <button type="submit" formaction="/login/otp" formmethod="post"> LOGIN with OTP</button>
                 </div>
 
                 <div class="signup d-flex flex-column justify-content-center">
@@ -104,9 +110,7 @@
 
         </form>
 
-
     </div>
+
+
 </div>
-
-
-
