@@ -49,8 +49,8 @@ router.post('/', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
 
 
             if (!user) {
-                req.flash('error', 'Please verify your mobile number to login')
-                console.log('Mobile no not verified or no user')
+                req.flash('error', 'OTP login works only if you have verified your mobile number')
+                debug('Mobile no not verified or no user')
                 return res.redirect('/')
             }
 
@@ -100,8 +100,8 @@ router.post('/resend', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
 
 
         if (!user) {
-            req.flash('error', 'Please verify your mobile number to login')
-            console.log('Mobile no not verified or no user')
+            req.flash('error', 'OTP login works only if you have verified your mobile number')
+            debug('Mobile no not verified or no user')
             return res.redirect('/')
         }
 
@@ -136,4 +136,4 @@ router.post('/resend', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
 
 })
 
-module.exports = router()
+module.exports = router
