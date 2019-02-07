@@ -26,3 +26,7 @@ hbs.registerHelper('ifCond', function (...args) {
     const options = args.pop()
     return args.some(x => !x) ? options.fn(this): options.inverse(this);
 });
+
+hbs.registerHelper('log', function(obj){
+    return JSON.stringify(obj);
+})

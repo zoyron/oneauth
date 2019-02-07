@@ -1,0 +1,1 @@
+alter table users add column verifiedmobile varchar(255) default null unique;

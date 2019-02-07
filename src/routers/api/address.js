@@ -3,7 +3,7 @@ const {db} = require('../../db/models')
 const cel = require('connect-ensure-login')
 const Raven = require('raven')
 const {hasNull} = require('../../utils/nullCheck')
-const {parseNumberByCountry, validateNumber} = require('../../utils/mobile_validator')
+const {parseNumberByCountry, validateNumber} = require('../../utils/mobile_validator');
 
 const {
     findOrCreateDemographic,

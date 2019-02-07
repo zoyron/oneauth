@@ -10,8 +10,10 @@ const express = require('express')
     , exphbs = require('express-hbs')
     , expressGa = require('express-ga-middleware')
     , flash = require('express-flash')
+    , csurf = require('csurf')
     , Raven = require('raven')
     , debug = require('debug')('oneauth:server')
+
 
 const config = require('../config')
     , secrets = config.SECRETS
@@ -23,14 +25,15 @@ const config = require('../config')
     , logoutrouter = require('./routers/logoutrouter')
     , signuprouter = require('./routers/signup')
     , verifyemailrouter = require('./routers/verifyemail')
+    , verifymobilerouter = require('./routers/verifymobile')
     , apirouter = require('./routers/api')
     , oauthrouter = require('./routers/oauthrouter')
     , pagerouter = require('./routers/pages')
     , statusrouter = require('./routers/statusrouter')
     , {expresstracer, datadogRouter} = require('./utils/ddtracer')
     , {expressLogger} = require('./utils/logger')
+    , handlebarsHelpers = require('./utils/handlebars')
     ,  { profilePhotoMiddleware } = require('./middlewares/profilephoto');
-require('./utils/handlebars')
 
 const app = express()
 
@@ -56,13 +59,13 @@ const setuserContext = function (req, res, next) {
     }
     if (req.user) {
         if (req.authInfo)
-        Raven.setContext({
-            user: {
-                username: req.user.dataValues.username,
-                id: req.user.dataValues.id
-            }
+            Raven.setContext({
+                user: {
+                    username: req.user.dataValues.username,
+                    id: req.user.dataValues.id
+                }
 
-        })
+            })
 
     }
     next()
@@ -89,7 +92,7 @@ app.use(expressLogger)
 app.use(express.static(path.join(__dirname, '../public_static')))
 app.use(express.static(path.join(__dirname, '../submodules/motley/examples/public')))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({
     store: sessionStore,
     secret: secrets.EXPRESS_SESSION_SECRET,
@@ -98,7 +101,8 @@ app.use(session({
     name: 'oneauth',
     cookie: {
         domain: config.COOKIE_DOMAIN,
-        maxAge: 86400000
+        secure: false,
+        maxAge: 86400000,
     }
 }))
 app.use(saveIp)
@@ -118,6 +122,7 @@ app.use((req, res, next) => {
     res.locals.csrfToken = ""; // req.csrfToken() // Inject csrf to hbs views
     next()
 })
+app.use('/verifymobile', verifymobilerouter)
 app.use('/logout', logoutrouter)
 app.use('/signup', signuprouter)
 app.use('/login', loginrouter)
@@ -128,7 +133,6 @@ app.use('/', pagerouter)
 app.get('*', (req, res) => res.render('404'));
 
 app.use(Raven.errorHandler())
-app.use((err, req, res, next) => { res.status(500).render('exception', { message: err.message }) })
 
 if(process.env.ONEAUTH_DEV === 'localhost'){
     Raven.captureException = (E) => console.error (E)

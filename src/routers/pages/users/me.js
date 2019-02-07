@@ -143,12 +143,19 @@ router.post('/edit',
       return res.redirect('/users/me/edit')
     }
 
-    if (!(validateNumber(parseNumberEntireString(
-        req.body.dial_code + '-' + req.body.mobile_number
+    try {
+      if (!(validateNumber(parseNumberEntireString(
+          req.body.dial_code + '-' + req.body.mobile_number
       )))) {
+        req.flash('error', 'Contact number is not a valid number')
+        return res.redirect('/users/me/edit')
+      }
+    } catch (e) {
       req.flash('error', 'Contact number is not a valid number')
       return res.redirect('/users/me/edit')
     }
+
+
 
     try {
       const user = await findUserById(req.user.id, [models.Demographic])

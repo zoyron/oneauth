@@ -11,7 +11,9 @@ router.use('/',
     // to differentiate local vs lms
     // makeGaEvent('attempt', 'login', 'local'),
     require('./local')
-)
+);
+
+
 router.use('/facebook', makeGaEvent('attempt', 'login', 'facebook'), require('./facebook'))
 router.use('/twitter', makeGaEvent('attempt', 'login', 'twitter'), require('./twitter'))
 router.use('/github', makeGaEvent('attempt', 'login', 'github'), require('./github'))
