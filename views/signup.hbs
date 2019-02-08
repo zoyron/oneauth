@@ -41,6 +41,35 @@
                     name="mobile_number" id="mobile_number" value="{{user.mobile_number}}"/>
             </div>
 
+
+            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                <div class="label-input col-2">College</div>
+                <select name="collegeId" class="input-text col-10" required>
+                    {{#each colleges}}
+                        {{#ifeq expected=id val=../user.demographic.collegeId}}
+                            <option class="dropdown-li" value="{{id}}" selected>{{name}}</option>
+                        {{/ifeq}}
+                        {{#ifneq expected=id val=../user.demographic.collegeId}}
+                            <option class="dropdown-li" value="{{id}}">{{name}}</option>
+                        {{/ifneq}}
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                <div class="label-input col-2">Branch / Course</div>
+                <select name="branchId" class="input-text col-10" required>
+                    {{#each branches}}
+                        {{#ifeq expected=id val=../user.demographic.branchId}}
+                            <option class="dropdown-li" value="{{id}}" selected>{{name}}</option>
+                        {{/ifeq}}
+                        {{#ifneq expected=id val=../user.demographic.branchId}}
+                            <option class="dropdown-li" value="{{id}}">{{name}}</option>
+                        {{/ifneq}}
+                    {{/each}}
+                </select>
+            </div>
+
             <input type="email" class="input-text icon mail-bg" name="email" placeholder="Email Address" required>
 
             <input type="password" class="input-text icon fingerprint-bg" name="password" placeholder="Password" required>
