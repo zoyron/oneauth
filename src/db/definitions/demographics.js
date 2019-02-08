@@ -23,7 +23,7 @@ module.exports = {
             allowNull: false
         },
         id: {
-            type: Sequelize.DataTypes.STRING(2),
+            type: Sequelize.DataTypes.STRING(4),
             primaryKey: true,
         }
     },
