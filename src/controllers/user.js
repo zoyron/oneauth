@@ -47,7 +47,7 @@ function updateUserById(userid, newValues) {
 function updateUserByParams(whereParams, newValues) {
     if (whereParams.email) {
         whereParams.email = {
-            $iLike: email
+            $iLike: whereParams.email
         }
     }
     return User.update(newValues, {
