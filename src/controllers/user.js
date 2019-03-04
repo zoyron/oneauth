@@ -13,6 +13,11 @@ function findUserById(id, includes) {
 }
 
 function findUserByParams(params) {
+    if (params.email) {
+        params.email = {
+            $iLike: params.email
+        }
+    }
     return User.findOne({where: params})
 }
 
@@ -40,6 +45,11 @@ function updateUserById(userid, newValues) {
  * @returns Promise<User>
  */
 function updateUserByParams(whereParams, newValues) {
+    if (whereParams.email) {
+        whereParams.email = {
+            $iLike: email
+        }
+    }
     return User.update(newValues, {
         where: whereParams,
         returning: true
@@ -81,8 +91,9 @@ function generateFilter(filterArgs) {
         let email = filterArgs.email
 
         //Testing if email has dots, i.e. ab.c@gmail.com is same as abc@gmail.com
-        whereObj.email = sequelize.where(sequelize.fn('replace', sequelize.col('email'), '.', ''), sequelize.fn('replace', email, '.', ''))
-
+        whereObj.email = {
+            $iLike: sequelize.where(sequelize.fn('replace', sequelize.col('email'), '.', ''), sequelize.fn('replace', email, '.', ''))
+        }
     }
     if (filterArgs.contact) {
         let contact = filterArgs.contact
