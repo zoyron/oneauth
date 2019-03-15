@@ -129,6 +129,22 @@ All clients created by currently logged in user
 #### `/clients/{clientid}`
 Details of the client (given the user who owns it is logged in)
 
+## Maintenance
+
+### Database Backup / Restore
+
+Backup
+
+```shell
+sudo -u postgres pg_dump oneauthdb -f oneauthdb.sql
+```
+
+Restore
+```shell
+PGPASSWORD=******* psql -U oneauthadmin -h <dbhost> -p <dbport> -d oneauthdb < oneauthdb.sql
+```
+
+
 -------------------------
 
 ## Credits

@@ -25,16 +25,11 @@
     <show-object-properties value="true" />
     <loaded-nodes />
   </component>
+  <component name="DBNavigator.Project.DatabaseFileManager">
+    <open-files />
+  </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
-  </component>
-  <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/db/schema_update/011-to-012.sql" connection-id="" session-id="MAIN" current-schema="" />
-    <mapping file-url="file://$PROJECT_DIR$/db/schema_update/008-to-009.sql" connection-id="virtual-postgres-connection" session-id="MAIN" current-schema="ROOT" />
-    <mapping file-url="file://$PROJECT_DIR$/db/schema_update/011-to-012.sql" connection-id="" session-id="MAIN" current-schema="" />
-    <mapping file-url="file://$PROJECT_DIR$/db/schema_update/011-to-012.sql" connection-id="" session-id="MAIN" current-schema="" />
-    <mapping file-url="file://$PROJECT_DIR$/db/schema_update/008-to-009.sql" connection-id="virtual-postgres-connection" session-id="MAIN" current-schema="ROOT" />
-    <mapping file-url="file://$PROJECT_DIR$/db/schema_update/008-to-009.sql" connection-id="virtual-postgres-connection" session-id="MAIN" current-schema="ROOT" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
@@ -187,8 +182,6 @@
           <content-type name="SQL" enabled="true" />
           <content-type name="PL/SQL" enabled="true" />
           <content-type name="JavaScript" enabled="true" />
-          <content-type name="JSP" enabled="true" />
-          <content-type name="JSPx" enabled="true" />
           <content-type name="ASP" enabled="true" />
           <content-type name="YAML" enabled="true" />
         </content-types>
