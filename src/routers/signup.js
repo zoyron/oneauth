@@ -21,6 +21,20 @@ const { parseNumberEntireString, validateNumber } = require('../utils/mobile_val
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
+    // store the posted data in the session
+    req.session.prevForm = {
+        username: req.body.username,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        dial_code: req.body.dial_code,
+        mobile_number: req.body.mobile_number,
+        email: req.body.email,
+        demographic: {
+            branchId: req.body.branchId,
+            collegeId: req.body.collegeId,
+        }
+    }
+
     if (req.body.username.trim() === '') {
         req.flash('error', 'Username cannot be empty')
         return res.redirect('/signup')
@@ -101,6 +115,9 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             'Registered you successfully! ' +
             '<b>You can use your account only after verifying you email id.</b> ' +
             'Please verify your email using the link we sent you.')
+
+        // delete the previous form
+        delete req.session.prevForm
 
         // Login after signup automatically
         passport.authenticate('local', {

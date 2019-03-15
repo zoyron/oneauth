@@ -33,11 +33,17 @@ router.get('/signup', cel.ensureNotLoggedIn('/'), async function (req, res, next
             findAllBranches(),
             findAllCountries()
         ]);
+        const prevForm = Object.assign({}, req.session.prevForm)
+
+        // use the previous form only once
+        delete req.session.prevForm
+
         res.render('signup', {
             pageTitle: "Signup",
             colleges,
             branches,
-            countries
+            countries,
+            prevForm
         })
     } catch (err) {
         Raven.captureException(err);
