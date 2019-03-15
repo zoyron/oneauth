@@ -144,6 +144,12 @@ Restore
 PGPASSWORD=******* psql -U oneauthadmin -h <dbhost> -p <dbport> -d oneauthdb < oneauthdb.sql
 ```
 
+Drop All Tables (this prints all the drop commands)
+```sqlite-sql
+select 'drop table if exists "' || tablename || '" cascade;' 
+  from pg_tables
+ where schemaname = 'public';
+ ```
 
 -------------------------
 

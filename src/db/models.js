@@ -4,18 +4,26 @@
 const Sequelize = require('sequelize')
 const config = require('../../config')
 const secrets = config.SECRETS
+const debug = require('debug')('sql:models')
 
 const db_name = secrets.DB.NAME
 const db_user = secrets.DB.USER
 const db_pass = secrets.DB.PASSWORD
 const db_host = secrets.DB.HOST
 const db_port = secrets.DB.PORT || "5432"
+const db_ssl = secrets.DB.SSL
 
 const DATABASE_URL =
     process.env.DATABASE_URL ||
     (`postgres://${db_user}:${db_pass}@${db_host}:${db_port}/${db_name}`)
 
+debug('Connecting to ' + DATABASE_URL)
+
 const db = new Sequelize(DATABASE_URL, {
+    ssl: db_ssl || false,
+    dialectOptions: {
+        ssl: db_ssl || false
+    },
     dialect: 'postgres',
     pool: {
         max: 5,
@@ -256,7 +264,9 @@ if (!process.env.ONEAUTH_DB_NO_SYNC) {
         force: process.env.ONEAUTH_DROP_TABLES || (config.DEPLOY_CONFIG === 'heroku'), // Clear DB on each run on heroku
     }).then(() => {
         console.log('Database configured')
-    }).catch(err => console.error(err))
+    }).catch(err =>
+        console.error(err)
+    )
 }
 
 
