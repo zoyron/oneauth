@@ -9,8 +9,11 @@ const db_name = secrets.DB.NAME
 const db_user = secrets.DB.USER
 const db_pass = secrets.DB.PASSWORD
 const db_host = secrets.DB.HOST
+const db_port = secrets.DB.PORT || "5432"
 
-const DATABASE_URL = process.env.DATABASE_URL || ('postgres://' + db_user + ":" + db_pass + "@" + db_host + ":5432/" + db_name)
+const DATABASE_URL =
+    process.env.DATABASE_URL ||
+    (`postgres://${db_user}:${db_pass}@${db_host}:${db_port}/${db_name}`)
 
 const db = new Sequelize(DATABASE_URL, {
     dialect: 'postgres',
