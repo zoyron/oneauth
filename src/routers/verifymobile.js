@@ -36,7 +36,7 @@ route.get('/', cel.ensureLoggedIn('/login'), async (req, res, next) => {
         if (!lastOTP || new Date(lastOTP.dataValues.createdAt).getTime() < (new Date().getTime() - 10 * 60 * 1000)) {
 
 
-            await models.VerifyMobile.upsert({
+            await models.VerifyMobile.create({
                 mobile_number: user.dataValues.mobile_number,
                 key: key,
                 userId: req.user.id,
@@ -139,7 +139,7 @@ route.post('/resend', cel.ensureLoggedIn('/login'), async (req, res, next) => {
             }
         });
 
-        await models.VerifyMobile.upsert({
+        await models.VerifyMobile.create({
             mobile_number: user.dataValues.mobile_number,
             key: key,
             userId: req.user.id,
