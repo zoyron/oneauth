@@ -1,0 +1,1 @@
+ALTER TABLE verifymobiles drop constraint verifymobiles_mobile_number_key
