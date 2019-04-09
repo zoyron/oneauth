@@ -17,6 +17,7 @@ const {
 const {
     createVerifyEmailEntry
 } = require('../controllers/verify_emails')
+const { validateUsername } = require('../utils/username_validator')
 const { parseNumberEntireString, validateNumber } = require('../utils/mobile_validator')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
@@ -35,8 +36,10 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         }
     }
 
-    if (req.body.username.trim() === '') {
-        req.flash('error', 'Username cannot be empty')
+    const username_err = validateUsername(req.body.username)    
+
+    if (username_err) {
+        req.flash('error', username_err)
         return res.redirect('/signup')
     }
     if ((req.body.firstname.trim() === '') || (req.body.lastname.trim() === '')) {
