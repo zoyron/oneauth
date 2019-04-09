@@ -8,6 +8,8 @@ const models = require('../../../db/models').models
 
 const passutils = require('../../../utils/password')
 
+const { createVerifyEmailEntry } = require('../../../controllers/verify_emails')
+
 
 /**
  * This is to authenticate _users_ using a username and password
@@ -33,14 +35,19 @@ module.exports = new LocalStrategy({
                     where: {
                         [Op.or]: [
                             {username: username},
-                            {verifiedemail: { $iLike: username }} // allow login via verified email too
+                            {email: { $iLike: username }},
+                            // {email: {$iLike: username}} // allow login via verified email too
                         ]
                     }
                 }
             ],
         });
         if (!userLocal) {
-            return cb(null, false, {message: 'Invalid Username or Unverified Email'})
+            return cb(null, false, {message: 'Invalid Username'})
+        }
+        if(!userLocal.verifiedemail && userLocal.username !== username) {
+            await createVerifyEmailEntry(userLocal, true, '/users/me')
+            return cb(null, false, {message: 'Unverified Email. Click on the link sent to your email address'})
         }
 
         const match = await passutils.compare2hash(password, userLocal.password);
