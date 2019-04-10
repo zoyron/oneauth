@@ -35,8 +35,7 @@ module.exports = new LocalStrategy({
                     where: {
                         [Op.or]: [
                             {username: username},
-                            {email: { $iLike: username }},
-                            // {email: {$iLike: username}} // allow login via verified email too
+                            {email: { $iLike: username }}// allow login via verified email too
                         ]
                     }
                 }
