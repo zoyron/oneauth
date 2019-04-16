@@ -6,11 +6,26 @@
 const router = require('express').Router()
 const passport = require('../../passport/passporthandler')
 const models = require('../../db/models').models
-
+const makeGaEvent = require('../../utils/ga').makeGaEvent
 const Raven = require('raven');
 const { findUserById , findUserForTrustedClient, findAllUsersWithFilter} = require('../../controllers/user');
 const { deleteAuthToken } = require('../../controllers/oauth');
 const  { findAllAddresses } = require('../../controllers/demographics');
+
+const passutils = require('../../utils/password')
+const mail = require('../../utils/email')
+const uid = require('uid2')
+
+const {
+    findUserByParams,
+    createUserLocal,
+    createUser
+} = require('../../controllers/user')
+const {
+    createVerifyEmailEntry
+} = require('../../controllers/verify_emails')
+const { parseNumberEntireString, validateNumber } = require('../../utils/mobile_validator')
+
 
 router.get('/',
   passport.authenticate('bearer', {session: false}),
@@ -213,6 +228,69 @@ router.get('/:id/address',
     }
 )
 
+router.post('/add',
+    makeGaEvent('submit', 'form', 'addUserDukaan'),
+    passport.authenticate('bearer', {session: false}),
+    async (req, res, next) => {
+
+        try {
+            let user = await findUserByParams({username: req.body.username})
+            if (user) {
+                return res.status(400).json({error: 'Username already exists. Please try again.'})
+            }
+
+            if(!(validateNumber(parseNumberEntireString(
+                req.body.dial_code + '-' + req.body.mobile_number
+            )))){
+                return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
+            }
+
+            user = await findUserByParams({email: req.body.email})
+            if (user) {
+                return res.status(400).json({error: 'Email already exists. Please try again.'})
+            }
+
+            const query = {
+                username: req.body.username,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
+                email: req.body.email,
+            }
+
+            let createdUser = await createUser(query)
+            if (!createdUser) {
+                return res.status(400).json({error: 'Error creating account! Please try in some time'})
+            }
+
+            user = createdUser
+
+            // Send welcome email
+            mail.welcomeEmail(user.dataValues)
+
+            // Send verification email
+            await createVerifyEmailEntry(user, true,
+                ''
+            )
+
+            //Sends a new mail to set a new account password
+            let setNewPassword = await models.Resetpassword.create({
+                key: uid(15),
+                userId: user.dataValues.id,
+                include: [models.User]
+            })
+
+            mail.setANewPassword(user.dataValues, setNewPassword.key)
+
+            delete user.password
+            res.status(200).json({success: 'Registration Successful', user: user})
+
+        } catch (err) {
+            Raven.captureException(err)
+            return res.status(400).json({error: 'Unsuccessful registration. Please try again.'})
+        }
+
+})
 
 
 
