@@ -8,7 +8,14 @@
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
             {{> error-snippet}}
 
-            <input type="text" class="input-text icon user-bg" name="username" placeholder="Username" value="{{prevForm.username}}" required>
+            <input type="text" class="input-text icon user-bg tooltip-button" name="username" placeholder="Username" value="{{prevForm.username}}" required>
+
+            <div class="border-card w-100 p-4 mb-4 tooltip-popper">
+                - Username should be of length 3-50 characters<br>
+                - Username can only start with alphabets<br>
+                - Username can only contain alhpabets, numbers, - (hyphen), _ (undderscore), .(dot)<br>
+                - Username should not end with confusing extensions like .js, .ts<br>
+            </div>
 
             <div class="row no-gutters">
                 <div class="col-sm-12 col-md-6 first-name">
@@ -90,3 +97,9 @@
 
     </div>
 </div>
+
+<script>
+    const reference = document.querySelector('.tooltip-button');
+    const popper = document.querySelector('.tooltip-popper');
+    const popperInstance = new Popper(reference, popper, {});
+</script>
