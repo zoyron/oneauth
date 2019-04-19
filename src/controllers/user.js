@@ -96,7 +96,10 @@ function generateFilter(filterArgs) {
         let email = filterArgs.email
 
         //Testing if email has dots, i.e. ab.c@gmail.com is same as abc@gmail.com
-        whereObj.email = sequelize.where(sequelize.fn('replace', sequelize.col('email'), '.', ''), sequelize.fn('replace', email, '.', ''))
+        whereObj.email =  sequelize.where(
+            sequelize.fn('replace', sequelize.col('email'), '.', ''),
+            {[sequelize.Op.iLike]: sequelize.fn('replace', email, '.', '')}
+        )
 
     }
     if (filterArgs.contact) {
