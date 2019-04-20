@@ -1,5 +1,8 @@
 const { User, UserLocal } = require("../db/models").models;
 const sequelize = require('sequelize');
+const Raven = require('raven');
+
+const { validateUsername } = require('../utils/username_validator')
 
 function findAllUsers() {
   return User.findAll({})
@@ -21,8 +24,15 @@ function findUserByParams(params) {
     return User.findOne({where: params})
 }
 
-function createUserLocal(params, pass, includes) {
-    return UserLocal.create({user: params, password: pass}, {include: includes})
+async function createUserLocal(userParams, pass, includes) {
+    const errorMessage = validateUsername(userParams.username) 
+    if (errorMessage) throw new Error(errorMessage)
+    try {
+        return UserLocal.create({user: userParams, password: pass}, {include: includes})
+    } catch (err) {
+        Raven.captureException(err)
+        throw new Error('Unsuccessful registration. Please try again.')
+    }
 }
 
 /**

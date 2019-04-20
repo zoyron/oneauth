@@ -17,7 +17,6 @@ const {
 const {
     createVerifyEmailEntry
 } = require('../controllers/verify_emails')
-const { validateUsername } = require('../utils/username_validator')
 const { parseNumberEntireString, validateNumber } = require('../utils/mobile_validator')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
@@ -36,12 +35,6 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         }
     }
 
-    const username_err = validateUsername(req.body.username)    
-
-    if (username_err) {
-        req.flash('error', username_err)
-        return res.redirect('/signup')
-    }
     if ((req.body.firstname.trim() === '') || (req.body.lastname.trim() === '')) {
         req.flash('error', 'Firstname and/or Lastname cannot be empty')
         return res.redirect('/signup')
@@ -133,7 +126,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
     } catch (err) {
         Raven.captureException(err)
-        req.flash('error', 'Unsuccessful registration. Please try again.')
+        req.flash('error', err.message)
         return res.redirect('/signup')
     }
 })
