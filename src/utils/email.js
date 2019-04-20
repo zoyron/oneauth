@@ -87,7 +87,7 @@ const setANewPassword = function (user, key) {
 
     let link = "https://account.codingblocks.com/forgot/password/new/" + key
     msgTemplate.substitutions = {
-        "subject": "Set your account password Codingblocks",
+        "subject": 'Coding Blocks : Set a password for your account',
         "username": user.username,
         "link": link
     }

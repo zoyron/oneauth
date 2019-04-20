@@ -229,7 +229,7 @@ router.get('/:id/address',
 )
 
 router.post('/add',
-    makeGaEvent('submit', 'form', 'addUserDukaan'),
+    makeGaEvent('submit', 'form', 'addUserByAPI'),
     passport.authenticate('bearer', {session: false}),
     async (req, res, next) => {
 
