@@ -25,6 +25,11 @@ function createUserLocal(params, pass, includes) {
     return UserLocal.create({user: params, password: pass}, {include: includes})
 }
 
+function createUser(user) {
+    return User.create(user)
+}
+
+
 /**
  * update an user
  * @param userid id of user to modify
@@ -91,9 +96,11 @@ function generateFilter(filterArgs) {
         let email = filterArgs.email
 
         //Testing if email has dots, i.e. ab.c@gmail.com is same as abc@gmail.com
-        whereObj.email = {
-            $iLike: sequelize.where(sequelize.fn('replace', sequelize.col('email'), '.', ''), sequelize.fn('replace', email, '.', ''))
-        }
+        whereObj.email =  sequelize.where(
+            sequelize.fn('replace', sequelize.col('email'), '.', ''),
+            {[sequelize.Op.iLike]: sequelize.fn('replace', email, '.', '')}
+        )
+
     }
     if (filterArgs.contact) {
         let contact = filterArgs.contact
@@ -129,5 +136,6 @@ module.exports = {
     updateUserById,
     updateUserByParams,
     findUserForTrustedClient,
-    findAllUsersWithFilter
+    findAllUsersWithFilter,
+    createUser
 };
