@@ -44,8 +44,8 @@ module.exports = new LocalStrategy({
         if (!userLocal) {
             return cb(null, false, {message: 'Invalid Username'})
         }
-        if(!userLocal.verifiedemail && userLocal.username !== username) {
-            await createVerifyEmailEntry(userLocal, true, '/users/me')
+        if(!userLocal.user.verifiedemail && userLocal.user.username !== username) {
+            await createVerifyEmailEntry(userLocal.user, true, '/users/me')
             return cb(null, false, {message: 'Unverified Email. Click on the link sent to your email address'})
         }
 
