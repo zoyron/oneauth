@@ -1,6 +1,6 @@
 const sgMail = require('@sendgrid/mail')
 const config = require('../../config')
-
+const Raven = require('raven')
 sgMail.setApiKey(config.SECRETS.SENDGRID_API_KEY)
 sgMail.setSubstitutionWrappers('{{', '}}')
 
@@ -76,6 +76,25 @@ const forgotPassEmail = function (user, key) {
 
 }
 
+
+const setANewPassword = function (user, key) {
+
+    let msgTemplate = {}
+    msgTemplate.template_id = config.FORGOT_PASS_EMAIL
+    msgTemplate.from = senderEmail
+
+    msgTemplate.to = user.email
+
+    let link = "https://account.codingblocks.com/forgot/password/new/" + key
+    msgTemplate.substitutions = {
+        "subject": 'Coding Blocks : Set a password for your account',
+        "username": user.username,
+        "link": link
+    }
+    return sgMail.send(msgTemplate)
+
+}
+
 //Send a Single Email to Single or Multiple Recipients where they don't see each others email addresses
 
 const verifyMultipleEmails = function (userEmails) {
@@ -122,5 +141,6 @@ module.exports = {
     verifyEmail,
     forgotPassEmail,
     forgotUsernameEmail,
-    verifyMultipleEmails
+    verifyMultipleEmails,
+    setANewPassword
 }

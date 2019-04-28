@@ -1,5 +1,8 @@
 const { User, UserLocal } = require("../db/models").models;
 const sequelize = require('sequelize');
+const Raven = require('raven');
+
+const { validateUsername } = require('../utils/username_validator')
 
 function findAllUsers() {
   return User.findAll({})
@@ -21,9 +24,21 @@ function findUserByParams(params) {
     return User.findOne({where: params})
 }
 
-function createUserLocal(params, pass, includes) {
-    return UserLocal.create({user: params, password: pass}, {include: includes})
+async function createUserLocal(userParams, pass, includes) {
+    const errorMessage = validateUsername(userParams.username) 
+    if (errorMessage) throw new Error(errorMessage)
+    try {
+        return UserLocal.create({user: userParams, password: pass}, {include: includes})
+    } catch (err) {
+        Raven.captureException(err)
+        throw new Error('Unsuccessful registration. Please try again.')
+    }
 }
+
+function createUser(user) {
+    return User.create(user)
+}
+
 
 /**
  * update an user
@@ -91,9 +106,11 @@ function generateFilter(filterArgs) {
         let email = filterArgs.email
 
         //Testing if email has dots, i.e. ab.c@gmail.com is same as abc@gmail.com
-        whereObj.email = {
-            $iLike: sequelize.where(sequelize.fn('replace', sequelize.col('email'), '.', ''), sequelize.fn('replace', email, '.', ''))
-        }
+        whereObj.email =  sequelize.where(
+            sequelize.fn('replace', sequelize.col('email'), '.', ''),
+            {[sequelize.Op.iLike]: sequelize.fn('replace', email, '.', '')}
+        )
+
     }
     if (filterArgs.contact) {
         let contact = filterArgs.contact
@@ -129,5 +146,6 @@ module.exports = {
     updateUserById,
     updateUserByParams,
     findUserForTrustedClient,
-    findAllUsersWithFilter
+    findAllUsersWithFilter,
+    createUser
 };
