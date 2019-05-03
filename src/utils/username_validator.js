@@ -34,7 +34,7 @@ const username_first_char_valid = function(username) {
 }
 
 const username_last_char_valid = function(username) {
-  if (username.match(/[^A-Za-z0-9]$/)) {
+  if (username.match(/[^A-Za-z0-9]+$/)) {
     return 'Invalid username'
   }
   return null
