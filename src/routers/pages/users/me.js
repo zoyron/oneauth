@@ -182,7 +182,7 @@ router.post('/edit',
       if (req.file) {
         user.photo = req.file.location
       } else if (req.body.avatarselect) {
-        user.photo = `https://minio.cb.lk/img/avatar-${req.body.avatarselect}.svg`
+        user.photo = `https://minio.codingblocks.com/img/avatar-${req.body.avatarselect}.svg`
       }
 
       await user.save()
