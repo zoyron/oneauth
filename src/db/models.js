@@ -49,7 +49,9 @@ const User = db.define('user', {
     mobile_number: {type: Sequelize.DataTypes.STRING},
     role: {type: Sequelize.DataTypes.ENUM('admin', 'employee', 'intern'), allowNull: true},
     verifiedemail: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true},
-    verifiedmobile: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true}
+    verifiedmobile: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true},
+    referralCode: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:true, allowNull: true},
+    referredBy: {type: Sequelize.DataTypes.BIGINT, defaultValue: null, unique:false, allowNull:true}
 }, {
     paranoid: true
 })
@@ -86,6 +88,8 @@ const UserMobileOTP = db.define('usermobileotp', {
 }, {
     paranoid: true
 });
+
+User.belongsTo(User,  {foreignKey: 'referredBy', targetKey :'id', as:'userReferredBy'})
 
 const UserLocal = db.define('userlocal', definitions.social.local)
 const UserFacebook = db.define('userfacebook', definitions.social.facebook)
