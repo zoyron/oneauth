@@ -12,7 +12,7 @@ $(function () {
             if (hiddenInput.val() === "") {
                 userImg.map(i=>{$(userImg[i]).attr('src', origPic)});
             } else {
-                userImg.map(i=>{$(userImg[i]).attr('src', `https://minio.cb.lk/img/avatar-${hiddenInput.val()}.svg`)});
+                userImg.map(i=>{$(userImg[i]).attr('src', `https://minio.codingblocks.com/img/avatar-${hiddenInput.val()}.svg`)});
             }
         } else {
             $(avatarPics).removeClass("click-pic")
