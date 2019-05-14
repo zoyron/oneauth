@@ -18,6 +18,7 @@ const {
     createVerifyEmailEntry
 } = require('../controllers/verify_emails')
 const { parseNumberEntireString, validateNumber } = require('../utils/mobile_validator')
+const {generateReferralCode}  = require('../utils/referral')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
@@ -89,6 +90,14 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
                 collegeId: req.body.collegeId,
             }
         }
+
+        query.referralCode = generateReferralCode(req.body.username)
+
+        if(req.body.refcode){
+           const userReferredBy = await findUserByParams({referralCode: req.body.refcode })
+           query.referredBy = userReferredBy.get().id
+        }
+
 
         let includes = [{model: models.User, include: [models.Demographic]}]
         let userLocal = await createUserLocal(query, passhash, includes)
