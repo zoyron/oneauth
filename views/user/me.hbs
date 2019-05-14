@@ -187,7 +187,8 @@
                     </div>
                 {{/ifCond}}
             </div>
-            
+
+
             <div class="links row justify-content-around">
                 {{#unless user.userfacebook}}
                     <div class="col-2">
@@ -250,6 +251,16 @@
                     </div>
                 {{/unless}}
             </div>
+
+            <div class="attributes">
+                <div class="flex-row">
+                    <div>My Referral Code</div>
+                    <div>
+                        <span class="faded">{{user.referralCode}}</span>
+                    </div>
+                </div>
+            </div>
+
 
             {{#unless user.verifiedemail}}
                 <div class="row mt-4">
