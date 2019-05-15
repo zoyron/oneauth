@@ -3,8 +3,8 @@ const {
   sendEvent
 } = require('../../utils/subscriptions')
 
-const getEventFunction = (type, sendType) => (clientId, userId) => {
-  const subscriptions = await getSubscriptions('client', type)
+const getEventFunction = (type, sendType) => async (clientId, userId) => {
+  const subscriptions = await getSubscriptions('client', type);
   return sendEvent(subscriptions, 'client', sendType, clientId, userId)
 }
 

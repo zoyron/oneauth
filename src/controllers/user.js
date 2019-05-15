@@ -36,10 +36,10 @@ async function createUserLocal(userParams, pass, includes) {
     }
 }
 
-function createUser(user) {
-    const user = await User.create(user)
-    eventUserCreated(user.id)
-    return user
+async function createUser(user) {
+    const userObj = await User.create(user)
+    eventUserCreated(userObj.id)
+    return userObj
 }
 
 
@@ -49,7 +49,7 @@ function createUser(user) {
  * @param newValues object has to merge into old user
  * @returns Promise<User>
  */
-function updateUserById(userid, newValues) {
+async function updateUserById(userid, newValues) {
     const updated = await User.update(newValues, {
         where: { id: userid },
         returning: true
@@ -64,7 +64,7 @@ function updateUserById(userid, newValues) {
  * @param newValues
  * @returns Promise<User>
  */
-function updateUserByParams(whereParams, newValues) {
+async function updateUserByParams(whereParams, newValues) {
     if (whereParams.email) {
         whereParams.email = {
             $iLike: whereParams.email
