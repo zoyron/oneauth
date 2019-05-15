@@ -28,17 +28,20 @@ function findUserByParams(params) {
 async function createUserLocal(userParams, pass, includes) {
     const errorMessage = validateUsername(userParams.username) 
     if (errorMessage) throw new Error(errorMessage)
+    let userLocal
     try {
-        return UserLocal.create({user: userParams, password: pass}, {include: includes})
+        userLocal = await UserLocal.create({user: userParams, password: pass}, {include: includes})
     } catch (err) {
         Raven.captureException(err)
         throw new Error('Unsuccessful registration. Please try again.')
     }
+    eventUserCreated(userLocal.user.id).catch(Raven.captureException)
+    return userLocal
 }
 
 async function createUser(user) {
     const userObj = await User.create(user)
-    eventUserCreated(userObj.id)
+    eventUserCreated(userObj.id).catch(Raven.captureException)
     return userObj
 }
 
@@ -54,7 +57,7 @@ async function updateUserById(userid, newValues) {
         where: { id: userid },
         returning: true
     });
-    eventUserUpdated(userid)
+    eventUserUpdated(userid).catch(Raven.captureException)
     return updated
 }
 
@@ -78,7 +81,7 @@ async function updateUserByParams(whereParams, newValues) {
         attributes: ['id'],
         where: whereParams
     })
-    eventUserUpdated(user.id)
+    eventUserUpdated(user.id).catch(Raven.captureException)
     return updated
 }
 
