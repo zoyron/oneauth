@@ -3,6 +3,7 @@ const sequelize = require('sequelize');
 const Raven = require('raven');
 
 const { validateUsername } = require('../utils/username_validator')
+const { eventUserCreated, eventUserUpdated } = require('./event/users')
 
 function findAllUsers() {
   return User.findAll({})
@@ -36,7 +37,9 @@ async function createUserLocal(userParams, pass, includes) {
 }
 
 function createUser(user) {
-    return User.create(user)
+    const user = await User.create(user)
+    eventUserCreated(user.id)
+    return user
 }
 
 
@@ -47,10 +50,12 @@ function createUser(user) {
  * @returns Promise<User>
  */
 function updateUserById(userid, newValues) {
-    return User.update(newValues, {
+    const updated = await User.update(newValues, {
         where: { id: userid },
         returning: true
     });
+    eventUserUpdated(userid)
+    return updated
 }
 
 /**
@@ -65,10 +70,16 @@ function updateUserByParams(whereParams, newValues) {
             $iLike: whereParams.email
         }
     }
-    return User.update(newValues, {
+    const updated = await User.update(newValues, {
         where: whereParams,
         returning: true
     })
+    const user = await User.findOne({
+        attributes: ['id'],
+        where: whereParams
+    })
+    eventUserUpdated(user.id)
+    return updated
 }
 
 function findUserForTrustedClient(trustedClient, userId) {
