@@ -35,8 +35,12 @@ async function createUserLocal(userParams, pass, includes) {
     }
 }
 
-function createUser(user) {
-    return User.create(user)
+function createUserWithoutPassword(userParams) {
+    return User.create(userParams, {
+        include: [{
+            association: User.Demographic
+        }]
+    })
 }
 
 
@@ -147,5 +151,5 @@ module.exports = {
     updateUserByParams,
     findUserForTrustedClient,
     findAllUsersWithFilter,
-    createUser
+    createUserWithoutPassword
 };
