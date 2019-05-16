@@ -1,4 +1,4 @@
-const { User, UserLocal } = require("../db/models").models;
+const { User, UserLocal, Demographic, Address} = require("../db/models").models;
 const sequelize = require('sequelize');
 const Raven = require('raven');
 
@@ -74,7 +74,11 @@ function updateUserByParams(whereParams, newValues) {
 function findUserForTrustedClient(trustedClient, userId) {
     return User.findOne({
         attributes: trustedClient ? undefined : ["id", "username", "photo"],
-        where: { id: userId }
+        where: { id: userId },
+        include: {
+            model: Demographic,
+            include: [Address]
+        }
     });
 }
 
