@@ -56,3 +56,5 @@ secrets.json
 newrelic_agent.log
 .DS_Store
 public_static/css/motley.css
+
+.vscode/*
