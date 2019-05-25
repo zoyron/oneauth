@@ -12,9 +12,11 @@ const {generateReferralCode} = require('../src/utils/referral');
 User.findAll().then((users) => {
     let usersPromise  = [];
     users.forEach((user) => {
-        usersPromise.push(user.update({
-            referralCode: generateReferralCode(user.get().username)
-        }))
+        if(!user.get().referralCode){
+            usersPromise.push(user.update({
+                referralCode: generateReferralCode(user.get().username)
+            }))
+        }
     });
     return usersPromise
 }).then((usersPromise) => {
