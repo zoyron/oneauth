@@ -9,7 +9,11 @@ const {
 } = require('.././src/db/models');
 const {generateReferralCode} = require('../src/utils/referral');
 
-User.findAll().then((users) => {
+User.findAll({
+    where: {
+        referralCode: {'$eq': null}
+    }
+}).then((users) => {
     let usersPromise  = [];
     users.forEach((user) => {
         if(!user.get().referralCode){
