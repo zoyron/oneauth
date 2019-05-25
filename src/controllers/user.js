@@ -1,8 +1,9 @@
-const { User, UserLocal } = require("../db/models").models;
+const { User, UserLocal, Demographic, College} = require("../db/models").models;
 const sequelize = require('sequelize');
 const Raven = require('raven');
 
 const { validateUsername } = require('../utils/username_validator')
+const { eventUserCreated, eventUserUpdated } = require('./event/users')
 
 function findAllUsers() {
   return User.findAll({})
@@ -27,12 +28,15 @@ function findUserByParams(params) {
 async function createUserLocal(userParams, pass, includes) {
     const errorMessage = validateUsername(userParams.username) 
     if (errorMessage) throw new Error(errorMessage)
+    let userLocal
     try {
-        return UserLocal.create({user: userParams, password: pass}, {include: includes})
+        userLocal = await UserLocal.create({user: userParams, password: pass}, {include: includes})
     } catch (err) {
         Raven.captureException(err)
         throw new Error('Unsuccessful registration. Please try again.')
     }
+    eventUserCreated(userLocal.user.id).catch(Raven.captureException)
+    return userLocal
 }
 
 function createUserWithoutPassword(userParams) {
@@ -43,6 +47,12 @@ function createUserWithoutPassword(userParams) {
     })
 }
 
+async function createUser(user) {
+    const userObj = await User.create(user)
+    eventUserCreated(userObj.id).catch(Raven.captureException)
+    return userObj
+}
+
 
 /**
  * update an user
@@ -50,11 +60,13 @@ function createUserWithoutPassword(userParams) {
  * @param newValues object has to merge into old user
  * @returns Promise<User>
  */
-function updateUserById(userid, newValues) {
-    return User.update(newValues, {
+async function updateUserById(userid, newValues) {
+    const updated = await User.update(newValues, {
         where: { id: userid },
         returning: true
     });
+    eventUserUpdated(userid).catch(Raven.captureException)
+    return updated
 }
 
 /**
@@ -63,22 +75,32 @@ function updateUserById(userid, newValues) {
  * @param newValues
  * @returns Promise<User>
  */
-function updateUserByParams(whereParams, newValues) {
+async function updateUserByParams(whereParams, newValues) {
     if (whereParams.email) {
         whereParams.email = {
             $iLike: whereParams.email
         }
     }
-    return User.update(newValues, {
+    const updated = await User.update(newValues, {
         where: whereParams,
         returning: true
     })
+    const user = await User.findOne({
+        attributes: ['id'],
+        where: whereParams
+    })
+    eventUserUpdated(user.id).catch(Raven.captureException)
+    return updated
 }
 
 function findUserForTrustedClient(trustedClient, userId) {
     return User.findOne({
         attributes: trustedClient ? undefined : ["id", "username", "photo"],
-        where: { id: userId }
+        where: { id: userId },
+        include: {
+            model: Demographic,
+            include: [College]
+        }
     });
 }
 
