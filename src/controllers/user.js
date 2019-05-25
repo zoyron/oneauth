@@ -39,6 +39,14 @@ async function createUserLocal(userParams, pass, includes) {
     return userLocal
 }
 
+function createUserWithoutPassword(userParams) {
+    return User.create(userParams, {
+        include: [{
+            association: User.Demographic
+        }]
+    })
+}
+
 async function createUser(user) {
     const userObj = await User.create(user)
     eventUserCreated(userObj.id).catch(Raven.captureException)
@@ -165,5 +173,5 @@ module.exports = {
     updateUserByParams,
     findUserForTrustedClient,
     findAllUsersWithFilter,
-    createUser
+    createUserWithoutPassword
 };

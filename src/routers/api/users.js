@@ -14,12 +14,13 @@ const  { findAllAddresses } = require('../../controllers/demographics');
 
 const passutils = require('../../utils/password')
 const mail = require('../../utils/email')
+const {generateReferralCode}  =require('../../utils/referral')
 const uid = require('uid2')
 
 const {
     findUserByParams,
     createUserLocal,
-    createUser
+    createUserWithoutPassword
 } = require('../../controllers/user')
 const {
     createVerifyEmailEntry
@@ -256,9 +257,14 @@ router.post('/add',
                 lastname: req.body.lastname,
                 mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
                 email: req.body.email,
+                referralCode: generateReferralCode(req.body.username),
+                demographic: {
+                    branchId: req.body.branchId,
+                    collegeId: req.body.collegeId,
+                }
             }
 
-            let createdUser = await createUser(query)
+            let createdUser = await createUserWithoutPassword(query)
             if (!createdUser) {
                 return res.status(400).json({error: 'Error creating account! Please try in some time'})
             }
