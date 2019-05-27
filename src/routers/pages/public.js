@@ -34,7 +34,8 @@ router.get('/signup', cel.ensureNotLoggedIn('/'), async function (req, res, next
             findAllCountries()
         ]);
         const prevForm = Object.assign({}, req.session.prevForm)
-        const refCode = req.query.refcode;
+
+        const verifiedRefCode = await findUserByParams({referralCode: req.query.refcode })
 
         // use the previous form only once
         delete req.session.prevForm
@@ -45,7 +46,7 @@ router.get('/signup', cel.ensureNotLoggedIn('/'), async function (req, res, next
             branches,
             countries,
             prevForm,
-            refCode
+            refCode: verifiedRefCode ? verifiedRefCode.get().referralCode : null
         })
     } catch (err) {
         Raven.captureException(err);

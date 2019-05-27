@@ -95,7 +95,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
         if(req.body.refcode){
            const userReferredBy = await findUserByParams({referralCode: req.body.refcode })
-           query.referredBy = userReferredBy.get().id
+           query.referredBy = userReferredBy ? userReferredBy.get().id : null
         }
 
 
