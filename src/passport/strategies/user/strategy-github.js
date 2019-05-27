@@ -9,6 +9,7 @@ const models = require('../../../db/models').models
 const config = require('../../../../config')
 const secrets = config.SECRETS
 const debug = require('debug')('oauth:strategies:github')
+const { generateReferralCode}  = require('../../../utils/referral')
 
 /**
  * Authenticate _users_ using their Github Accounts
@@ -108,6 +109,7 @@ module.exports = new GithubStrategy({
                         firstname: profileJson.name ? profileJson.name.split(' ')[0] : profileJson.login,
                         lastname: profileJson.name ? profileJson.name.split(' ').pop() : profileJson.login,
                         email: profileJson.email,
+                        referralCode: generateReferralCode(profileJson.email).toUpperCase(),
                         photo: profileJson.avatar_url
                     }
                 }, {
