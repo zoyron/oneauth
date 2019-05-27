@@ -8,6 +8,7 @@ const models = require('../../../db/models').models
 
 const config = require('../../../../config')
 const secrets = config.SECRETS
+const { generateReferralCode}  = require('../../../utils/referral')
 // const debug = require('debug')('oauth:strategy:facebook')
 
 
@@ -121,6 +122,7 @@ module.exports = new FacebookStrategy({
                         firstname: profileJson.first_name,
                         lastname: profileJson.last_name,
                         email: profileJson.email,
+                        referralCode: generateReferralCode(profileJson.email).toUpperCase(),
                         photo: "https://graph.facebook.com/" + profileJson.id + "/picture?type=large"
                     }
                 }, {

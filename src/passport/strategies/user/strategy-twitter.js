@@ -9,6 +9,8 @@ const models = require('../../../db/models').models
 const config = require('../../../../config')
 const secrets = config.SECRETS
 const debug = require('debug')('oauth:strategies:twitter')
+const { generateReferralCode}  = require('../../../utils/referral')
+
 
 /**
  * Authenticate _users_ using their Twitter accounts
@@ -111,6 +113,7 @@ module.exports = new TwitterStrategy({
                         firstname: profileJson.name.split(' ')[0],
                         lastname: profileJson.name.split(' ').pop(),
                         email: profileJson.email || undefined,
+                        referralCode: generateReferralCode(profileJson.email || profileJson.screen_name).toUpperCase(),
                         photo: profileJson.profile_image_url_https.replace('_normal', '_400x400')
                     }
                 }, {
