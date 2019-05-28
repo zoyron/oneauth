@@ -37,6 +37,10 @@ router.get('/signup', cel.ensureNotLoggedIn('/'), async function (req, res, next
 
         const verifiedRefCode = await findUserByParams({referralCode: req.query.refcode })
 
+        let gradYears = []
+        for(let i=2025;i >= 2000; i--){
+            gradYears.push(i)
+        }
         // use the previous form only once
         delete req.session.prevForm
 
@@ -46,6 +50,7 @@ router.get('/signup', cel.ensureNotLoggedIn('/'), async function (req, res, next
             branches,
             countries,
             prevForm,
+            gradYears,
             refCode: verifiedRefCode ? verifiedRefCode.get().referralCode : null
         })
     } catch (err) {

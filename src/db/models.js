@@ -51,7 +51,8 @@ const User = db.define('user', {
     verifiedemail: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true},
     verifiedmobile: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true},
     referralCode: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:true, allowNull: true},
-    referredBy: {type: Sequelize.DataTypes.BIGINT, defaultValue: null, unique:false, allowNull:true}
+    referredBy: {type: Sequelize.DataTypes.BIGINT, defaultValue: null, unique:false, allowNull:true},
+    graduationYear: {type: Sequelize.DataTypes.SMALLINT, defaultValue: null, unique:false, allowNull:true}
 }, {
     paranoid: true
 })
