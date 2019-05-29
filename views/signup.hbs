@@ -77,6 +77,19 @@
                 </select>
             </div>
 
+            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                <div class="label-input col-2">Graduation Year</div>
+                <select name="gradYear" class="input-text col-10" required>
+                    {{#each gradYears}}
+                        {{#ifeq expected=this val=../prevForm.gradYear}}
+                            <option class="dropdown-li" value="{{this}}" selected>{{this}}</option>
+                        {{else}}
+                            <option class="dropdown-li" value="{{this}}">{{this}}</option>
+                        {{/ifeq}}
+                    {{/each}}
+                </select>
+            </div>
+
             <input type="email" class="input-text icon mail-bg" name="email" placeholder="Email Address" value="{{prevForm.email}}" required>
 
             <input type="password" class="input-text icon fingerprint-bg" name="password" placeholder="Password" required>

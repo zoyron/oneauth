@@ -30,6 +30,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         dial_code: req.body.dial_code,
         mobile_number: req.body.mobile_number,
         email: req.body.email,
+        gradYear: req.body.gradYear ?  req.body.gradYear : null,
         demographic: {
             branchId: req.body.branchId,
             collegeId: req.body.collegeId,
@@ -54,6 +55,10 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
     }
     if ((req.body.password.trim() === '') || req.body.password.length < 5) {
         req.flash('error', 'Password too weak. Use 5 characters at least.')
+        return res.redirect('/signup')
+    }
+    if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
+        req.flash('error', 'Invalid Graduation year')
         return res.redirect('/signup')
     }
 
@@ -83,6 +88,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             username: req.body.username,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
+            graduationYear: req.body.gradYear,
             mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
             email: req.body.email,
             demographic: {

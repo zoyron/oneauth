@@ -7,6 +7,7 @@ const models = require('../../../db/models').models
 
 const config = require('../../../../config')
 const secrets = config.SECRETS
+const { generateReferralCode}  = require('../../../utils/referral')
 
 
 module.exports = new LmsStrategy({
@@ -44,6 +45,7 @@ module.exports = new LmsStrategy({
                     firstname: profileJson.name.split(' ')[0],
                     lastname: profileJson.name.split(' ').pop(),
                     email: profileJson.email,
+                    referralCode: generateReferralCode(profileJson.email),
                     photo: profileJson.photo ? profileJson.photo.url : ""
                 }
             }
