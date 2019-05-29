@@ -257,6 +257,7 @@ router.post('/add',
                 lastname: req.body.lastname,
                 mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
                 email: req.body.email,
+                graduationYear: req.body.gradYear ? req.body.gradYear : null,
                 referralCode: generateReferralCode(req.body.username),
                 demographic: {
                     branchId: req.body.branchId,
