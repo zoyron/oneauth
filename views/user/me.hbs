@@ -188,69 +188,70 @@
                 {{/ifCond}}
             </div>
 
-
-            <div class="links row justify-content-around">
-                {{#unless user.userfacebook}}
-                    <div class="col-2">
-                        <div class="auth-link">
-                            <a href="/connect/facebook">
-                                <button class="button-circle facebook">
-                                    <i class="fab fa-facebook-f fa-2x"></i>
-                                </button>
-                                <div class="link-text">FACEBOOK</div>
-                            </a>
+            {{#ifCond user.userfacebook user.usergithub user.usergoogle user.usertwitter user.userlinkedin}}
+                <div class="links row justify-content-around">
+                    {{#unless user.userfacebook}}
+                        <div class="col-2">
+                            <div class="auth-link">
+                                <a href="/connect/facebook">
+                                    <button class="button-circle facebook">
+                                        <i class="fab fa-facebook-f fa-2x"></i>
+                                    </button>
+                                    <div class="link-text">FACEBOOK</div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                {{/unless}}
-                {{#unless user.usergoogle}}
-                    <div class="col-2">
-                        <div class="auth-link">
-                            <a href="/connect/google">
-                                <button class="button-circle google">
-                                    <i class="fab fa-google-plus-g fa-2x"></i>
-                                </button>
-                                <div class="link-text">GOOGLE</div>
-                            </a>
+                    {{/unless}}
+                    {{#unless user.usergoogle}}
+                        <div class="col-2">
+                            <div class="auth-link">
+                                <a href="/connect/google">
+                                    <button class="button-circle google">
+                                        <i class="fab fa-google-plus-g fa-2x"></i>
+                                    </button>
+                                    <div class="link-text">GOOGLE</div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                {{/unless}}
-                {{#unless user.usertwitter}}
-                    <div class="col-2">
-                        <div class="auth-link">
-                            <a href="/connect/twitter">
-                                <button class="button-circle twitter">
-                                    <i class="fab fa-twitter fa-2x"></i>
-                                </button>
-                                <div class="link-text">TWITTER</div>
-                            </a>
+                    {{/unless}}
+                    {{#unless user.usertwitter}}
+                        <div class="col-2">
+                            <div class="auth-link">
+                                <a href="/connect/twitter">
+                                    <button class="button-circle twitter">
+                                        <i class="fab fa-twitter fa-2x"></i>
+                                    </button>
+                                    <div class="link-text">TWITTER</div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                {{/unless}}
-                {{#unless user.usergithub}}
-                    <div class="col-2">
-                        <div class="auth-link">
-                            <a href="/connect/github">
-                                <button class="button-circle github">
-                                    <i class="fab fa-github fa-2x"></i>
-                                </button>
-                                <div class="link-text">GITHUB</div>
-                            </a>
+                    {{/unless}}
+                    {{#unless user.usergithub}}
+                        <div class="col-2">
+                            <div class="auth-link">
+                                <a href="/connect/github">
+                                    <button class="button-circle github">
+                                        <i class="fab fa-github fa-2x"></i>
+                                    </button>
+                                    <div class="link-text">GITHUB</div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                {{/unless}}
-                {{#unless user.userlinkedin}}
-                    <div class="col-2">
-                        <div class="auth-link">
-                            <a href="/connect/linkedin">
-                                <button class="button-circle linkedin">
-                                    <i class="fab fa-linkedin fa-2x"></i>
-                                </button>
-                                <div class="link-text">LINKEDIN</div>
-                            </a>
+                    {{/unless}}
+                    {{#unless user.userlinkedin}}
+                        <div class="col-2">
+                            <div class="auth-link">
+                                <a href="/connect/linkedin">
+                                    <button class="button-circle linkedin">
+                                        <i class="fab fa-linkedin fa-2x"></i>
+                                    </button>
+                                    <div class="link-text">LINKEDIN</div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                {{/unless}}
-            </div>
+                    {{/unless}}
+                </div>
+            {{/ifCond}}
 
             <div class="attributes">
                 <div class="flex-row">
