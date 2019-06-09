@@ -141,7 +141,7 @@
                         <div class="label-input col-2">Graduation Year</div>
                         <select name="gradYear" class="input-text col-9" required>
                             {{#each gradYears}}
-                                {{#ifeq expected=this val=../user.gradYear}}
+                                {{#ifeq expected=this val=../user.graduationYear}}
                                     <option class="dropdown-li" value="{{this}}" selected>{{this}}</option>
                                 {{else}}
                                     <option class="dropdown-li" value="{{this}}">{{this}}</option>
