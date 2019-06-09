@@ -95,12 +95,17 @@ router.get('/edit',
         }
 
       }
+      const gradYears = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
+        2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000]
+
       return res.render('user/me/edit', {
         user,
         colleges,
         branches,
-        countries
+        countries,
+        gradYears
       })
+
     } catch (error) {
       Raven.captureException(error)
       res.flash('error', 'Error Fetching College and Branches Data.')
@@ -143,6 +148,11 @@ router.post('/edit',
       return res.redirect('/users/me/edit')
     }
 
+    if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
+      req.flash('error', 'Invalid Graduation year')
+      return res.redirect('/users/me/edit')
+    }
+
     try {
       if (!(validateNumber(parseNumberEntireString(
           req.body.dial_code + '-' + req.body.mobile_number
@@ -166,6 +176,10 @@ router.post('/edit',
       user.lastname = req.body.lastname
       if (req.body.gender) {
         user.gender = req.body.gender
+      }
+
+      if (req.body.gradYear) {
+        user.graduationYear = req.body.gradYear
       }
 
       user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
