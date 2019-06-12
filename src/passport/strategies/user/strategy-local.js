@@ -28,22 +28,27 @@ module.exports = new LocalStrategy({
     Raven.setContext({extra: {file: 'localstrategy'}});
     try {
 
-        const userLocal = await models.UserLocal.findOne({
+        const userLocals = await models.UserLocal.findAll({
             include: [
                 {
                     model: models.User,
                     where: {
                         [Op.or]: [
                             {username: username},
-                            {email: { $iLike: username }}// allow login via verified email too
+                            {email: username}// allow login via verified email too
                         ]
                     }
                 }
             ],
         });
-        if (!userLocal) {
+
+        if (!userLocals.length) {
             return cb(null, false, {message: 'Invalid Username'})
         }
+
+        // pick one of the verified or the first one that matches
+        const userLocal = userLocals.find(userLocal => userLocal.user.verifiedemail) || userLocals[0]
+       
         if(!userLocal.user.verifiedemail && userLocal.user.username !== username) {
             await createVerifyEmailEntry(userLocal.user, true, '/users/me')
             return cb(null, false, {message: 'Unverified Email. Click on the link sent to your email address'})
