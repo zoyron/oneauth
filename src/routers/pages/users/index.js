@@ -82,6 +82,7 @@ router.post('/:id/edit',
                 gender:req.body.gender,
                 email: req.body.email,
                 mobile_number: mobile_number,
+                referralCode: req.body.referralCode,
                 role: req.body.role !== 'unchanged' ? req.body.role : undefined
             })
             return res.redirect('../' + req.params.id);
