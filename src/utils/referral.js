@@ -15,7 +15,18 @@ const generateReferralCode = function(username) {
     return username.substring(0, 3).toUpperCase() + result;
 }
 
+const validateReferralCode = function(code) {
+
+    // The code should have a length of 6 digits
+    if(code.length !==6) return false;
+
+    // check if the code is alphanumeric
+    if(/^[a-z0-9]+$/i.test(code)) return true;
+    else return false;
+}
+
 
 module.exports = {
-    generateReferralCode
+    generateReferralCode,
+    validateReferralCode
 }

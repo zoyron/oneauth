@@ -14,6 +14,7 @@ const {
 
 const meRoute = require('./me')
 const { parseNumber, validateNumber } = require('../../../utils/mobile_validator')
+const { validateReferralCode } = require('../../../utils/referral')
 
 router.use('/me', meRoute)
 
@@ -66,6 +67,7 @@ router.post('/:id/edit',
 
       let number = parseNumber(req.body.mobile_number)
       let mobile_number = ''
+      let referral_code = ''
 
       try {
 
@@ -76,13 +78,20 @@ router.post('/:id/edit',
               return res.redirect('../' + req.params.id + '/edit');
           }
 
+            if (validateReferralCode(req.body.referralCode)) {
+                referral_code = req.body.referralCode.toUpperCase()
+            } else {
+                req.flash('error', 'Please enter a six digit alphanumeric referral code')
+                return res.redirect('../' + req.params.id + '/edit')
+            }
+
             await updateUserById(req.params.id,{
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 gender:req.body.gender,
                 email: req.body.email,
                 mobile_number: mobile_number,
-                referralCode: req.body.referralCode,
+                referralCode: referral_code,
                 role: req.body.role !== 'unchanged' ? req.body.role : undefined
             })
             return res.redirect('../' + req.params.id);
