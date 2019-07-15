@@ -30,6 +30,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         dial_code: req.body.dial_code,
         mobile_number: req.body.mobile_number,
         email: req.body.email,
+        refCode: req.body.refcode,
         gradYear: req.body.gradYear ?  req.body.gradYear : null,
         demographic: {
             branchId: req.body.branchId,

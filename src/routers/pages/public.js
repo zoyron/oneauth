@@ -50,7 +50,7 @@ router.get('/signup', cel.ensureNotLoggedIn('/'), async function (req, res, next
             countries,
             prevForm,
             gradYears,
-            refCode: verifiedRefCode ? verifiedRefCode.get().referralCode : null
+            refCode: verifiedRefCode ? verifiedRefCode.get().referralCode : prevForm.refCode ? prevForm.refCode : null
         })
     } catch (err) {
         Raven.captureException(err);
