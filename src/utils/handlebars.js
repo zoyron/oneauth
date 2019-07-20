@@ -11,7 +11,10 @@ hbs.registerHelper('ifeq', function (options) {
 hbs.registerHelper('formatDate', function (date) {
     debug(date)
     let dateObject = new Date(date)
-    let dateString = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
+    let day = dateObject.getDate()
+    let month = ("0" + (dateObject.getMonth() + 1)).slice(-2)
+    let year = dateObject.getFullYear()
+    let dateString = `${day}/${month}/${year}`
     return dateString
 })
 
