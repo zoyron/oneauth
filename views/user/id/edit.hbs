@@ -30,10 +30,10 @@
 
                 <div class="row no-gutters align-items-center justify-content-between detail-row">
                     <div class="label-input col-2">Gender</div>
-                    <select class="col-9" name="gender" id="gender">
-                        <option>MALE</option>
-                        <option>FEMALE</option>
-                        <option>UNDISCLOSED</option>
+                    <select name="gender" id="gender" class="input-text col-9">
+                        <option class="dropdown-li" value="MALE" {{#ifeq val="MALE" expected=user.gender}}selected="selected"{{/ifeq}}>MALE</option>
+                        <option class="dropdown-li" value="FEMALE" {{#ifeq val="FEMALE" expected=user.gender}}selected="selected"{{/ifeq}}>FEMALE</option>
+                        <option class="dropdown-li" value="UNDISCLOSED" {{#ifeq val="UNDISCLOSED" expected=user.gender}}selected="selected"{{/ifeq}}>UNDISCLOSED</option>
                     </select>
                 </div>
 
@@ -50,11 +50,11 @@
                 <div class="row no-gutters align-items-center justify-content-between detail-row">
                     <div class="label-input col-2">Role@CB</div>
                     <select name="role" class="input-text col-9">
-                        <option class="dropdown-li" value="unchanged" selected>Unchanged</option>
+                        <option class="dropdown-li" value="unchanged">Unchanged</option>
                         <option class="dropdown-li" value="NULL">None</option>
-                        <option class="dropdown-li" value="admin">Administrator</option>
-                        <option class="dropdown-li" value="employee">Employee</option>
-                        <option class="dropdown-li" value="intern">Intern</option>
+                        <option class="dropdown-li" value="admin" {{#ifeq val="admin" expected=user.role}}selected="selected"{{/ifeq}}>Administrator</option>
+                        <option class="dropdown-li" value="employee" {{#ifeq val="employee" expected=user.role}}selected="selected"{{/ifeq}}>Employee</option>
+                        <option class="dropdown-li" value="intern" {{#ifeq val="intern" expected=user.role}}selected="selected"{{/ifeq}}>Intern</option>
                     </select>
                 </div>
 
