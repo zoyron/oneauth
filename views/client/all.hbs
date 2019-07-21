@@ -39,7 +39,12 @@
                             <span>Client Secret:</span>
                             <span class="grey">{{client.secret}}</span>
                         </div>
-                        <div class="row justify-content-end button-row">
+                        <div class="row justify-content-between button-row align-items-center">
+                            <a href="/clients/{{client.id}}/delete">
+                                <div class="grey">
+                                    <button>Remove App  <i class="far fa-window-close"></i></button>
+                                </div>
+                            </a>
                             <div class="button-dashed">
                                 <a class="red" href="/clients/{{client.id}}/edit">
                                     <button>Edit Client</button>

@@ -135,6 +135,8 @@ const Client = db.define('client', {
     webhookURL: {type: Sequelize.DataTypes.STRING, default: null},
     trusted: {type: Sequelize.DataTypes.BOOLEAN, default: false},
     defaultURL: {type: Sequelize.DataTypes.STRING, allowNull: false, default: 'https://codingblocks.com/'},
+}, {
+    paranoid: true
 })
 
 Client.belongsTo(User)
