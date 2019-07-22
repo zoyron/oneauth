@@ -117,9 +117,9 @@ app.use('/api', apirouter)
 app.use(profilePhotoMiddleware)
 app.use('/oauth', oauthrouter)
 app.use('/verifyemail', verifyemailrouter)
-// app.use(csurf({cookie: false}))
+app.use(csurf({cookie: false}))
 app.use((req, res, next) => {
-    res.locals.csrfToken = ""; // req.csrfToken() // Inject csrf to hbs views
+    res.locals.csrfToken = req.csrfToken(); // Inject _csrf token to hbs views
     next()
 })
 app.use('/verifymobile', verifymobilerouter)
