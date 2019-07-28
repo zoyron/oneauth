@@ -27,10 +27,10 @@ const username_char_valid = function(username) {
 }
 
 const username_first_char_valid = function(username) {
-  if (username.match(/\W/)) {
-    return 'Invalid username'
+  if (username.match(/^[a-zA-Z].*/)) {
+    return null
   }
-  return null
+  return "Username should start with alphabets only"
 }
 
 const username_last_char_valid = function(username) {
