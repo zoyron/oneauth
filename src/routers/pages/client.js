@@ -14,7 +14,10 @@ const {
     findAllEventSubscription
 } =require('../../controllers/event_subscriptions');
 
-router.get('/',acl.ensureAdmin, async function (req,res,next) {
+router.get('/', 
+    cel.ensureLoggedIn('/login'), 
+    acl.ensureAdmin, 
+    async function (req,res,next) {
     try {
         const clients = await findAllClients();
         return res.render('client/all',{clients:clients})
