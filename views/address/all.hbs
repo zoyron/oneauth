@@ -23,20 +23,24 @@
                         | {{address.whatsapp_number}}
                       {{/if}}
                 </div>
-
                 <div class="address-row grey">
                   {{address.street_address}} Near {{address.landmark}}, {{address.city}}<br> {{address.state.name}}: {{address.pincode}}
                     <br>{{address.country.name}}
                 </div>
-                <div class="row justify-content-end button-row">
-                  <div class="button-dashed">
-                    <a class="red" href="/address/{{address.id}}/edit">
-                      <button>Edit Address</button>
-                    </a>
-                  </div>
-                </div>
               </a>
-            </div>
+                <div class="row justify-content-between button-row align-items-center">
+                  <a href="/address/{{address.id}}/delete">
+                    <div class="grey">
+                      <button>Remove Address  <i class="far fa-window-close"></i></button>
+                    </div>
+                  </a>
+                  <a href="/address/{{address.id}}/edit">
+                    <div class="button-dashed">
+                      <button>Edit Address</button>
+                    </div>
+                  </a>
+                </div>
+              </div>
           {{/each}}
         </div>
       </div>

@@ -4,6 +4,7 @@ const Raven = require('raven')
 
 const {
     findAddress,
+    findAddressById,
     findAllAddresses,
     findAllStates,
     findAllCountries
@@ -82,6 +83,29 @@ router.get('/:id/edit',
             return res.redirect('/users/me')
         }
     }
+)
+
+router.get('/:id/delete', 
+    cel.ensureLoggedIn('/login'),
+    (async (req, res) => {
+        try {
+            const address = await findAddress(req.params.id,req.user.id )
+
+            if(!address) {
+                return res.send("Invalid Address Id")
+            }
+
+            console.log(address)
+            await address.destroy()
+            return res.redirect('/address/')
+        }
+        catch(err) {
+            // Raven.captureException(err)
+            console.log(err)
+            req.flash('error', 'Something went wrong, could not delete address')
+            res.redirect('/address/')
+        }
+    })
 )
 
 module.exports = router
