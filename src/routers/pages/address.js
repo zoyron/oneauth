@@ -4,7 +4,6 @@ const Raven = require('raven')
 
 const {
     findAddress,
-    findAddressById,
     findAllAddresses,
     findAllStates,
     findAllCountries
