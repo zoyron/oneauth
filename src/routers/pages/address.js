@@ -94,7 +94,6 @@ router.get('/:id/delete',
                 return res.send("Invalid Address Id")
             }
 
-            console.log(address)
             await address.destroy()
             return res.redirect('/address/')
         }
