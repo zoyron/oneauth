@@ -29,11 +29,9 @@
                 </div>
               </a>
                 <div class="row justify-content-between button-row align-items-center">
-                  <a href="/address/{{address.id}}/delete">
-                    <div class="grey">
-                      <button>Remove Address  <i class="far fa-window-close"></i></button>
-                    </div>
-                  </a>
+                  <div class="grey">
+                    <button class="removeButton" id={{address.id}}>Remove Address  <i class="far fa-window-close"></i></button>
+                  </div>
                   <a href="/address/{{address.id}}/edit">
                     <div class="button-dashed">
                       <button>Edit Address</button>
@@ -47,3 +45,21 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(function() {
+    $(".removeButton").click(function(event) {
+      swal({
+        title: "Are you sure?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          window.location.href = `/address/${event.target.id}/delete`;
+        }
+      });
+    })
+  })
+</script>
