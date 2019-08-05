@@ -38,11 +38,11 @@ router.get('/:id/delete', cel.ensureLoggedIn('/login'),
                 return res.send("Unauthorized user")
             }
             await client.destroy()
-            return res.redirect('/clients/')
+            return res.redirect('/users/me/clients/')
         } catch(err) {
             Raven.captureException(err)
             req.flash('error', 'Something went wrong, could not delete client')
-            res.redirect('/clients/')
+            res.redirect('/users/me/clients/')
         }
     }   
 )
