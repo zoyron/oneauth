@@ -30,7 +30,7 @@
               </a>
                 <div class="row justify-content-between button-row align-items-center">
                   <div class="grey">
-                    <button class="removeButton" id={{address.id}}>Remove Address  <i class="far fa-window-close"></i></button>
+                    <button class="removeAddress" id={{address.id}}>Remove Address  <i class="far fa-window-close" id={{address.id}}></i></button>
                   </div>
                   <a href="/address/{{address.id}}/edit">
                     <div class="button-dashed">
@@ -48,10 +48,10 @@
 
 <script>
   $(function() {
-    $(".removeButton").click(function(event) {
+    $(".removeAddress").click(function(event) {
       swal({
-        title: "Are you sure?",
-        icon: "warning",
+        title: "Delete Address",
+        text: "Are you sure you want to this address?",
         buttons: true,
         dangerMode: true,
       })
