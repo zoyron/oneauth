@@ -23,23 +23,43 @@
                         | {{address.whatsapp_number}}
                       {{/if}}
                 </div>
-
                 <div class="address-row grey">
                   {{address.street_address}} Near {{address.landmark}}, {{address.city}}<br> {{address.state.name}}: {{address.pincode}}
                     <br>{{address.country.name}}
                 </div>
-                <div class="row justify-content-end button-row">
-                  <div class="button-dashed">
-                    <a class="red" href="/address/{{address.id}}/edit">
-                      <button>Edit Address</button>
-                    </a>
-                  </div>
-                </div>
               </a>
-            </div>
+                <div class="row justify-content-between button-row align-items-center">
+                  <div class="grey">
+                    <button class="removeAddress" id={{address.id}}>Remove Address  <i class="far fa-window-close" id={{address.id}}></i></button>
+                  </div>
+                  <a href="/address/{{address.id}}/edit">
+                    <div class="button-dashed">
+                      <button>Edit Address</button>
+                    </div>
+                  </a>
+                </div>
+              </div>
           {{/each}}
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $(function() {
+    $(".removeAddress").click(function(event) {
+      swal({
+        title: "Delete Address",
+        text: "Are you sure you want to this address?",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          window.location.href = `/address/${event.target.id}/delete`;
+        }
+      });
+    })
+  })
+</script>

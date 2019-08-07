@@ -84,4 +84,26 @@ router.get('/:id/edit',
     }
 )
 
+router.get('/:id/delete', 
+    cel.ensureLoggedIn('/login'),
+    (async (req, res) => {
+        try {
+            const address = await findAddress(req.params.id,req.user.id )
+
+            if(!address) {
+                return res.send("Invalid Address Id")
+            }
+
+            await address.destroy()
+            return res.redirect('/address/')
+        }
+        catch(err) {
+            // Raven.captureException(err)
+            console.log(err)
+            req.flash('error', 'Something went wrong, could not delete address')
+            res.redirect('/address/')
+        }
+    })
+)
+
 module.exports = router

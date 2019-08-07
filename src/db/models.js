@@ -223,7 +223,8 @@ const Address = db.define('address', definitions.demographics.address, {
             fields: ['demographicId'],
             where: {primary: true}
         }
-    ]
+    ],
+    paranoid: true
 })
 const State = db.define('state', definitions.demographics.state)
 const Country = db.define('country', definitions.demographics.country)
