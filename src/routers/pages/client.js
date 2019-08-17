@@ -28,6 +28,28 @@ router.get('/',
     }
 })
 
+router.get('/:id/delete', cel.ensureLoggedIn('/login'), 
+    async function(req, res) {
+        try {
+            const client = await findClientById(req.params.id)
+            console.log(client, req.params.id)
+            
+            if (!client) {
+                return res.send("Invalid Client Id")
+            }
+            if (client.userId != req.user.id) {
+                return res.send("Unauthorized user")
+            }
+            await client.destroy()
+            return res.redirect('/users/me/clients/')
+        } catch(err) {
+            Raven.captureException(err)
+            req.flash('error', 'Something went wrong, could not delete client')
+            res.redirect('/users/me/clients/')
+        }
+    }   
+)
+
 router.get('/add',
     cel.ensureLoggedIn('/login'),
     function (req, res, next) {
