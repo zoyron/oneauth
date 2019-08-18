@@ -20,8 +20,18 @@ router.use(function (req, res, next) {
     res.locals.userId = req.user && req.user.id
     res.locals.userName= req.user && req.user.firstname
     res.locals.userPhoto= req.user && req.user.photo
-    res.locals.currentUrl= req.url.split("/")[1];
     res.locals.title = "Coding Blocks Account"
+
+    if(req.url.includes("address")) {
+        res.locals.currentUrl = "address"
+    } else if(req.url.includes("organisations")) {
+        res.locals.currentUrl = "organisations"
+    } else if(req.url.includes("apps")) {
+        res.locals.currentUrl = "apps"
+    } else if (req.url.includes("clients")) {
+        res.locals.currentUrl = "clients"
+    } else res.locals.currentUrl = "users"
+
     next()
 })
 
