@@ -7,13 +7,14 @@ const router = require('express').Router()
 const passport = require('../../passport/passporthandler')
 
 const {findUserByParams} = require('../../controllers/user')
+const {validateUsername}  = require('../../utils/username_validator')
 
 router.get('/username',
     passport.authenticate('bearer', {session: false}),
     async function (req, res, next) {
         try {
             const user = await findUserByParams({username: req.query.username});
-            if (user || req.query.username.length < 3) {
+            if (user || req.query.username.length < 3 || validateUsername(req.query.username)) {
                 res.status(422).json()
             } else {
                 res.status(200).json()
