@@ -300,5 +300,52 @@ router.post('/add',
 })
 
 
+router.post(
+    '/verifyemail',
+    makeGaEvent('POST', 'clientAPI', 'sendVerifyemail'),
+    passport.authenticate('bearer', {session: false}),
+    async (req, res, next) => {
+
+        try {
+            if (!req.body.email || req.body.email.trim() === '') {
+                req.flash('error', 'Email cannot be empty')
+                return res.status(400).json({error:' Email cannot be empty'})
+            }
+            let user = await findUserByParams({
+                verifiedemail: req.body.email
+            })
+            if (!user) {
+                //Email not verified, go to next middleware
+                return next()
+            } else {
+                // Email already verified, take person to profile page
+                return res.status(400).json({error:'Email already verified with codingblocks account ID:' + user.get('id')})
+            }
+        } catch (err) {
+            Raven.captureException(err)
+            return res.status(400).json({error:'Something went wrong. Please try again with your registered email.'})
+        }
+    },
+    async (req, res) => {
+        try {
+
+            let user = await findUserByParams({
+                email: req.body.email,
+            })
+            if (!user) {
+                // No user with this email
+                return res.status(400).json({error:'This email is not registered with this codingblocks account.'})
+            }
+            await createVerifyEmailEntry(user, true,
+                req.body.returnTo? req.body.returnTo: null
+            )
+            return res.status(200).json({success:'Verification email sent'})
+
+        } catch (err) {
+            Raven.captureException(err)
+            return res.status(400).json({error:'Something went wrong. Please try again with your registered email.'})
+        }
+    }
+)
 
 module.exports = router
