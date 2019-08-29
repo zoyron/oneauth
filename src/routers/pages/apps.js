@@ -16,7 +16,7 @@ router.get('/',
         try{
             const apps = await findAuthTokensByUserId(req.user.id);
             return res.render('apps/all', {apps: apps})
-        } catch(error){
+        } catch(err){
             Raven.captureException(err)
             req.flash('error','No Clients registered')
             res.redirect('user/me')

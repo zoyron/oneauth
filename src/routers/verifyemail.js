@@ -142,7 +142,6 @@ router.get('/key/:key', function (req, res) {
             if (req.user) {
                 // If user's email is already verified
                 if (req.user.dataValues.verifiedemail) {
-                    eventUserUpdated(req.user.id).catch(Raven.captureException)
                     req.flash('success', 'Your email is already verified.')
                     return
                 }
@@ -160,6 +159,7 @@ router.get('/key/:key', function (req, res) {
         .then((verifiedemail) => {
 
             if (verifiedemail) {
+                eventUserUpdated(req.user.id).catch(Raven.captureException)
                 req.flash('success', 'Your email is verified. Thank you.')
                 return res.redirect(returnTo || '/users/me')
             } else {
