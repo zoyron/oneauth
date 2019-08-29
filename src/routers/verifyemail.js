@@ -18,6 +18,7 @@ const {
     createVerifyEmailEntry,
     findVerifyEmailEntryByKey
 } = require('../controllers/verify_emails')
+const { eventUserUpdated } = require('../controllers/event/users')
 
 router.post(
     '/',
@@ -141,6 +142,7 @@ router.get('/key/:key', function (req, res) {
             if (req.user) {
                 // If user's email is already verified
                 if (req.user.dataValues.verifiedemail) {
+                    eventUserUpdated(req.user.id).catch(Raven.captureException)
                     req.flash('success', 'Your email is already verified.')
                     return
                 }
