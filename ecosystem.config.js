@@ -3,7 +3,7 @@ module.exports = {
         {
           name: "oneauth",
           script: "src/server.js",
-          instances: max,
+          instances: 'max',
           exec_mode: "cluster",
           env: {
               "NODE_ENV": "development"
