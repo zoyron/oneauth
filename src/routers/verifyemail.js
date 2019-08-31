@@ -18,6 +18,7 @@ const {
     createVerifyEmailEntry,
     findVerifyEmailEntryByKey
 } = require('../controllers/verify_emails')
+const { eventUserUpdated } = require('../controllers/event/users')
 
 router.post(
     '/',
@@ -158,6 +159,7 @@ router.get('/key/:key', function (req, res) {
         .then((verifiedemail) => {
 
             if (verifiedemail) {
+                eventUserUpdated(req.user.id).catch(Raven.captureException)
                 req.flash('success', 'Your email is verified. Thank you.')
                 return res.redirect(returnTo || '/users/me')
             } else {
