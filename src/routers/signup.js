@@ -91,7 +91,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             lastname: req.body.lastname,
             graduationYear: req.body.gradYear,
             mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
-            email: req.body.email,
+            email: req.body.email.toLowerCase(),
             demographic: {
                 branchId: req.body.branchId,
                 collegeId: req.body.collegeId,

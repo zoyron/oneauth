@@ -30,9 +30,9 @@ router.get('/username',
 router.get('/email',
     passport.authenticate('bearer', {session: false}),
     async function (req, res, next) {
-        let emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+        const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
         try {
-            const user = await findUserByParams({verifiedemail: req.query.email});
+            const user = await findUserByParams({email: req.query.email});
             if (user) {
                 res.status(422).json({error: `Email ${req.query.email} is already registered on oneauth.`})
             } else if (!emailRegex.test(req.query.email)) {
