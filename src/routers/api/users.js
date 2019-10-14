@@ -16,7 +16,8 @@ const passutils = require('../../utils/password')
 const mail = require('../../utils/email')
 const {generateReferralCode}  =require('../../utils/referral')
 const uid = require('uid2')
-
+const {createAddress} = require("../../controllers/demographics");
+const {hasNull} = require('../../utils/nullCheck')
 const {
     findUserByParams,
     createUserLocal,
@@ -234,6 +235,11 @@ router.post('/add',
     passport.authenticate('bearer', {session: false}),
     async (req, res, next) => {
 
+        if (hasNull(req.body, ['firstname', 'lastname', 'mobile_number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId',
+            'countryId', 'dial_code', 'whatsapp_number'])) {
+            res.status(400).json({error:'Missing required params'})
+        }
+
         try {
             let user = await findUserByParams({username: req.body.username})
             if (user) {
@@ -269,6 +275,27 @@ router.post('/add',
             if (!createdUser) {
                 return res.status(400).json({error: 'Error creating account! Please try in some time'})
             }
+
+            const options = {
+                label: req.body.label || null,
+                first_name: req.body.firstname,
+                last_name: req.body.lastname,
+                mobile_number: req.body.mobile_number,
+                email:  req.body.email.toLowerCase(),
+                pincode: req.body.pincode,
+                street_address: req.body.street_address,
+                landmark: req.body.landmark,
+                city: req.body.city,
+                stateId: req.body.stateId,
+                countryId: req.body.countryId,
+                dial_code: req.body.dial_code,
+                demographicId: createdUser.get().demographic.id,
+                whatsapp_number: req.body.whatsapp_number || null,
+                // if no addresses, then first one added is primary
+                primary: true
+            }
+
+            const address = await createAddress(options)
 
             user = createdUser
 
