@@ -1,4 +1,4 @@
-const { User, UserLocal, Demographic, College} = require("../db/models").models;
+const { User, UserLocal, Demographic, College, Branch, Address} = require("../db/models").models;
 const sequelize = require('sequelize');
 const Raven = require('raven');
 
@@ -99,7 +99,7 @@ function findUserForTrustedClient(trustedClient, userId) {
         where: { id: userId },
         include: {
             model: Demographic,
-            include: [College]
+            include: [College, Branch, Address],
         }
     });
 }
