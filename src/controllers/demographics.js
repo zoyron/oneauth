@@ -72,6 +72,10 @@ function upsertDemographic(id, userId, collegeId, branchId) {
   return models.Demographic.upsert({ id, userId, collegeId, branchId });
 }
 
+function upsertAddress(values) {
+  return models.Address.upsert(values);
+}
+
 module.exports = {
   findOrCreateDemographic,
   updateAddressbyDemoId,
@@ -84,5 +88,6 @@ module.exports = {
   findAllCountries,
   findAllBranches,
   findAllColleges,
-  upsertDemographic
+  upsertDemographic,
+  upsertAddress
 };
