@@ -1,46 +1,69 @@
+<div class="col-3 b-right py-5">
+  <div class="img-ring p-1 mx-auto">
+    {{#if userPhoto}}
+      <img class="round img" src="{{userPhoto}}">
+    {{else}}
+      <img class="round img" src="/img/user.svg">
+    {{/if}}
+  </div>
+  <div class="px-5 mx-auto work-area__side-menu">
+    <h4 class="bold pt-3 pb-4">Hi, {{userName}}</h4>
+    <div class="font-md py-4"><a href="#" class="hover-pink active">My Profile</a></div>
+    <div class="font-md py-4"><a href="#" class="hover-pink">My Addresses</a></div>
+    <div class="font-md py-4"><a href="#" class="hover-pink">My Organizations</a></div>
+    <div class="font-md py-4"><a href="#" class="hover-pink">My Applications</a></div>
+    <div class="font-md py-4"><a href="#" class="hover-pink">My Clients</a></div>
+    <div class="font-md py-4"><a href="#" class="hover-pink">Logout</a></div>
+  </div>
+</div>
+
 <div class="nav-info col-md-3">
-    <a href="/users/me">
-        <div class="profile-pic">
-            <div class="d-flex justify-content-center profile-container">
-                {{#if userPhoto}}
-                    <img class="round-img user-pic" src="{{userPhoto}}">
-                {{else}}
-                    <img class="round-img user-pic" src="/img/user.svg">
-                {{/if}}
-            </div>
-            <div class="card">
-                {{#if userName}}
-                    <p>Hi, {{userName}}</p>
-                {{else}}
-                    <p>Hi, Guest User</p>
-                {{/if}}
+  <a href="/users/me">
+    <div class="profile-pic">
+      <div class="d-flex justify-content-center profile-container">
+        {{#if userPhoto}}
+        <img class="round-img user-pic" src="{{userPhoto}}">
+        {{else}}
+        <img class="round-img user-pic" src="/img/user.svg">
+        {{/if}}
+      </div>
+      <div class="card">
+        {{#if userName}}
+        <p>Hi, {{userName}}</p>
+        {{else}}
+        <p>Hi, Guest User</p>
+        {{/if}}
 
-            </div>
-        </div>
-    </a>
-
-    <div>
-      <div class="flex-row">
-        <a href="/users/me"><span class="pointer {{#ifeq  val=currentUrl expected="users"}}red{{/ifeq}}">MY PROFILE</span></a>
-      </div>
-      <div class="separator"></div>
-      <div class="flex-row">
-        <a href="/address/"><span class="pointer {{#ifeq  val=currentUrl expected="address"}}red{{/ifeq}}">MY ADDRESSES</span></a>
-      </div>
-      <div class="flex-row">
-        <a href="/users/me/organisations"><span class="pointer {{#ifeq  val=currentUrl expected="organisations"}}red{{/ifeq}}">MY ORGANISATIONS</span></a>
-      </div>
-      <div class="separator"></div>
-      <div class="flex-row">
-        <a href="/apps"><span class="pointer {{#ifeq  val=currentUrl expected="apps"}}red{{/ifeq}}">MY APPS</span></a>
-      </div>
-      <div class="separator"></div>
-      <div class="flex-row">
-        <a href="/users/me/clients"><span class="pointer {{#ifeq  val=currentUrl expected="clients"}}red{{/ifeq}}">MY CLIENTS</span></a>
-      </div>
-      <div class="separator"></div>
-      <div class="flex-row faded">
-        <a href="/logout"><span class="pointer">LOGOUT</span></a>
       </div>
     </div>
+  </a>
+
+  <div>
+    <div class="flex-row">
+      <a href="/users/me"><span class="pointer {{#ifeq  val=currentUrl expected="users"}}red{{/ifeq}}">MY
+          PROFILE</span></a>
+    </div>
+    <div class="separator"></div>
+    <div class="flex-row">
+      <a href="/address/"><span class="pointer {{#ifeq  val=currentUrl expected="address"}}red{{/ifeq}}">MY
+          ADDRESSES</span></a>
+    </div>
+    <div class="flex-row">
+      <a href="/users/me/organisations"><span
+          class="pointer {{#ifeq  val=currentUrl expected="organisations"}}red{{/ifeq}}">MY ORGANISATIONS</span></a>
+    </div>
+    <div class="separator"></div>
+    <div class="flex-row">
+      <a href="/apps"><span class="pointer {{#ifeq  val=currentUrl expected="apps"}}red{{/ifeq}}">MY APPS</span></a>
+    </div>
+    <div class="separator"></div>
+    <div class="flex-row">
+      <a href="/users/me/clients"><span class="pointer {{#ifeq  val=currentUrl expected="clients"}}red{{/ifeq}}">MY
+          CLIENTS</span></a>
+    </div>
+    <div class="separator"></div>
+    <div class="flex-row faded">
+      <a href="/logout"><span class="pointer">LOGOUT</span></a>
+    </div>
   </div>
+</div>

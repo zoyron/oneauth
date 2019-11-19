@@ -1,22 +1,5 @@
 <div class="row no-gutters work-area">
-  <div class="col-3 b-right py-5">
-    <div class="img-ring p-1 mx-auto">
-      {{#if user.photo}}
-        <img class="round img" src="{{user.photo}}">
-      {{else}}
-        <img class="round img" src="/img/user.svg">
-      {{/if}}
-    </div>
-    <div class="px-5 mx-auto work-area__side-menu">
-      <h4 class="bold pt-3 pb-4">Hi, {{user.firstname}} {{user.lastname}} {{user.photo}}</h4>
-      <div class="font-md py-4"><a href="#" class="hover-pink active">My Profile</a></div>
-      <div class="font-md py-4"><a href="#" class="hover-pink">My Addresses</a></div>
-      <div class="font-md py-4"><a href="#" class="hover-pink">My Organizations</a></div>
-      <div class="font-md py-4"><a href="#" class="hover-pink">My Applications</a></div>
-      <div class="font-md py-4"><a href="#" class="hover-pink">My Clients</a></div>
-      <div class="font-md py-4"><a href="/logout" class="hover-pink">Logout</a></div>
-    </div>
-  </div>
+  {{< side-nav}}
   <div class="col-9 py-5 work-area__main-area">
     
   </div>
