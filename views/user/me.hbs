@@ -1,6 +1,282 @@
 <div class="row no-gutters work-area">
-  {{< side-nav}}
+  {{> side-nav}}
   <div class="col-9 py-5 work-area__main-area">
-    
+    <div class="row no-gutters align-items-center justify-content-between">
+      <div class="col-4">
+        <div class="tab-nav-underline w-100 justify-content-start">
+          <div class="tab active px-0 font-md extra-bold">My Profile</div>
+        </div>
+      </div>
+      <a href="/users/me/edit" class="button-solid lg">
+        Edit Profile
+      </a>
+    </div>
+    <div class="row my-5">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <i class="far fa-envelope"></i>
+            <span class="font-sm ml-2">Verified Email</span>
+          </div>
+          <div class="col-8">
+            {{#if user.verifiedemail}}
+              <span class="font-sm bold salmon mr-2">{{user.verifiedemail}}</span>
+              <i class="fas fa-check"></i>
+            {{else}}
+              <form action="/verifyemail" method="POST">
+                <input 
+                  type="text"
+                  class="underline-input font-sm bold"
+                  placeholder="Email to verify"
+                  name="email"
+                  value={{user.email}}
+                  required />
+                <button type="submit" class="salmon">
+                  Verify
+                </button>
+              </form>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <i class="fas fa-phone"></i>
+            <span class="font-sm ml-2">Verified Mobile Number</span>
+          </div>
+          <div class="col-8">
+            {{#if user.verifiedmobile}}
+              <span class="font-sm bold salmon mr-2">{{user.verifiedmobile}}</span>
+              <i class="fas fa-check"></i>
+            {{else}}
+              <span class="font-sm bold mr-2">{{user.mobile_number}}</span>
+              <a class="salmon" href="/verifymobile">Verify</a> 
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h6 class="bold mt-5 pt-4 pb-2">USER DETAILS</h6>
+    <div class="divider-h mb-5 mt-4"></div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">First Name</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">{{user.firstname}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">Last Name</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">{{user.lastname}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row my-5">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">User ID</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">{{user.id}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">User Name</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">{{user.username}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">My Referral Code</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">{{user.referralCode}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">Gender</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">{{user.gender}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h6 class="bold mt-5 pt-4 pb-2">COLLEGE DETAILS</h6>
+    <div class="divider-h mb-5 mt-4"></div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">College</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">{{user.demographic.college.name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <span class="font-sm">Branch</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold">(B.Tech/BE) Computers / IT / Software</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h6 class="bold mt-5 pt-4 pb-2">ACCOUNTS CONNECTED</h6>
+    <div class="divider-h mb-5 mt-4"></div>
+
+    <div class="row mb-5">
+      {{#if user.usergoogle}}
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <i class="fab fa-google-plus"></i>
+              <span class="font-sm ml-2">Google</span>
+            </div>
+            <div class="col-8">
+              <a target="_blank" href="http://google.com/{{user.usergoogle.id}}">
+                <span class="font-sm bold salmon mr-2">{{user.usergoogle.id}}</span>
+              </a>
+              <a href="/disconnect/google">
+                <i class="fas fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+      {{#if user.userfacebook}}
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <i class="fab fa-facebook-f"></i>
+              <span class="font-sm ml-2">Facebook</span>
+            </div>
+            <div class="col-8">
+              <a target="_blank" href="http://facebook.com/{{user.userfacebook.id}}">
+                <span class="font-sm bold salmon mr-2">{{user.userfacebook.id}}</span>
+              </a>
+              <a href="/disconnect/facebook">
+                <i class="fas fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+      {{#if user.usertwitter}}
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <i class="fab fa-twitter"></i>
+              <span class="font-sm ml-2">Twitter</span>
+            </div>
+            <div class="col-8">
+              <a target="_blank" href="http://twitter.com/{{user.usertwitter.username}}">
+                <span class="font-sm bold salmon mr-2">{{user.usertwitter.username}}</span>
+              </a>
+              <a href="/disconnect/twitter">
+                <i class="fas fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+      {{#if user.usergithub}}
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <i class="fab fa-github"></i>
+              <span class="font-sm ml-2">Github</span>
+            </div>
+            <div class="col-8">
+              <a target="_blank" href="http://github.com/{{user.usergithub.username}}">
+                <span class="font-sm bold salmon mr-2">{{user.usergithub.username}}</span>
+              </a>
+              <a href="/disconnect/github">
+                <i class="fas fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+      {{#if user.userlinkedin}}
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <i class="fab fa-linkedin-in"></i>
+              <span class="font-sm ml-2">LinkedIn</span>
+            </div>
+            <div class="col-8">
+              <a target="_blank" href="{{user.userlinkedin.profile}}">
+                <span class="font-sm bold salmon mr-2">{{user.userlinkedin.username}}</span>
+              </a>
+              <a href="/disconnect/linkedin">
+                <i class="fas fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+    </div>
+
+    <div class="pt-5">
+      <span class="font-sm">You may also connect to</span>
+      {{#unless user.usergoogle}}
+        <a href="/connect/google" class="ml-5">
+          <i class="fa-2x fab fa-google-plus"></i>
+        </a>
+      {{/unless}}
+      {{#unless user.userfacebook}}
+        <a href="/connect/facebook" class="ml-5">
+          <i class="fa-2x fab fa-facebook-f"></i>
+        </a>
+      {{/unless}}
+      {{#unless user.usertwitter}}
+        <a href="/connect/twitter" class="ml-5">
+          <i class="fa-2x fab fa-twitter"></i>
+        </a>
+      {{/unless}}
+      {{#unless user.usergithub}}
+        <a href="/connect/github" class="ml-5">
+          <i class="fa-2x fab fa-github"></i>
+        </a>
+      {{/unless}}
+      {{#unless user.userlinkedin}}
+        <a href="/connect/linkedin" class="ml-5">
+          <i class="fa-2x fab fa-linkedin-in"></i>
+        </a>
+      {{/unless}}
+    </div>
   </div>
 </div>
