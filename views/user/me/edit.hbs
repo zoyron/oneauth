@@ -5,6 +5,8 @@
       <div class="tab active px-0 font-md extra-bold">Edit Profile</div>
     </div>
 
+    {{> error-snippet}}
+
     <div class="row my-5 align-items-center">
       <div class="col-lg-2 col-3">
         <div class="img-ring img-ring--profile p-1">
@@ -29,343 +31,239 @@
 
     <div class="divider-h mb-5 mt-4"></div>
 
-    <div class="row">
-      <div class="col-6">
-        <div class="row">
-          <div class="col-4">
-            <i class="far fa-envelope"></i>
-            <span class="font-sm ml-2">Verified Email</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold salmon mr-2">sidjain2901@gmail.com</span>
-            <i class="fas fa-check"></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row">
-          <div class="col-4">
-            <i class="fas fa-phone"></i>
-            <span class="font-sm ml-2">Verified Mobile Number</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold salmon mr-2">+91 9560873209</span>
-            <i class="fas fa-check"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row my-5">
-      <div class="col-6">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">User ID</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold">8967</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">User Name</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold">SidJain</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row my-5">
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="addtype" class="font-sm">First Name</label>
-          </div>
-          <div class="col-8">
-            <input type="text" id="addtype" class="underline-input pb-3 font-sm bold w-100" placeholder="First Name">
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="addtype" class="font-sm">Last Name</label>
-          </div>
-          <div class="col-8">
-            <input type="text" id="addtype" class="underline-input pb-3 font-sm bold w-100" placeholder="Last Name">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row my-5">
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="slct" class="font-sm">Gender</label>
-          </div>
-          <div class="col-8">
-            <div class="select">
-              <select name="slct" id="slct" class="font-sm bold">
-                <option selected disabled hidden>Choose Gender</option>
-                <option value="1" class="py-2">Male</option>
-                <option value="2" class="py-2">Female</option>
-                <option value="3" class="py-2">Undisclosed</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="slct" class="font-sm">College</label>
-          </div>
-          <div class="col-8">
-            <div class="select">
-              <select name="slct" id="slct" class="font-sm bold">
-                <option selected disabled hidden>Choose College</option>
-                <option value="1" class="py-2">Male</option>
-                <option value="2" class="py-2">Female</option>
-                <option value="3" class="py-2">Undisclosed</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row my-5">
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="addtype" class="font-sm">Password</label>
-          </div>
-          <div class="col-8">
-            <input type="password" id="addtype" class="underline-input pb-3 font-sm bold w-100"
-              placeholder="Enter Password">
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="addtype" class="font-sm">Password</label>
-          </div>
-          <div class="col-8">
-            <input type="password" id="addtype" class="underline-input pb-3 font-sm bold w-100"
-              placeholder="Re-Enter Password">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row my-5">
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="slct" class="font-sm">Branch</label>
-          </div>
-          <div class="col-8">
-            <div class="select">
-              <select name="slct" id="slct" class="font-sm bold">
-                <option selected disabled hidden>Choose Branch</option>
-                <option value="1" class="py-2">Male</option>
-                <option value="2" class="py-2">Female</option>
-                <option value="3" class="py-2">Undisclosed</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row align-items-center">
-          <div class="col-4">
-            <label for="slct" class="font-sm">Grad Year</label>
-          </div>
-          <div class="col-8">
-            <div class="select">
-              <select name="slct" id="slct" class="font-sm bold">
-                <option selected disabled hidden>Choose Graduation Year</option>
-                <option value="1" class="py-2">Male</option>
-                <option value="2" class="py-2">Female</option>
-                <option value="3" class="py-2">Undisclosed</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-5">
-      <button class="button-solid lg">Save Changes</button>
-      <span class="font-sm ml-4"><a href="#" class="dark-grey">Reset</a></span>
-    </div>
-  </div>
-</div>
-
-
-<div class="offset-md-4 col-md-8 c-profile-edit">
-  <div class="card">
-    <h1 class="heading-u-red">
-      Edit Profile
-    </h1>
-
-    <form id="edit-form" enctype="multipart/form-data" method="POST">
+    <form action="" method="post" enctype="multipart/form-data">
       <input type="hidden" name="_csrf" value="{{csrfToken}}">
-      {{#if user.email}}
-      {{#unless user.mobile_number}}
-      <div class="alert alert-danger" role="alert">
-        Please enter your mobile number to continue.
-      </div>
-      {{/unless}}
-      {{else}}
-      {{#if user.mobile_number}}
-      <div class="alert alert-danger" role="alert">
-        Please enter your email address to continue.
-      </div>
-      {{else}}
-      <div class="alert alert-danger" role="alert">
-        Please enter your email address and mobile number to continue.
-      </div>
-      {{/if}}
-      {{/if}}
-      {{>modal_profile_pic}}
-      <div class="row justify-content-between align-items-center profile-row">
-        <div class="round-img">
-          {{#if userPhoto}}
-          <img class="round-img user-pic" src="{{userPhoto}}">
-          {{else}}
-          <img class="round-img user-pic" src="/img/user.svg">
-          {{/if}}
-        </div>
-
-        <div class="button-solid">
-          <button type="button" data-toggle="modal" data-target="#change-dp">CHANGE PROFILE IMAGE</button>
-        </div>
-      </div>
-
-      {{> error-snippet}}
-
-      <div class="attributes">
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">UserID</div>
-          <input class="input-text col-9" type="text" id="userid" disabled value="{{user.id}}" />
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Username</div>
-          <input type="text" class="input-text col-9" id="username" disabled value="{{user.username}}" />
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Firstname</div>
-          <input type="text" id="firstname" class="input-text col-9" name="firstname" value="{{user.firstname}}" />
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Lastname</div>
-          <input class="input-text col-9" type="text" name="lastname" id="lastname" value="{{user.lastname}}" />
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Gender</div>
-          <select class="col-9 input-text" name="gender" id="gender">
-            <option>MALE</option>
-            <option>FEMALE</option>
-            <option>UNDISCLOSED</option>
-          </select>
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Email</div>
-          {{#if user.verifiedemail}}
-          <input type="text" id="email" name="email" class="input-text col-9" disabled value="{{user.email}}" />
-          {{else}}
-          <input type="text" id="email" name="email" class="input-text col-9" value="{{user.email}}" />
-          {{/if}}
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Contact Number</div>
-          <select name="dial_code" class="input-text col-3">
-            {{#each countries}}
-            {{#ifeq expected=dial_code val=../user.dial_code}}
-            <option class="dropdown-li" value="{{dial_code}}" selected>
-              {{name}} ({{dial_code}})
-            </option>
-            {{else}}
-            <option class="dropdown-li" value="{{dial_code}}">
-              {{name}} ({{dial_code}})
-            </option>
-            {{/ifeq}}
-            {{/each}}
-          </select>
-
-          <input class="input-text col-5" type="text" name="mobile_number" id="mobile_number"
-            value="{{user.mobile_number}}" />
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Password</div>
-          <input class="input-text col-9" type="password" name="password"
-            placeholder="Enter Password (keep empty for unchanged)" id="password" />
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Re-Enter</div>
-          <input class="input-text col-9" type="password" name="repassword" placeholder="Re-Enter Password"
-            id="repassword" />
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">College</div>
-          <select name="collegeId" class="input-text col-9">
-            {{#each colleges}}
-            {{#ifeq expected=id val=../user.demographic.collegeId}}
-            <option class="dropdown-li" value="{{id}}" selected>{{name}}</option>
-            {{/ifeq}}
-            {{#ifneq expected=id val=../user.demographic.collegeId}}
-            <option class="dropdown-li" value="{{id}}">{{name}}</option>
-            {{/ifneq}}
-            {{/each}}
-          </select>
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Branch</div>
-          <select name="branchId" class="input-text col-9">
-            {{#each branches}}
-            {{#ifeq expected=id val=../user.demographic.branchId}}
-            <option class="dropdown-li" value="{{id}}" selected>{{name}}</option>
-            {{/ifeq}}
-            {{#ifneq expected=id val=../user.demographic.branchId}}
-            <option class="dropdown-li" value="{{id}}">{{name}}</option>
-            {{/ifneq}}
-            {{/each}}
-          </select>
-        </div>
-
-        <div class="row no-gutters align-items-center justify-content-between detail-row">
-          <div class="label-input col-2">Graduation Year</div>
-          <select name="gradYear" class="input-text col-9" required>
-            {{#each gradYears}}
-            {{#ifeq expected=this val=../user.graduationYear}}
-            <option class="dropdown-li" value="{{this}}" selected>{{this}}</option>
-            {{else}}
-            <option class="dropdown-li" value="{{this}}">{{this}}</option>
-            {{/ifeq}}
-            {{/each}}
-          </select>
-        </div>
-
-        <div class="flex-row justify-content-end button-div">
-          <div class="reset-button">
-            <button type="reset">RESET</button>
-          </div>
-          <div class="button-solid">
-            <button type="submit">SAVE CHANGES</button>
+      <div class="row">
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <i class="far fa-envelope"></i>
+              <span class="font-sm ml-2">Verified Email</span>
+            </div>
+            <div class="col-8">
+              {{#if user.verifiedemail}}
+                <span class="font-sm bold salmon mr-2">{{user.verifiedemail}}</span>
+                <i class="fas fa-check"></i>
+              {{else}}
+                <form action="/verifyemail" method="POST">
+                  <input 
+                    type="text"
+                    class="underline-input font-sm bold"
+                    placeholder="Email to verify"
+                    name="email"
+                    value={{user.email}}
+                    required />
+                  <button type="submit" class="salmon">
+                    Verify
+                  </button>
+                </form>
+              {{/if}}
+            </div>
           </div>
         </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <i class="fas fa-phone"></i>
+              <span class="font-sm ml-2">Verified Mobile Number</span>
+            </div>
+            <div class="col-8">
+              {{#if user.verifiedmobile}}
+                <span class="font-sm bold salmon mr-2">{{user.verifiedmobile}}</span>
+                <i class="fas fa-check"></i>
+              {{else}}
+                <span class="font-sm bold mr-2">{{user.mobile_number}}</span>
+                <a class="salmon" href="/verifymobile">Verify</a> 
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <span class="font-sm">User ID</span>
+            </div>
+            <div class="col-8">
+              <span class="font-sm bold">{{user.id}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-4">
+              <span class="font-sm">User Name</span>
+            </div>
+            <div class="col-8">
+              <span class="font-sm bold">{{user.username}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">First Name</label>
+            </div>
+            <div class="col-8">
+              <input type="text" name="firstname" value={{user.firstname}} class="underline-input pb-3 font-sm bold w-100" placeholder="First Name">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">Last Name</label>
+            </div>
+            <div class="col-8">
+              <input type="text" name="lastname" value={{user.lastname}} class="underline-input pb-3 font-sm bold w-100" placeholder="Last Name">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="slct" class="font-sm">Gender</label>
+            </div>
+            <div class="col-8">
+              <div class="select">
+                <select name="gender" class="font-sm bold">
+                  <option selected disabled hidden>Choose Gender</option>
+                  <option value="MALE" class="py-2">MALE</option>
+                  <option value="FEMALE" class="py-2">FEMALE</option>
+                  <option value="UNDISCLOSED" class="py-2">UNDISCLOSED</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="slct" class="font-sm">College</label>
+            </div>
+            <div class="col-8">
+              <div class="select">
+                <select name="collegeId" class="font-sm bold">
+                  {{#each colleges}}
+                    {{#ifeq expected=id val=../user.demographic.collegeId}}
+                      <option class="py-2" value="{{id}}" selected>{{name}}</option>
+                    {{/ifeq}}
+                    {{#ifneq expected=id val=../user.demographic.collegeId}}
+                      <option class="py-2" value="{{id}}">{{name}}</option>
+                    {{/ifneq}}
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">Password</label>
+            </div>
+            <div class="col-8">
+              <input type="password" name="password" class="underline-input pb-3 font-sm bold w-100"
+                placeholder="Enter Password">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">Re-Enter Password</label>
+            </div>
+            <div class="col-8">
+              <input type="password" name="repassword" class="underline-input pb-3 font-sm bold w-100"
+                placeholder="Re-Enter Password">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="slct" class="font-sm">Branch</label>
+            </div>
+            <div class="col-8">
+              <div class="select">
+                <select name="branchId" class="font-sm bold">
+                  {{#each branches}}
+                    {{#ifeq expected=id val=../user.demographic.branchId}}
+                      <option class="py-2" value="{{id}}" selected>{{name}}</option>
+                    {{/ifeq}}
+                    {{#ifneq expected=id val=../user.demographic.branchId}}
+                      <option class="py-2" value="{{id}}">{{name}}</option>
+                    {{/ifneq}}
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="slct" class="font-sm">Grad Year</label>
+            </div>
+            <div class="col-8">
+              <div class="select">
+                <select name="gradYear" class="font-sm bold">
+                  {{#each gradYears}}
+                    {{#ifeq expected=this val=../user.graduationYear}}
+                      <option class="py-2" value="{{this}}" selected>{{this}}</option>
+                    {{else}}
+                      <option class="py-2" value="{{this}}">{{this}}</option>
+                    {{/ifeq}}
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="slct" class="font-sm">Phone Number</label>
+            </div>
+            <div class="col-8">
+              <div class="row">
+                <div class="col-4 select">
+                  <select name="dial_code" class="font-sm bold" required>
+                    {{#each countries}}
+                      <option class="py-2" value="{{dial_code}}">
+                        {{name}} ({{dial_code}})
+                      </option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="col-8">
+                  <input 
+                    type="text" 
+                    class="underline-input font-sm bold w-100"
+                    id="mobile_number"
+                    name="mobile_number"
+                    value="{{user.mobile_number}}"
+                    placeholder="Phone Number" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5">
+        <button class="button-solid lg" type="submit">Save Changes</button>
+        <button class="font-sm ml-4 dark-grey" type="reset">Reset</button>
       </div>
     </form>
   </div>
