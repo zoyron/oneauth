@@ -72,7 +72,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
             if (returnTo) {
                 res.redirect(returnTo)
             } else {
-                res.redirect('/address/' + address.id)
+                res.redirect('/address/')
             }
         } catch (err) {
             Raven.captureException(err)
@@ -102,7 +102,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
                 await updateAddressbyDemoId(demoId, {primary: false})
             }
 
-            let number = req.body.dial_code + req.body.mobile_number
+            let number = req.body.dial_code + req.body.number
             if (!validateNumber(parseNumberByCountry(number, req.body.countryId))) {
                 req.flash('error', 'This number does not exist in your country.')
                 return res.redirect('/address/add')
@@ -128,7 +128,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
             if (req.body.returnTo) {
                 return res.redirect(req.body.returnTo)
             } else {
-                return res.redirect(`/address/${addrId}`)
+                return res.redirect('/address/')
             }
         })
 
