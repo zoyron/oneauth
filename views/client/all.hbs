@@ -1,79 +1,70 @@
-{{!< centercolumn}}
-
-<div class="offset-md-4 col-md-8 c-client-page">
-    <div class="card">
-        <div class="flex-row justify-content-between">
-            <h1 class="heading-u-red">My Clients</h1>
-            <div class="button-solid align-self-start">
-                <a class="white" href="/clients/add">
-                    <button>+ Add New Client</button>
-                </a>
-            </div>
+<div class="row no-gutters work-area">
+  {{> side-nav}}
+  <div class="col-9 py-5 work-area__main-area">
+    <div class="row no-gutters align-items-center justify-content-between">
+      <div class="col-4">
+        <div class="tab-nav-underline w-100 justify-content-start">
+          <div class="tab active px-0 font-md extra-bold">My Clients</div>
         </div>
-        <div class="attributes">
-            <div class="row justify-content-between">
-                {{#each clients as |client|}}
-                    <div class="border-card">
-                        <div class="client-row heading">
-                            <a href="/clients/{{client.id}}">
-                                {{client.name}}
-                            </a>
-                        </div>
-                        <div class="client-row">
-                            <span>Client Id:</span>
-                            <span class="grey">{{client.id}}</span>
-                        </div>
-                        <div class="client-row">
-                            <span>Domain:</span>
-                            <span class="grey">{{client.domain}}</span>
-                        </div>
-                        <div class="client-row">
-                            <span>Callback URL:</span>
-                            <span class="grey">{{client.callbackURL}}</span>
-                        </div>
-                        <div class="client-row">
-                            <span>Webhook URL:</span>
-                            <span class="grey">{{client.webhookURL}}</span>
-                        </div>
-                        <div class="client-row">
-                            <span>Client Secret:</span>
-                            <span class="grey">{{client.secret}}</span>
-                        </div>
-                        <div class="row justify-content-between button-row align-items-center">
-                            <div class="grey">
-                                <button class="removeClient" id={{client.id}}>Remove Client  <i class="far fa-window-close" id={{client.id}}></i></button>
-                            </div>
-                            <div class="button-dashed">
-                                <a class="red" href="/clients/{{client.id}}/edit">
-                                    <button>Edit Client</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {{else}}
-                    <div class="border-card">
-                        <div class="client-row heading">You have registered no clients yet</div>
-                    </div>
-                {{/each}}
-            </div>
-        </div>
+      </div>
+      <a href="/clients/add" class="button-solid lg">Add Client</a>
     </div>
-</div>
 
-<script>
-  $(function() {
-    $(".removeClient").click(function(event) {
-      swal({
-        title: "Delete Client",
-        text: "Are you sure you want to delete this client?",
-        buttons: true,
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-          window.location.href = `/clients/${event.target.id}/delete`;
-        }
-      });
-    })
-  })
-</script> 
+    <div class="row mt-5">
+      {{#each clients as |client|}}
+        <div class="col-6 mb-5">
+          <div class="border-card p-5 position-relative">
+            <div class="row justify-content-between no-gutters">
+              <div class="col-6">
+                <h5 class="bold mb-4">{{client.name}}</h5>
+              </div>
+              <a href="/clients/{{client.id}}/edit" class="salmon semi-bold">
+                <div>Edit Client</div>
+              </a>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <div>ID</div>
+              </div>
+              <div class="col-7">
+                <div class="med-grey">{{client.id}}</div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-5">
+                <div>Callback URL</div>
+              </div>
+              <div class="col-7">
+                <div class="med-grey">{{client.callbackURL}}</div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-5">
+                <div>Domain</div>
+              </div>
+              <div class="col-7">
+                <div class="med-grey">{{client.domain}}</div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-5">
+                <div>Webhook URL</div>
+              </div>
+              <div class="col-7">
+                <div class="med-grey">{{client.webhookURL}}</div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-5">
+                <div>Secret</div>
+              </div>
+              <div class="col-7">
+                <div class="med-grey word-wrap">{{client.secret}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

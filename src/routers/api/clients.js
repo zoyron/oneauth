@@ -49,7 +49,7 @@ router.post('/add', async function (req, res) {
 
     try {
         const clientid = await createClient(options, req.user.id)
-        res.redirect('/clients/' + clientid.id)
+        res.redirect('/users/me/clients')
     } catch (error) {
         Raven.captureException(err)
         req.flash('error', 'Could not create client')
@@ -134,7 +134,7 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
 
             await createEventSubscriptionBulk (event_subscription)
 
-            res.redirect('/clients/' + clientId)
+            res.redirect('/users/me/clients')
         } catch (err) {
             Raven.captureException(err)
             req.flash('error', 'Could not update client')
