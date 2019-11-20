@@ -1,41 +1,65 @@
-{{!< centercolumn}}
-
-<div class="offset-md-4 col-md-8 c-client-add">
-    <div class="card">
-        <h1 class="heading-u-red">Edit Details for {{organisation.name}}</h1>
-        <div class="attributes d-flex flex-column">
-            <form method="post" action="/api/organisations/edit/{{organisation.id}}">
-                <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                {{> error-snippet}}
-                <div class="row justify-content-between">
-                    <div class="row no-gutters align-items-center justify-content-between detail-row">
-                        <div class="label-input col-md-4 col-sm-3">Org Name</div>
-                        <input type="text" class="input-text col-8" placeholder="(e.g Nagarro)" name="name" value="{{organisation.name}}"/>
-                    </div>
-
-                    <div class="row no-gutters align-items-center justify-content-between detail-row">
-                        <div class="label-input col-md-4 col-sm-3">Full Name</div>
-                        <input type="text" class="input-text col-8" placeholder="(e.g Nagarro Software Pvt. Ltd.)" name="full_name" value="{{organisation.full_name}}"/>
-                    </div>
-                </div>
-
-                <div class="row justify-content-between">
-                    <div class="row no-gutters align-items-center justify-content-between detail-row">
-                        <div class="label-input col-md-4 col-sm-3">Domain</div>
-                        <input type="text" class="input-text col-8" placeholder="Domains" name="domain" value="{{organisation.domain}}"/>
-                    </div>
-
-                    <div class="row no-gutters align-items-center justify-content-between detail-row">
-                        <div class="label-input col-md-4 col-sm-3">Website</div>
-                        <input type="text" class="input-text col-8" placeholder="Website URL" name="website" value="{{organisation.website}}"/>
-                    </div>
-                </div>
-                <div class="row justify-content-end mt-5">
-                    <div class="button-solid">
-                        <button type="submit">SAVE CHANGES</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+<div class="row no-gutters work-area">
+  {{>side-nav}}
+  <div class="col-9 py-5 work-area__main-area">
+    <div class="tab-nav-underline w-100 justify-content-start">
+      <div class="tab active px-0 font-md extra-bold">Add Organisation</div>
     </div>
+
+    <form action="/api/organisations/edit/{{organisation.id}}" method="POST">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">Organisation Name</label>
+            </div>
+            <div class="col-8">
+              <input type="text" name="name" value={{organisation.name}} class="underline-input pb-3 font-sm bold w-100"
+                placeholder="(e.g Nagarro)">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">Full Name</label>
+            </div>
+            <div class="col-8">
+              <input type="text" name="full_name" value={{organisation.full_name}} class="underline-input pb-3 font-sm bold w-100"
+                placeholder="(e.g Nagarro Software Pvt. Ltd.)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">Website</label>
+            </div>
+            <div class="col-8">
+              <input type="text" name="website" value={{organisation.website}} class="underline-input pb-3 font-sm bold w-100"
+                placeholder="Enter Website URL">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label for="addtype" class="font-sm">Domain</label>
+            </div>
+            <div class="col-8">
+              <input type="text" name="domain" value={{organisation.domain}} class="underline-input pb-3 font-sm bold w-100"
+                placeholder="Enter Domain Name">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <button class="button-solid lg" type="submit">Save Organisation</button>
+        <button class="font-sm ml-4 daark-grey" type="reset">Reset</button>
+      </div>
+    </form>
+  </div>
 </div>
