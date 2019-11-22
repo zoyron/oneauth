@@ -1,24 +1,23 @@
-{{!< centercolumn}}
+<div class="row no-gutters work-area">
+    <div class="col-5 b-right py-5">
+    </div>
+    <div class="col-7 py-5 px-5">
+        <div class="tab-nav-underline w-100 justify-content-start">
+            <a href="/forgot/username" class="tab active px-0 font-md extra-bold">Forgot Username</a>
+        </div>
 
- <div class="col-12 col-md-6 c-add-address">
-     <div class="card">
-         <h1 class="heading-u-red">
-             Forgot Username
-         </h1>
-         <form action="/forgot/username" method="POST">
-             <input type="hidden" name="_csrf" value="{{csrfToken}}">
-             {{> error-snippet}}
-             <div class="row no-gutters align-items-center justify-content-between detail-row">
-                 <div class="label-input col-md-4 col-sm-3">Enter your registered Email-Id</div>
-                 <input type="email" class="input-text col-8" placeholder="abc@gmail.com" name="email" required/>
-             </div>
+        <div class="my-4 pt-4">
+            <div class="font-mds dark-grey">Enter Your Registered Email ID.</div>
+        </div>
 
-             <div class="row justify-content-end">
-                 <div class="button-solid mt-4">
-                     <button type="submit"> SUBMIT</button>
-                 </div>
-             </div>
-         </form>
+        <form action="/forgot/username" method="POST">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            {{> error-snippet}}
 
-     </div>
- </div>
+            <input type="text" class="underline-input font-sm bold w-100 my-5" name="email" placeholder="abc@gmail.com"
+                required />
+
+            <button class="button-solid lg mt-4" type="submit">Submit</button>
+        </form>
+    </div>
+</div>

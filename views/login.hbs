@@ -1,7 +1,7 @@
 <div class="row no-gutters work-area">
   <div class="col-5 b-right py-5">
   </div>
-  <div class="col-7 pb-5 px-5">
+  <div class="col-7 py-5 px-5">
     <div class="tab-nav-underline w-100 justify-content-start">
       <a href="/login" class="tab active px-0 font-md extra-bold">Login</a>
       <a href="/signup" class="tab px-0 mx-5 font-md extra-bold">Sign Up</a>
@@ -18,51 +18,28 @@
       {{> error-snippet}}
 
       <div class="input-btn">
-        <input 
-          type="text" 
-          id="addtype" 
-          class="underline-input font-sm bold w-100 my-5"
-          placeholder="Username or Verfied Email ID or Verified Mobile No"
-          name="username"
-          required />
-        <a href="/forgot/username">
-          <button class="dark-grey centered">
-            Forgot?
-          </button>
-        </a>
+        <input type="text" id="addtype" class="underline-input font-sm bold w-100 my-5"
+          placeholder="Username or Verfied Email ID or Verified Mobile No" name="username" required />
+        <a href="/forgot/username">Forgot?</a>
       </div>
 
       <div class="input-btn">
-        <input 
-          type="password" 
-          id="addtype" 
-          class="underline-input font-sm bold w-100 my-5"
-          placeholder="Enter Password (Leave blank for OTP Login)"
-          name="password"
-          required />
-        <a href="/forgot/password">
-          <button class="dark-grey centered">
-            Forgot?
-          </button>
-        </a>
+        <input type="password" id="addtype" class="underline-input font-sm bold w-100 my-5"
+          placeholder="Enter Password (Leave blank for OTP Login)" name="password" required />
+        <a href="/forgot/password">Forgot?</a>
       </div>
 
       <label class="input-checkbox checkbox-solid font-sm" for="solid">
-        <input type="checkbox" id="solid"> Remember Me
+        <input type="checkbox" id="solid">
+        <div class="d-inline-block mt-2">Remember Me</div>
         <span class="salmon-gradient"></span>
       </label>
 
       <div class="mt-5">
         <button class="button-solid lg" type="submit">Login Now</button>
-        <span class="font-sm ml-3 semi-bold">
-          <button 
-            class="button-dashed"
-            type="submit"
-            formaction="/login/otp"
-            formmethod="post" >
-            Login with OTP
-          </button>
-        </span>
+        <button class="font-sm salmon semi-bold ml-3" type="submit" formaction="/login/otp" formmethod="post">
+          Login with OTP
+        </button>
       </div>
     </form>
 
