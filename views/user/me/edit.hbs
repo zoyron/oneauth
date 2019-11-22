@@ -130,8 +130,8 @@
               <label for="slct" class="font-sm">Gender</label>
             </div>
             <div class="col-8">
-              <div class="select">
-                <select name="gender" class="font-sm bold">
+              <div class="select-container">
+                <select name="gender" class="font-sm bold underline-select">
                   <option selected disabled hidden>Choose Gender</option>
                   <option value="MALE" class="py-2">MALE</option>
                   <option value="FEMALE" class="py-2">FEMALE</option>
@@ -147,8 +147,8 @@
               <label for="slct" class="font-sm">College</label>
             </div>
             <div class="col-8">
-              <div class="select">
-                <select name="collegeId" class="font-sm bold">
+              <div class="select-container">
+                <select name="collegeId" class="font-sm bold underline-select">
                   {{#each colleges}}
                     {{#ifeq expected=id val=../user.demographic.collegeId}}
                       <option class="py-2" value="{{id}}" selected>{{name}}</option>
@@ -194,8 +194,8 @@
               <label for="slct" class="font-sm">Branch</label>
             </div>
             <div class="col-8">
-              <div class="select">
-                <select name="branchId" class="font-sm bold">
+              <div class="select-container">
+                <select name="branchId" class="font-sm bold underline-select">
                   {{#each branches}}
                     {{#ifeq expected=id val=../user.demographic.branchId}}
                       <option class="py-2" value="{{id}}" selected>{{name}}</option>
@@ -215,8 +215,8 @@
               <label for="slct" class="font-sm">Grad Year</label>
             </div>
             <div class="col-8">
-              <div class="select">
-                <select name="gradYear" class="font-sm bold">
+              <div class="select-container">
+                <select name="gradYear" class="font-sm bold underline-select">
                   {{#each gradYears}}
                     {{#ifeq expected=this val=../user.graduationYear}}
                       <option class="py-2" value="{{this}}" selected>{{this}}</option>
@@ -238,8 +238,8 @@
             </div>
             <div class="col-8">
               <div class="row">
-                <div class="col-4 select">
-                  <select name="dial_code" class="font-sm bold" required>
+                <div class="col-4 select-container">
+                  <select name="dial_code" class="font-sm bold underline-select" required>
                     {{#each countries}}
                       <option class="py-2" value="{{dial_code}}">
                         {{name}} ({{dial_code}})
