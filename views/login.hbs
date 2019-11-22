@@ -18,24 +18,14 @@
       {{> error-snippet}}
 
       <div class="input-btn">
-        <input 
-          type="text" 
-          id="addtype" 
-          class="underline-input font-sm bold w-100 my-5"
-          placeholder="Username or Verfied Email ID or Verified Mobile No"
-          name="username"
-          required />
+        <input type="text" id="addtype" class="underline-input font-sm bold w-100 my-5"
+          placeholder="Username or Verfied Email ID or Verified Mobile No" name="username" required />
         <a href="/forgot/username">Forgot?</a>
       </div>
 
       <div class="input-btn">
-        <input 
-          type="password" 
-          id="addtype" 
-          class="underline-input font-sm bold w-100 my-5"
-          placeholder="Enter Password (Leave blank for OTP Login)"
-          name="password"
-          required />
+        <input type="password" id="addtype" class="underline-input font-sm bold w-100 my-5"
+          placeholder="Enter Password (Leave blank for OTP Login)" name="password" required />
         <a href="/forgot/password">Forgot?</a>
       </div>
 
@@ -47,15 +37,9 @@
 
       <div class="mt-5">
         <button class="button-solid lg" type="submit">Login Now</button>
-        <span class="font-sm ml-3 semi-bold">
-          <button 
-            class="button-dashed lg"
-            type="submit"
-            formaction="/login/otp"
-            formmethod="post" >
-            Login with OTP
-          </button>
-        </span>
+        <button class="button-dashed lg ml-3" type="submit" formaction="/login/otp" formmethod="post">
+          Login with OTP
+        </button>
       </div>
     </form>
 
