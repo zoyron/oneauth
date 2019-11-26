@@ -40,26 +40,32 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
     if ((req.body.firstname.trim() === '') || (req.body.lastname.trim() === '')) {
         req.flash('error', 'Firstname and/or Lastname cannot be empty')
+        makeGaEvent('signup', 'unsuccessful', 'Firstname and/or Lastname cannot be empty'),
         return res.redirect('/signup')
     }
     if ((req.body.gender.trim() === '')) {
         req.flash('error', 'Gender cannot be empty')
+        makeGaEvent('signup', 'unsuccessful', 'Gender cannot be empty')
         return res.redirect('/signup')
     }
     if (req.body.email.trim() === '') {
         req.flash('error', 'Email cannot be empty')
+        makeGaEvent('signup', 'unsuccessful', 'Email cannot be empty')
         return res.redirect('/signup')
     }
     if (req.body.mobile_number.trim() === '') {
         req.flash('error', 'Contact number cannot be empty')
+        makeGaEvent('signup', 'unsuccessful', 'Contact number cannot be empty')
         return res.redirect('/signup')
     }
     if ((req.body.password.trim() === '') || req.body.password.length < 5) {
         req.flash('error', 'Password too weak. Use 5 characters at least.')
+        makeGaEvent('signup', 'unsuccessful', 'Password too weak. Use 5 characters at least.')
         return res.redirect('/signup')
     }
     if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
         req.flash('error', 'Invalid Graduation year')
+        makeGaEvent('signup', 'unsuccessful', 'Invalid Graduation year')
         return res.redirect('/signup')
     }
 
@@ -68,6 +74,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         let user = await findUserByParams({username: req.body.username})
         if (user) {
             req.flash('error', 'Username already exists. Please try again.')
+            makeGaEvent('signup', 'unsuccessful', 'Username already exists. Please try again.')
             return res.redirect('/signup')
         }
 
@@ -75,12 +82,14 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             req.body.dial_code + '-' + req.body.mobile_number
         )))){
             req.flash('error', 'Please provide a Valid Contact Number.')
+            makeGaEvent('signup', 'unsuccessful', 'Please provide a Valid Contact Number.')
             return res.redirect('/signup')
         }
 
         user = await findUserByParams({email: req.body.email})
         if (user) {
             req.flash('error', 'Email already exists. Please try again.')
+            makeGaEvent('signup', 'unsuccessful', 'Email already exists. Please try again.')
             return res.redirect('/signup')
         }
 
@@ -110,6 +119,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         let userLocal = await createUserLocal(query, passhash, includes)
         if (!userLocal) {
             req.flash('error', 'Error creating account! Please try in some time')
+            makeGaEvent('signup', 'unsuccessful', 'Error creating account! Please try in some time')
             return res.redirect('/signup')
         }
 
@@ -138,7 +148,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             failureFlash: true
         })(req, res)
 
-
+        makeGaEvent('signup', 'successful')
 
     } catch (err) {
         Raven.captureException(err)
