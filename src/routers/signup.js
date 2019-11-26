@@ -40,32 +40,62 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
     if ((req.body.firstname.trim() === '') || (req.body.lastname.trim() === '')) {
         req.flash('error', 'Firstname and/or Lastname cannot be empty')
-        makeGaEvent('signup', 'unsuccessful', 'Firstname and/or Lastname cannot be empty')
+        req.ga.event({
+            action: 'signup',
+            category: 'unsuccessful',
+            label: 'Firstname and/or Lastname cannot be empty'
+        }, e => {
+        })
         return res.redirect('/signup')
     }
     if ((req.body.gender.trim() === '')) {
         req.flash('error', 'Gender cannot be empty')
-        makeGaEvent('signup', 'unsuccessful', 'Gender cannot be empty')
+        req.ga.event({
+            action: 'signup',
+            category: 'unsuccessful',
+            label: 'Gender cannot be empty'
+        }, e => {
+        })
         return res.redirect('/signup')
     }
     if (req.body.email.trim() === '') {
         req.flash('error', 'Email cannot be empty')
-        makeGaEvent('signup', 'unsuccessful', 'Email cannot be empty')
+        req.ga.event({
+            action: 'signup',
+            category: 'unsuccessful',
+            label: 'Email cannot be empty'
+        }, e => {
+        })
         return res.redirect('/signup')
     }
     if (req.body.mobile_number.trim() === '') {
         req.flash('error', 'Contact number cannot be empty')
-        makeGaEvent('signup', 'unsuccessful', 'Contact number cannot be empty')
+        req.ga.event({
+            action: 'signup',
+            category: 'unsuccessful',
+            label: 'Mobile cannot be empty'
+        }, e => {
+        })
         return res.redirect('/signup')
     }
     if ((req.body.password.trim() === '') || req.body.password.length < 5) {
         req.flash('error', 'Password too weak. Use 5 characters at least.')
-        makeGaEvent('signup', 'unsuccessful', 'Password too weak. Use 5 characters at least.')
+        req.ga.event({
+            action: 'signup',
+            category: 'unsuccessful',
+            label: 'Password too weak'
+        }, e => {
+        })
         return res.redirect('/signup')
     }
     if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
         req.flash('error', 'Invalid Graduation year')
-        makeGaEvent('signup', 'unsuccessful', 'Invalid Graduation year')
+        req.ga.event({
+            action: 'signup',
+            category: 'unsuccessful',
+            label: 'Invalid Graduation year'
+        }, e => {
+        })
         return res.redirect('/signup')
     }
 
@@ -74,7 +104,12 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         let user = await findUserByParams({username: req.body.username})
         if (user) {
             req.flash('error', 'Username already exists. Please try again.')
-            makeGaEvent('signup', 'unsuccessful', 'Username already exists. Please try again.')
+            req.ga.event({
+                action: 'signup',
+                category: 'unsuccessful',
+                label: 'Username already exists. Please try again.'
+            }, e => {
+            })
             return res.redirect('/signup')
         }
 
@@ -82,14 +117,24 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             req.body.dial_code + '-' + req.body.mobile_number
         )))){
             req.flash('error', 'Please provide a Valid Contact Number.')
-            makeGaEvent('signup', 'unsuccessful', 'Please provide a Valid Contact Number.')
+            req.ga.event({
+                action: 'signup',
+                category: 'unsuccessful',
+                label: 'Please provide a Valid Contact Number.'
+            }, e => {
+            })
             return res.redirect('/signup')
         }
 
         user = await findUserByParams({email: req.body.email})
         if (user) {
             req.flash('error', 'Email already exists. Please try again.')
-            makeGaEvent('signup', 'unsuccessful', 'Email already exists. Please try again.')
+            req.ga.event({
+                action: 'signup',
+                category: 'unsuccessful',
+                label: 'Email already exists. Please try again.'
+            }, e => {
+            })
             return res.redirect('/signup')
         }
 
@@ -119,7 +164,12 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         let userLocal = await createUserLocal(query, passhash, includes)
         if (!userLocal) {
             req.flash('error', 'Error creating account! Please try in some time')
-            makeGaEvent('signup', 'unsuccessful', 'Error creating account! Please try in some time')
+            req.ga.event({
+                action: 'signup',
+                category: 'unsuccessful',
+                label: 'Error creating account! Please try in some time'
+            }, e => {
+            })
             return res.redirect('/signup')
         }
 
@@ -141,7 +191,12 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         // delete the previous form
         delete req.session.prevForm
 
-        makeGaEvent('signup', 'successful')
+        req.ga.event({
+            action: 'signup',
+            category: 'successful',
+            label: 'local'
+        }, e => {
+        })
 
         // Login after signup automatically
         passport.authenticate('local', {

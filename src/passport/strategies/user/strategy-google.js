@@ -113,7 +113,12 @@ module.exports = new GoogleStrategy({
                     }, {
                         include: [models.User],
                     })
-
+                    req.ga.event({
+                        action: 'signup',
+                        category: 'successful',
+                        label: 'google'
+                    }, e => {
+                    })
                     if (!userGoogle) {
                         return cb(null, false, {message: 'Authentication Failed'})
                     }
