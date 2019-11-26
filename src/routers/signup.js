@@ -40,7 +40,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
     if ((req.body.firstname.trim() === '') || (req.body.lastname.trim() === '')) {
         req.flash('error', 'Firstname and/or Lastname cannot be empty')
-        makeGaEvent('signup', 'unsuccessful', 'Firstname and/or Lastname cannot be empty'),
+        makeGaEvent('signup', 'unsuccessful', 'Firstname and/or Lastname cannot be empty')
         return res.redirect('/signup')
     }
     if ((req.body.gender.trim() === '')) {
@@ -141,6 +141,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         // delete the previous form
         delete req.session.prevForm
 
+        makeGaEvent('signup', 'successful')
+
         // Login after signup automatically
         passport.authenticate('local', {
             failureRedirect: '/login',
@@ -148,7 +150,6 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             failureFlash: true
         })(req, res)
 
-        makeGaEvent('signup', 'successful')
 
     } catch (err) {
         Raven.captureException(err)
