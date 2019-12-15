@@ -142,7 +142,7 @@ function generateFilter(filterArgs) {
         let contact = filterArgs.contact
         if(/^\d+$/.test(contact)) {
             whereObj.mobile_number = {
-                like: `%${contact}`
+                like: `${contact}%`
             }
         } else {
             throw new Error("Invalid Phone Format")

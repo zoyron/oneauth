@@ -237,7 +237,7 @@ router.post('/add',
     async (req, res, next) => {
 
         if (hasNull(req.body, ['firstname', 'lastname', 'mobile_number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId',
-            'countryId', 'dial_code', 'whatsapp_number'])) {
+            'countryId', 'dial_code', 'whatsapp_number', 'gender'])) {
             res.status(400).json({error:'Missing required params'})
         }
 
@@ -262,6 +262,7 @@ router.post('/add',
                 username: req.body.username,
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
+                gender: req.body.gender,
                 mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
                 email: req.body.email.toLowerCase(),
                 graduationYear: req.body.gradYear ? req.body.gradYear : null,
@@ -348,7 +349,7 @@ router.post('/edit',
         }
 
 
-        if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
+        if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2026)) {
             return res.status(400).json({error: 'Graduation year is not valid'})
         }
 
@@ -431,18 +432,22 @@ router.post('/edit',
                 first_name: req.body.firstname,
                 last_name: req.body.lastname,
                 mobile_number: req.body.mobile_number,
-                email:  req.body.addressEmail.toLowerCase(),
+                email:  req.body.addressEmail? req.body.addressEmail.toLowerCase() : updatedUserDemographics.get().email,
                 pincode: req.body.pincode,
                 street_address: req.body.street_address,
                 landmark: req.body.landmark,
                 city: req.body.city,
                 stateId: req.body.stateId,
                 countryId: req.body.countryId,
-                dial_code: req.body.dial_code,
                 demographicId: updatedUserDemographics.get().demographic.id,
+                dial_code: req.body.dial_code,
                 whatsapp_number: req.body.whatsapp_number || null,
                 // if no addresses, then first one added is primary
                 primary: true
+            }
+
+            if( req.body.address_id ){
+                addressOptions.id = req.body.address_id
             }
 
             const updatedAddress = upsertAddress(addressOptions)
