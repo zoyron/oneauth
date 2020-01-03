@@ -153,11 +153,6 @@ router.post('/edit',
       return res.redirect('/users/me/edit')
     }
 
-      if (!req.body.apparelGoodiesSize) {
-          req.flash('error', 'Choose your T-shirt size to receive your CB goodies :)')
-          return res.redirect('/users/me/edit')
-      }
-
 
     try {
       if (!(validateNumber(parseNumberEntireString(
