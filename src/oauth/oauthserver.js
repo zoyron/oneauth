@@ -132,10 +132,20 @@ const authorizationMiddleware = [
     }
 ]
 
-// Exchange the client id and password/secret for an access token. The callback accepts the
-// `client`, which is exchanging the client's id and password/secret from the
-// authorization request for verification. If these values are validated, the
-// application issues an access token on behalf of the client who authorized the code.
+server.exchange(oauth.exchange.password(async (client, username, password, done) => {
+    // try username:password auth with these
+    // and also try phone(=username):otp(=password)
+    // if either matches, generate auth token
+    // call done(null, authToken)
+
+}))
+
+/**
+ * Exchange the client id and password/secret for an access token. The callback accepts the
+ * `client`, which is exchanging the client's id and password/secret from the
+ * authorization request for verification. If these values are validated, the
+ * application issues an access token on behalf of the client who authorized the code.
+ */
 
 server.exchange(oauth.exchange.clientCredentials(async (client, scope, done) => {
     // Validate the client
