@@ -153,6 +153,12 @@ router.post('/edit',
       return res.redirect('/users/me/edit')
     }
 
+      if (!req.body.apparelGoodiesSize) {
+          req.flash('error', 'Choose your T-shirt size to receive your CB goodies :)')
+          return res.redirect('/users/me/edit')
+      }
+
+
     try {
       if (!(validateNumber(parseNumberEntireString(
           req.body.dial_code + '-' + req.body.mobile_number
@@ -182,6 +188,9 @@ router.post('/edit',
         user.graduationYear = req.body.gradYear
       }
 
+        if (req.body.apparelGoodiesSize) {
+            user.apparelGoodiesSize = req.body.apparelGoodiesSize
+        }
 
       // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
       if(user.verifiedmobile && user.verifiedmobile!==req.body.dial_code + '-' + req.body.mobile_number){
