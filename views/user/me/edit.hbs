@@ -130,7 +130,7 @@
               <label for="slct" class="font-sm">Gender</label>
             </div>
             <div class="col-8">
-              <div class="select-container">
+              <div class="select">
                 <select name="gender" class="font-sm bold underline-select">
                   <option selected disabled hidden>Choose Gender</option>
                   <option value="MALE" class="py-2">MALE</option>
@@ -147,7 +147,7 @@
               <label for="slct" class="font-sm">College</label>
             </div>
             <div class="col-8">
-              <div class="select-container">
+              <div class="select">
                 <select name="collegeId" class="font-sm bold underline-select">
                   {{#each colleges}}
                     {{#ifeq expected=id val=../user.demographic.collegeId}}
@@ -194,7 +194,7 @@
               <label for="slct" class="font-sm">Branch</label>
             </div>
             <div class="col-8">
-              <div class="select-container">
+              <div class="select">
                 <select name="branchId" class="font-sm bold underline-select">
                   {{#each branches}}
                     {{#ifeq expected=id val=../user.demographic.branchId}}
@@ -215,7 +215,7 @@
               <label for="slct" class="font-sm">Grad Year</label>
             </div>
             <div class="col-8">
-              <div class="select-container">
+              <div class="select">
                 <select name="gradYear" class="font-sm bold underline-select">
                   {{#each gradYears}}
                     {{#ifeq expected=this val=../user.graduationYear}}
@@ -238,7 +238,7 @@
             </div>
             <div class="col-8">
               <div class="row">
-                <div class="col-4 select-container">
+                <div class="col-4 select">
                   <select name="dial_code" class="font-sm bold underline-select" required>
                     {{#each countries}}
                       <option class="py-2" value="{{dial_code}}">

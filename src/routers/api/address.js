@@ -72,7 +72,7 @@ router.post('/', cel.ensureLoggedIn('/login'), async function (req, res) {
             if (returnTo) {
                 res.redirect(returnTo)
             } else {
-                res.redirect('/address/')
+                res.redirect('/address/' + address.id)
             }
         } catch (err) {
             Raven.captureException(err)
@@ -128,7 +128,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res) {
             if (req.body.returnTo) {
                 return res.redirect(req.body.returnTo)
             } else {
-                return res.redirect('/address/')
+                return res.redirect('/address/' + addrId)
             }
         })
 

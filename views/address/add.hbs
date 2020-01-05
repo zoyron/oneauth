@@ -120,7 +120,7 @@
             <div class="col-4">
               <label for="addtype" class="font-sm">State</label>
             </div>
-            <div class="col-8 select-container">
+            <div class="col-8 select">
               <select name="stateId" class="font-sm bold underline-select" required>
                 {{#each states}}
                   <option class="py-2" value="{{id}}" {{#selected}}selected="selected"{{/selected}}>{{name}}</option>
@@ -134,7 +134,7 @@
             <div class="col-4">
               <label for="addtype" class="font-sm">Country</label>
             </div>
-            <div class="col-8 select-container">
+            <div class="col-8 select">
               <select name="countryId" class="font-sm bold underline-select" required>
                 {{#each countries}}
                   <option class="py-2" value="{{id}}" {{#selected}}selected="selected"{{/selected}}>{{name}}</option>
@@ -148,7 +148,7 @@
             <div class="col-4">
               <label for="addtype" class="font-sm">Country Code</label>
             </div>
-            <div class="col-8 select-container">
+            <div class="col-8 select">
               <select name="dial_code" class="font-sm bold underline-select" required>
                 {{#each countries}}
                   <option class="py-2" value="{{dial_code}}" {{#selected}}selected="selected"{{/selected}}>
