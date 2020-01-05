@@ -18,7 +18,7 @@
             <span class="font-sm">Client ID</span>
           </div>
           <div class="col-8">
-            <span class="font-sm bold">{{client.id}}</span>
+            <span class="font-sm bold word-wrap">{{client.id}}</span>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
             <span class="font-sm">Client Secret</span>
           </div>
           <div class="col-8">
-            <span class="font-sm bold">{{client.secret}}</span>
+            <span class="font-sm bold word-wrap">{{client.secret}}</span>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
             <span class="font-sm">Default URL</span>
           </div>
           <div class="col-8">
-            <span class="font-sm bold">{{client.defaultURL}}</span>
+            <span class="font-sm bold word-wrap">{{client.defaultURL}}</span>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
             <span class="font-sm">Trusted Client</span>
           </div>
           <div class="col-8">
-            <span class="font-sm bold">{{client.trusted}}</span>
+            <span class="font-sm bold word-wrap">{{client.trusted}}</span>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
           </div>
           <div class="col-8">
             {{#each client.domain as |domain index|}}
-              <span class="font-sm bold">
+              <span class="font-sm bold word-wrap">
                 {{#if index}} , {{/if}}
                 {{domain}}
               </span>
@@ -80,7 +80,7 @@
           </div>
           <div class="col-8">
             {{#each client.callbackURL as |callback index|}}
-              <span class="font-sm bold">
+              <span class="font-sm bold word-wrap">
                 {{#if index}} , {{/if}}
                 {{callback}}
               </span>

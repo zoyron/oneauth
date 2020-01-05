@@ -18,7 +18,7 @@
             <span class="font-sm">Name</span>
           </div>
           <div class="col-8">
-            <span class="font-sm bold">{{organisation.name}}</span>
+            <span class="font-sm bold word-wrap">{{organisation.name}}</span>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
             <span class="font-sm">Full Name</span>
           </div>
           <div class="col-8">
-            <span class="font-sm bold">{{organisation.full_name}}</span>
+            <span class="font-sm bold word-wrap">{{organisation.full_name}}</span>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
             <span class="font-sm">Website</span>
           </div>
           <div class="col-8">
-            <span class="font-sm bold">{{organisation.website}}</span>
+            <span class="font-sm bold word-wrap">{{organisation.website}}</span>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
           </div>
           <div class="col-8">
             {{#each organisation.domain as |domain index|}}
-              <span class="font-sm bold">
+              <span class="font-sm bold word-wrap">
                 {{#if index }} , {{/if}}
                 {{domain}}
               </span>
