@@ -22,7 +22,7 @@ router.post('/add', cel.ensureLoggedIn('/login'),
 
       try {
           const org = await createOrganisation(options, req.user.id)
-          res.redirect('/users/me/organisations')
+          res.redirect('/organisations/' + org.id)
       } catch (error) {
           Raven.captureException(error)
           req.flash('error', 'Could not create organisation')
@@ -42,7 +42,7 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
             }
             await updateOrganisation(options, orgId)
 
-            res.redirect('/users/me/organisations')
+            res.redirect('/organisations/' + orgId)
         } catch (error) {
             Raven.captureException(error)
             req.flash('error', 'Could not update organisation')
