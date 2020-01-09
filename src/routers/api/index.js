@@ -24,5 +24,6 @@ router.use('/address', require('./address'))
 router.use('/organisations', require('./organisations'))
 router.use('/demographics', require('./demographics'))
 router.use('/signup_check', require('./signupcheck'))
+router.use('/otp', require('./otp'))
 
 module.exports = router
