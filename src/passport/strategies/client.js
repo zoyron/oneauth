@@ -25,7 +25,7 @@ const verifyClient = async function (clientId, clientSecret, done) {
         if (!client) {
             return done(null, false)
         }
-        if (client.secret != clientSecret) {
+        if (client.secret !== clientSecret) {
             return done(null, false)
         }
 

@@ -127,6 +127,7 @@ Verifyemail.belongsTo(User)
 VerifyMobile.belongsTo(User)
 UserMobileOTP.belongsTo(User)
 
+
 const Client = db.define('client', {
     id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true},
     name: Sequelize.DataTypes.STRING,
@@ -136,9 +137,12 @@ const Client = db.define('client', {
     webhookURL: {type: Sequelize.DataTypes.STRING, default: null},
     trusted: {type: Sequelize.DataTypes.BOOLEAN, default: false},
     defaultURL: {type: Sequelize.DataTypes.STRING, allowNull: false, default: 'https://codingblocks.com/'},
+    androidOTPHash:  {type: Sequelize.DataTypes.STRING, default: null},
 }, {
     paranoid: true
 })
+
+UserMobileOTP.belongsTo(Client)
 
 Client.belongsTo(User)
 User.hasMany(Client)
