@@ -17,7 +17,7 @@ const isValidOtpForUser = async (user, otp) => {
             return false
         }
 
-        if (lastLoginOTP.get('login_otp') === otp && (new Date(lastLoginOTP.dataValues.createdAt).getTime() < (new Date().getTime() - 10 * 60 * 1000)) ) {
+        if (lastLoginOTP.get('login_otp') === otp && (new Date(lastLoginOTP.dataValues.createdAt).getTime() > (new Date().getTime() - 10 * 60 * 1000)) ) {
             await lastLoginOTP.update({
                 used_at: new Date()
             })
