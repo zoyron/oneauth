@@ -65,7 +65,8 @@ router.get('/:id',
             if (!client) {
                 return res.send("Invalid Client Id")
             }
-            if (client.userId != req.user.id) {
+            // Let user see their own client, or if admin, allow and client
+            if (client.userId != req.user.id && req.user.role !== 'admin') {
                 return res.send("Unauthorized user")
             }
             return res.render('client/id', {client: client})
@@ -87,7 +88,8 @@ router.get('/:id/edit',
             if (!client) {
                 return res.send("Invalid Client Id")
             }
-            if (client.userId != req.user.id) {
+            // Let user see their own client, or if admin, allow and client
+            if (client.userId != req.user.id && req.user.role !== 'admin') {
                 return res.send("Unauthorized user")
             }
             client.clientDomains = client.domain.join(";")
