@@ -35,6 +35,11 @@
                     <div class="label-input col-md-4 col-sm-3">Webhook Url</div>
                     <input type="url" class="input-text col-8" placeholder="Webhook URL" name="webhookurl" value="{{client.webhookURL}}"/>
                 </div>
+
+                <div class="row no-gutters align-items-center justify-content-between detail-row">
+                    <div class="label-input col-md-4 col-sm-3">Android OTP Hash</div>
+                    <input type="text" maxlength="11" class="input-text col-8" placeholder="OTP Hash for Android" name="androidOTPHash" value="{{client.androidOTPHash}}"/>
+                </div>
                 {{#if client.trusted}}
                 {{#if client.webhookURL}}
                 Manage Rights:
