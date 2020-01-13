@@ -1,6 +1,6 @@
 {
   "name": "oneauth",
-  "version": "0.7.2",
+  "version": "0.7.5",
   "description": "",
   "main": "index.js",
   "scripts": {
