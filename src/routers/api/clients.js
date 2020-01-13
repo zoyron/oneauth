@@ -66,6 +66,7 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
                 clientDomains : req.body.domain.replace(/ /g, '').split(';'),
                 clientCallbacks : req.body.callback.replace(/ /g, '').split(';'),
                 defaultURL : req.body.defaulturl.replace(/ /g, ''),
+                androidOTPHash: req.body.androidOTPHash,
                 trustedClient : false
             }
             let hashRegEx = /\/#\//

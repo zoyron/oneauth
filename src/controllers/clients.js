@@ -43,7 +43,8 @@ function updateClient(options, clientId) {
       domain: options.clientDomains,
       defaultURL: options.defaultURL,
       callbackURL: options.clientCallbacks,
-      trusted: options.trustedClient
+      trusted: options.trustedClient,
+      androidOTPHash: options.androidOTPHash
     }
   if (options.webhookURL) {
     update.webhookURL = options.webhookURL
