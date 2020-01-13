@@ -162,7 +162,7 @@ built by [jaredhanson](http://github.com/jaredhanson) from [auth0](http://github
 
 ### Inspirations
 We built this at @coding-blocks looking at a similar solution [hasgeek](http://github.com/hasgeek)
-has here - http://github.com/hasgeek/lastuser
+has here - <http://github.com/hasgeek/lastuser>
 We made our own, instead of using _lastuser_, because (a) the documentation
 was a little lacking on lastuser, and (b) we were more comfortable on a
 NodeJS+Postgres based stack.
