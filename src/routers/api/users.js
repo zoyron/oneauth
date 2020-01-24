@@ -231,6 +231,123 @@ router.get('/:id/address',
     }
 )
 
+router.post('/',
+    makeGaEvent('submit', 'form', 'addUserByAPI'),
+    passport.authenticate(['bearer', 'oauth2-client-password'], {session: false}),
+    async (req, res, next) => {
+
+        if (hasNull(req.body, ['username', 'firstname', 'lastname', 'mobile_number', 'email'])) {
+            res.status(400).json({error:'Missing required params'})
+        }
+
+        try {
+            let user = await findUserByParams({username: req.body.username})
+            console.log('User is', user)
+            if (user) {
+                return res.status(400).json({
+                    err: 'USERNAME_ALREADY_EXISTS',
+                    description: 'username already taken'
+                })
+            }
+
+            if(!(validateNumber(parseNumberEntireString(
+                req.body.dial_code + '-' + req.body.mobile_number
+            )))){
+                return res.status(400).json({
+                    err: 'INVALID_MOBILE_NUMBER',
+                    description: 'please enter a valid mobile number'
+                })
+            }
+
+            user = await findUserByParams({
+                $or: [{
+                        email:
+                            {
+                                $eq: req.body.email
+                            }
+                    }, {
+                        verifiedemail:
+                            {
+                                $eq: req.body.email
+                            }
+                    }]
+            })
+            if (user) {
+                return res.status(400).json({
+                    err: 'EMAIL_ALREADY_EXISTS',
+                    description: 'email address already exist'
+                })
+            }
+
+            user = await findUserByParams({
+                $or: [{
+                        mobile_number:
+                            {
+                                $eq: req.body.dial_code + '-' + req.body.mobile_number
+                            }
+                    }, {
+                        verifiedmobile:
+                            {
+                                $eq: req.body.dial_code + '-' + req.body.mobile_number
+                            }
+                    }]
+            })
+
+            if (user) {
+                return res.status(400).json({
+                    err: 'MOBILE_ALREADY_EXISTS',
+                    description: 'mobile number already exist'
+                })
+            }
+
+            let now = new Date();
+            now.setMinutes(now.getMinutes() + 20); // timestamp
+            now = new Date(now); // Date object
+            const query = {
+                username: req.body.username,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
+                email: req.body.email.toLowerCase(),
+                deletedAt: now
+            }
+
+            const createdUser = await createUserWithoutPassword(query)
+
+            if (!createdUser) {
+                return res.status(400).json({error: 'Error creating account! Please try in some time'})
+            }
+
+            user = createdUser
+
+            // Send welcome email
+            mail.welcomeEmail(user.dataValues)
+
+            // Send verification email
+            await createVerifyEmailEntry(user, true,
+                ''
+            )
+
+            //Sends a new mail to set a new account password
+            let setNewPassword = await models.Resetpassword.create({
+                key: uid(15),
+                userId: user.dataValues.id,
+                include: [models.User]
+            })
+
+            mail.setANewPassword(user.dataValues, setNewPassword.key)
+
+            delete user.password
+            res.status(200).json({success: 'Registration Successful', user: user})
+
+        } catch (err) {
+            Raven.captureException(err)
+            return res.status(400).json({error: 'Unsuccessful registration. Please try again.'})
+        }
+
+    })
+
+
 router.post('/add',
     makeGaEvent('submit', 'form', 'addUserByAPI'),
     passport.authenticate('bearer', {session: false}),
@@ -331,12 +448,11 @@ router.post('/add',
 
 router.post('/edit',
     makeGaEvent('submit', 'form', 'editUserByAPI'),
-    passport.authenticate('bearer', {session: false}),
+    passport.authenticate(['bearer', 'oauth2-client-password'], {session: false}),
     async function (req, res, next) {
 
         // Check if update body has null params
-        if (hasNull(req.body, ['oneauthId' ,'firstname', 'lastname', 'mobile_number', 'pincode', 'street_address', 'landmark', 'city', 'stateId',
-            'countryId', 'dial_code', 'whatsapp_number'])) {
+        if (hasNull(req.body, ['oneauthId' ,'firstname', 'lastname', 'mobile_number'])) {
             res.status(400).json({error:'Missing required params'})
         }
 
