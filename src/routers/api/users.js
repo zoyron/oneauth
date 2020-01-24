@@ -448,19 +448,20 @@ router.post('/add',
 
 router.post('/edit',
     makeGaEvent('submit', 'form', 'editUserByAPI'),
-    passport.authenticate(['bearer', 'oauth2-client-password'], {session: false}),
+    passport.authenticate('bearer', {session: false}),
     async function (req, res, next) {
 
         // Check if update body has null params
-        if (hasNull(req.body, ['oneauthId' ,'firstname', 'lastname', 'mobile_number'])) {
-            res.status(400).json({error:'Missing required params'})
+        if (hasNull(req.body, ['oneauthId', 'firstname', 'lastname', 'mobile_number', 'pincode', 'street_address', 'landmark', 'city', 'stateId',
+            'countryId', 'dial_code', 'whatsapp_number'])) {
+            res.status(400).json({error: 'Missing required params'})
         }
 
         // Find resource (user) with id
-        const user = await findUserById(req.body.oneauthId, [{model: models.Demographic, include: [models.Address] }])
+        const user = await findUserById(req.body.oneauthId, [{model: models.Demographic, include: [models.Address]}])
 
 
-        if(!user){
+        if (!user) {
             return res.status(404).json({error: 'Resource to be updated not found.'})
         }
 
@@ -482,13 +483,11 @@ router.post('/edit',
 
         const userWithVerifiedNumber = await findUserByParams({verifiedmobile: `${req.body.dial_code}-${req.body.mobile_number}`})
 
-        console.log('user with Mobilenumber', JSON.parse(JSON.stringify(userWithVerifiedNumber)))
 
         // Check if mobile number to be updated, is verified with any other account
-        if(userWithVerifiedNumber && user.get().id !== userWithVerifiedNumber.get().id){
+        if (userWithVerifiedNumber && user.get().id !== userWithVerifiedNumber.get().id) {
             return res.status(400).json({error: `${req.body.mobile_number} is already associated with coding blocks account ${userWithVerifiedNumber.get().id}`})
         }
-
 
         try {
             // user might have demographic, if not make empty
@@ -505,14 +504,13 @@ router.post('/edit',
             }
 
             // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
-            if(user.verifiedmobile && user.verifiedmobile!==req.body.dial_code + '-' + req.body.mobile_number){
+            if (user.verifiedmobile && user.verifiedmobile !== req.body.dial_code + '-' + req.body.mobile_number) {
                 user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
                 user.verifiedmobile = null
                 // If mobile is verified and there no change on update, just update mobile_number
-            }else if(user.verifiedmobile && user.verifiedmobile ===req.body.dial_code + '-' + req.body.mobile_number){
+            } else if (user.verifiedmobile && user.verifiedmobile === req.body.dial_code + '-' + req.body.mobile_number) {
                 user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
-            }
-            else{
+            } else {
                 //If mobile is not verified, update mobile_number and set verifiedmobile = null
                 user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
                 user.verifiedmobile = null
@@ -548,22 +546,23 @@ router.post('/edit',
                 first_name: req.body.firstname,
                 last_name: req.body.lastname,
                 mobile_number: req.body.mobile_number,
-                email:  req.body.addressEmail? req.body.addressEmail.toLowerCase() : updatedUserDemographics.get().email,
+                email: req.body.addressEmail ? req.body.addressEmail.toLowerCase() : updatedUserDemographics.get().email,
                 pincode: req.body.pincode,
                 street_address: req.body.street_address,
                 landmark: req.body.landmark,
                 city: req.body.city,
                 stateId: req.body.stateId,
                 countryId: req.body.countryId,
-                demographicId: updatedUserDemographics.get().demographic.id,
                 dial_code: req.body.dial_code,
                 whatsapp_number: req.body.whatsapp_number || null,
                 // if no addresses, then first one added is primary
                 primary: true
             }
 
-            if( req.body.address_id ){
+            if (req.body.address_id) {
                 addressOptions.id = req.body.address_id
+            } else {
+                addressOptions.demographicId = updatedUserDemographics.get().demographic.id
             }
 
             const updatedAddress = upsertAddress(addressOptions)
@@ -575,6 +574,97 @@ router.post('/edit',
         }
 
     })
+
+
+
+router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
+    passport.authenticate('oauth2-client-password', {session: false}),
+    async (req, res, next) => {
+        // Check name isn't null
+        if (hasNull(req.body, ['firstname', 'lastname', 'gradYear'])) {
+            return res.status(400).json({error: 'Null values for name not allowed'})
+        }
+
+        if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
+            return res.status(400).json({error: 'Invalid graduation year'})
+        }
+
+        try {
+            if (!(validateNumber(parseNumberEntireString(
+                req.body.dial_code + '-' + req.body.mobile_number
+            )))) {
+                return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
+            }
+        } catch (e) {
+            return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
+        }
+
+
+        try {
+            const user = await findUserById(req.params.id, [models.Demographic])
+            // user might have demographic, if not make empty
+            const demographic = user.demographic || {};
+
+            user.firstname = req.body.firstname
+            user.lastname = req.body.lastname
+            if (req.body.gender) {
+                user.gender = req.body.gender
+            }
+
+            if (req.body.gradYear) {
+                user.graduationYear = req.body.gradYear
+            }
+
+            if (req.body.apparelGoodiesSize) {
+                user.apparelGoodiesSize = req.body.apparelGoodiesSize
+            }
+
+            // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
+            if (user.verifiedmobile && user.verifiedmobile !== req.body.dial_code + '-' + req.body.mobile_number) {
+                user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+                user.verifiedmobile = null
+                // If mobile is verified and there no change on update, just update mobile_number
+            } else if (user.verifiedmobile && user.verifiedmobile === req.body.dial_code + '-' + req.body.mobile_number) {
+                user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+            } else {
+                //If mobile is not verified, update mobile_number and set verifiedmobile = null
+                user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+                user.verifiedmobile = null
+            }
+
+
+            await user.save()
+
+
+            // If am empty demographic, then insert userid
+            if (!demographic.userId) {
+                demographic.userId = req.user.id
+            }
+
+            if (req.body.branchId) {
+                demographic.branchId = +req.body.branchId
+            }
+            if (req.body.collegeId) {
+                demographic.collegeId = +req.body.collegeId
+            }
+
+            await upsertDemographic(
+                demographic.id,
+                demographic.userId,
+                demographic.collegeId,
+                demographic.branchId
+            )
+
+
+            res.status(200).json({success: 'User details updated'})
+        } catch (err) {
+            Raven.captureException(err)
+            Raven.captureException(err)
+            return res.status(400).send(err)
+        }
+
+    })
+
 
 
 router.post(
