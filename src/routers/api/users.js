@@ -233,7 +233,7 @@ router.get('/:id/address',
 
 router.post('/',
     makeGaEvent('submit', 'form', 'addUserByAPI'),
-    passport.authenticate(['bearer', 'oauth2-client-password'], {session: false}),
+    passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
     async (req, res, next) => {
 
         if (hasNull(req.body, ['username', 'firstname', 'lastname', 'mobile_number', 'email'])) {
@@ -242,7 +242,6 @@ router.post('/',
 
         try {
             let user = await findUserByParams({username: req.body.username})
-            console.log('User is', user)
             if (user) {
                 return res.status(400).json({
                     err: 'USERNAME_ALREADY_EXISTS',
@@ -578,7 +577,7 @@ router.post('/edit',
 
 
 router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
-    passport.authenticate('oauth2-client-password', {session: false}),
+    passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
     async (req, res, next) => {
         // Check name isn't null
         if (hasNull(req.body, ['firstname', 'lastname', 'gradYear'])) {
@@ -604,6 +603,7 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
             const user = await findUserById(req.params.id, [models.Demographic])
             // user might have demographic, if not make empty
             const demographic = user.demographic || {};
+
 
             user.firstname = req.body.firstname
             user.lastname = req.body.lastname
@@ -658,7 +658,6 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
 
             res.status(200).json({success: 'User details updated'})
         } catch (err) {
-            Raven.captureException(err)
             Raven.captureException(err)
             return res.status(400).send(err)
         }

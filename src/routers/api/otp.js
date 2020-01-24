@@ -23,6 +23,7 @@ router.post('/', passport.authenticate(['basic', 'oauth2-client-password'], {ses
 
         let user;
         if (req.body.username.startsWith('+')) {
+            // username is being treated as mobile number
             const mobileCountry = await models.Country.findOne({
                 where: {
                     dial_code: req.body.username.substring(0, 3)
@@ -35,6 +36,7 @@ router.post('/', passport.authenticate(['basic', 'oauth2-client-password'], {ses
 
             user = await findUserByParams({verifiedmobile: req.body.username})
         } else {
+            // username is being treated as user id (pk)
             user = await findUserById(req.body.username)
         }
 

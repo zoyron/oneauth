@@ -155,12 +155,11 @@ server.exchange(oauth.exchange.password(async (client, username, password, done)
             return done(null, token.get().token)
         } else if (tempUser) {
             // trying to login using oneauthId temporarily generated
-            const valid = await isValidOtpForTempUser(tempUser, password)
-            const updatedUser = await makeTempOTPUserPermanent(tempUser)
-
+            const valid = await isValidOtpForUser(tempUser, password)
             if (!valid) {
                 return done(null, false)
             }
+            const updatedUser = await makeTempOTPUserPermanent(tempUser)
             const token = await createAuthToken(client.id, tempUser.get().id)
             return done(null, token.get().token)
 
