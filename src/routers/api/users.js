@@ -337,7 +337,7 @@ router.post('/',
             mail.setANewPassword(user.dataValues, setNewPassword.key)
 
             delete user.password
-            res.status(200).json({success: 'Registration Successful', user: user})
+            res.status(200).json(user)
 
         } catch (err) {
             Raven.captureException(err)
