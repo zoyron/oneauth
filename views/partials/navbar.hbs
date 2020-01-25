@@ -2,6 +2,15 @@
   <div class="col-12 b-bottom position-fixed tl bg-white z-pos topbar">
     <div class="row align-items-center h-100 py-2">
       <div class="col-3 px-5">
+        <div class="hamburger-menu mr-3 d-md-none d-block" id="hamburger-toggle">
+          <div class="ham-toggle">
+            <div class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
         <img src="/img/account-logo.png" alt="Online CB Logo" class="w-50 mx-5">
       </div>
       <div class="col-9">
@@ -15,3 +24,9 @@
     </div>
   </div>
 </div>
+
+<script>
+  $("#hamburger-toggle").click(function() {
+    $("#hamburger-nav").toggleClass("hamburger-nav--hidden")
+  })
+</script>
