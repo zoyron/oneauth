@@ -3,6 +3,7 @@
  *
  * This is the /api/v1/users path
  */
+
 const router = require('express').Router()
 const passport = require('../../passport/passporthandler')
 const models = require('../../db/models').models
@@ -28,6 +29,8 @@ const {
     createVerifyEmailEntry
 } = require('../../controllers/verify_emails')
 const { parseNumberEntireString, validateNumber } = require('../../utils/mobile_validator')
+const  {setVerifiedMobileNull}  = require('../../controllers/demographics')
+const {updateUserById}  = require('../../controllers/user')
 
 
 router.get('/',
@@ -579,14 +582,6 @@ router.post('/edit',
 router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
     passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
     async (req, res, next) => {
-        // Check name isn't null
-        if (hasNull(req.body, ['firstname', 'lastname', 'gradYear'])) {
-            return res.status(400).json({error: 'Null values for name not allowed'})
-        }
-
-        if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
-            return res.status(400).json({error: 'Invalid graduation year'})
-        }
 
         try {
             if (!(validateNumber(parseNumberEntireString(
@@ -598,64 +593,38 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
             return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
         }
 
-
         try {
             const user = await findUserById(req.params.id, [models.Demographic])
             // user might have demographic, if not make empty
             const demographic = user.demographic || {};
 
-
-            user.firstname = req.body.firstname
-            user.lastname = req.body.lastname
-            if (req.body.gender) {
-                user.gender = req.body.gender
+            const update = {
+                ...(req.body.firstname ? {firstname: req.body.firstname} : {}),
+                ...(req.body.lastname ? {lastname: req.body.lastname} : {}),
+                ...(req.body.gender ? {gender: req.body.gender} : {}),
+                ...(req.body.gradYear ? {graduationYear: req.body.gradYear}: {}),
+                ...(req.body.mobile_number ? {
+                    mobile_number: req.body.dial_code + '-' + req.body.mobile_number
+                } : {}),
+                ...(setVerifiedMobileNull(user.verifiedmobile,
+                        req.body.dial_code + '-' + req.body.mobile_number
+                    ) ? {verifiedmobile: null} : {})
             }
 
-            if (req.body.gradYear) {
-                user.graduationYear = req.body.gradYear
-            }
-
-            if (req.body.apparelGoodiesSize) {
-                user.apparelGoodiesSize = req.body.apparelGoodiesSize
-            }
-
-            // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
-            if (user.verifiedmobile && user.verifiedmobile !== req.body.dial_code + '-' + req.body.mobile_number) {
-                user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
-                user.verifiedmobile = null
-                // If mobile is verified and there no change on update, just update mobile_number
-            } else if (user.verifiedmobile && user.verifiedmobile === req.body.dial_code + '-' + req.body.mobile_number) {
-                user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
-            } else {
-                //If mobile is not verified, update mobile_number and set verifiedmobile = null
-                user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
-                user.verifiedmobile = null
-            }
+            await updateUserById(user.id, update)
 
 
-            await user.save()
-
-
-            // If am empty demographic, then insert userid
+            // If an empty demographic, then insert userid
             if (!demographic.userId) {
                 demographic.userId = req.user.id
-            }
-
-            if (req.body.branchId) {
-                demographic.branchId = +req.body.branchId
-            }
-            if (req.body.collegeId) {
-                demographic.collegeId = +req.body.collegeId
             }
 
             await upsertDemographic(
                 demographic.id,
                 demographic.userId,
-                demographic.collegeId,
-                demographic.branchId
+                req.body.collegeId ? +req.body.collegeId : demographic.collegeId,
+                req.body.branchId ? +req.body.branchId : demographic.branchId,
             )
-
-
             res.status(200).json({success: 'User details updated'})
         } catch (err) {
             Raven.captureException(err)
