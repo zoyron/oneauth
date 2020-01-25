@@ -583,15 +583,18 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
     passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
     async (req, res, next) => {
 
-        try {
-            if (!(validateNumber(parseNumberEntireString(
-                req.body.dial_code + '-' + req.body.mobile_number
-            )))) {
+        if (req.body.mobile_number){
+            try {
+                if (!(validateNumber(parseNumberEntireString(
+                    req.body.dial_code + '-' + req.body.mobile_number
+                )))) {
+                    return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
+                }
+            } catch (e) {
                 return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
             }
-        } catch (e) {
-            return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
         }
+
 
         try {
             const user = await findUserById(req.params.id, [models.Demographic])
@@ -608,7 +611,7 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
                 } : {}),
                 ...(setVerifiedMobileNull(user.verifiedmobile,
                         req.body.dial_code + '-' + req.body.mobile_number
-                    ) ? {verifiedmobile: null} : {})
+                    ) && req.body.mobile_number ? {verifiedmobile: null} : {})
             }
 
             await updateUserById(user.id, update)
