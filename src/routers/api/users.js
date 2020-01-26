@@ -579,15 +579,6 @@ router.post('/edit',
 router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
     passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
     async (req, res, next) => {
-        // Check name isn't null
-        if (hasNull(req.body, ['firstname', 'lastname', 'gradYear'])) {
-            return res.status(400).json({error: 'Null values for name not allowed'})
-        }
-
-        if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
-            return res.status(400).json({error: 'Invalid graduation year'})
-        }
-
         if (req.body.mobile_number) {
             try {
                 if (!(validateNumber(parseNumberEntireString(
@@ -607,8 +598,12 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
             const demographic = user.demographic || {};
 
 
-            user.firstname = req.body.firstname
-            user.lastname = req.body.lastname
+            if (req.body.firstname) {
+                user.firstname = req.body.firstname
+            }
+            if (req.body.lastname) {
+                user.lastname = req.body.lastname
+            }
             if (req.body.gender) {
                 user.gender = req.body.gender
             }
@@ -658,7 +653,6 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
                 demographic.collegeId,
                 demographic.branchId
             )
-
 
             res.status(200).json({success: 'User details updated'})
         } catch (err) {
