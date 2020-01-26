@@ -451,16 +451,16 @@ router.post('/edit',
     async function (req, res, next) {
 
         // Check if update body has null params
-        if (hasNull(req.body, ['oneauthId', 'firstname', 'lastname', 'mobile_number', 'pincode', 'street_address', 'landmark', 'city', 'stateId',
+        if (hasNull(req.body, ['oneauthId' ,'firstname', 'lastname', 'mobile_number', 'pincode', 'street_address', 'landmark', 'city', 'stateId',
             'countryId', 'dial_code', 'whatsapp_number'])) {
-            res.status(400).json({error: 'Missing required params'})
+            res.status(400).json({error:'Missing required params'})
         }
 
         // Find resource (user) with id
-        const user = await findUserById(req.body.oneauthId, [{model: models.Demographic, include: [models.Address]}])
+        const user = await findUserById(req.body.oneauthId, [{model: models.Demographic, include: [models.Address] }])
 
 
-        if (!user) {
+        if(!user){
             return res.status(404).json({error: 'Resource to be updated not found.'})
         }
 
@@ -482,11 +482,13 @@ router.post('/edit',
 
         const userWithVerifiedNumber = await findUserByParams({verifiedmobile: `${req.body.dial_code}-${req.body.mobile_number}`})
 
+        console.log('user with Mobilenumber', JSON.parse(JSON.stringify(userWithVerifiedNumber)))
 
         // Check if mobile number to be updated, is verified with any other account
-        if (userWithVerifiedNumber && user.get().id !== userWithVerifiedNumber.get().id) {
+        if(userWithVerifiedNumber && user.get().id !== userWithVerifiedNumber.get().id){
             return res.status(400).json({error: `${req.body.mobile_number} is already associated with coding blocks account ${userWithVerifiedNumber.get().id}`})
         }
+
 
         try {
             // user might have demographic, if not make empty
@@ -503,13 +505,14 @@ router.post('/edit',
             }
 
             // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
-            if (user.verifiedmobile && user.verifiedmobile !== req.body.dial_code + '-' + req.body.mobile_number) {
+            if(user.verifiedmobile && user.verifiedmobile!==req.body.dial_code + '-' + req.body.mobile_number){
                 user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
                 user.verifiedmobile = null
                 // If mobile is verified and there no change on update, just update mobile_number
-            } else if (user.verifiedmobile && user.verifiedmobile === req.body.dial_code + '-' + req.body.mobile_number) {
+            }else if(user.verifiedmobile && user.verifiedmobile ===req.body.dial_code + '-' + req.body.mobile_number){
                 user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
-            } else {
+            }
+            else{
                 //If mobile is not verified, update mobile_number and set verifiedmobile = null
                 user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
                 user.verifiedmobile = null
@@ -545,23 +548,22 @@ router.post('/edit',
                 first_name: req.body.firstname,
                 last_name: req.body.lastname,
                 mobile_number: req.body.mobile_number,
-                email: req.body.addressEmail ? req.body.addressEmail.toLowerCase() : updatedUserDemographics.get().email,
+                email:  req.body.addressEmail? req.body.addressEmail.toLowerCase() : updatedUserDemographics.get().email,
                 pincode: req.body.pincode,
                 street_address: req.body.street_address,
                 landmark: req.body.landmark,
                 city: req.body.city,
                 stateId: req.body.stateId,
                 countryId: req.body.countryId,
+                demographicId: updatedUserDemographics.get().demographic.id,
                 dial_code: req.body.dial_code,
                 whatsapp_number: req.body.whatsapp_number || null,
                 // if no addresses, then first one added is primary
                 primary: true
             }
 
-            if (req.body.address_id) {
+            if( req.body.address_id ){
                 addressOptions.id = req.body.address_id
-            } else {
-                addressOptions.demographicId = updatedUserDemographics.get().demographic.id
             }
 
             const updatedAddress = upsertAddress(addressOptions)
