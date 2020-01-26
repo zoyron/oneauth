@@ -143,24 +143,28 @@ router.get('/key/:key', function (req, res) {
                 // If user's email is already verified
                 if (req.user.dataValues.verifiedemail) {
                     req.flash('success', 'Your email is already verified.')
-                    return
+                    return req.user
                 }
             }
 
             if (updates) {
                 // Update the value of verifiedEmail for the user
                 return models.User.update(
-                    {verifiedemail: user.dataValues.email},
-                    {where: {id: user.dataValues.id}})
+                        {verifiedemail: user.dataValues.email},
+                        {
+                            where: {id: user.dataValues.id},
+                            returning: true
+                        }
+                    )
             } else {
                 return
             }
         })
-        .then((verifiedemail) => {
+        .then((verifiedUser) => {
 
-            if (verifiedemail) {
+            if (verifiedUser) {
                 try {
-                    eventUserUpdated(req.user.id).catch(Raven.captureException)
+                    eventUserUpdated(verifiedUser.id).catch(Raven.captureException)
                 } catch (e) {
                     Raven.captureException(e)
                 }
