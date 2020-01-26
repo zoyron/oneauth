@@ -159,7 +159,11 @@ router.get('/key/:key', function (req, res) {
         .then((verifiedemail) => {
 
             if (verifiedemail) {
-                eventUserUpdated(req.user.id).catch(Raven.captureException)
+                try {
+                    eventUserUpdated(req.user.id).catch(Raven.captureException)
+                } catch (e) {
+                    Raven.captureException(e)
+                }
                 req.flash('success', 'Your email is verified. Thank you.')
                 return res.redirect(returnTo || '/users/me')
             } else {
