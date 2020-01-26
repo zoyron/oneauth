@@ -231,6 +231,122 @@ router.get('/:id/address',
     }
 )
 
+router.post('/',
+    makeGaEvent('submit', 'form', 'addUserByAPI'),
+    passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
+    async (req, res, next) => {
+
+        if (hasNull(req.body, ['username', 'firstname', 'lastname', 'mobile_number', 'email'])) {
+            res.status(400).json({error:'Missing required params'})
+        }
+
+        try {
+            let user = await findUserByParams({username: req.body.username})
+            if (user) {
+                return res.status(400).json({
+                    err: 'USERNAME_ALREADY_EXISTS',
+                    description: 'username already taken'
+                })
+            }
+
+            if(!(validateNumber(parseNumberEntireString(
+                req.body.dial_code + '-' + req.body.mobile_number
+            )))){
+                return res.status(400).json({
+                    err: 'INVALID_MOBILE_NUMBER',
+                    description: 'please enter a valid mobile number'
+                })
+            }
+
+            user = await findUserByParams({
+                $or: [{
+                        email:
+                            {
+                                $eq: req.body.email
+                            }
+                    }, {
+                        verifiedemail:
+                            {
+                                $eq: req.body.email
+                            }
+                    }]
+            })
+            if (user) {
+                return res.status(400).json({
+                    err: 'EMAIL_ALREADY_EXISTS',
+                    description: 'email address already exist'
+                })
+            }
+
+            user = await findUserByParams({
+                $or: [{
+                        mobile_number:
+                            {
+                                $eq: req.body.dial_code + '-' + req.body.mobile_number
+                            }
+                    }, {
+                        verifiedmobile:
+                            {
+                                $eq: req.body.dial_code + '-' + req.body.mobile_number
+                            }
+                    }]
+            })
+
+            if (user) {
+                return res.status(400).json({
+                    err: 'MOBILE_ALREADY_EXISTS',
+                    description: 'mobile number already exist'
+                })
+            }
+
+            let now = new Date();
+            now.setMinutes(now.getMinutes() + 20); // timestamp
+            now = new Date(now); // Date object
+            const query = {
+                username: req.body.username,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                mobile_number: req.body.dial_code + '-' + req.body.mobile_number,
+                email: req.body.email.toLowerCase(),
+                deletedAt: now
+            }
+
+            const createdUser = await createUserWithoutPassword(query)
+
+            if (!createdUser) {
+                return res.status(400).json({error: 'Error creating account! Please try in some time'})
+            }
+
+            user = createdUser
+
+            // Send welcome email
+            mail.welcomeEmail(user.dataValues)
+
+            // Send verification email
+            await createVerifyEmailEntry(user, true,
+                ''
+            )
+
+            //Sends a new mail to set a new account password
+            let setNewPassword = await models.Resetpassword.create({
+                key: uid(15),
+                userId: user.dataValues.id,
+                include: [models.User]
+            })
+
+            mail.setANewPassword(user.dataValues, setNewPassword.key)
+
+            delete user.password
+            res.status(200).json(user)
+
+        } catch (err) {
+            Raven.captureException(err)
+            return res.status(400).json({error: 'Unsuccessful registration. Please try again.'})
+        }
+
+    })
+
+
 router.post('/add',
     makeGaEvent('submit', 'form', 'addUserByAPI'),
     passport.authenticate('bearer', {session: false}),
@@ -459,6 +575,101 @@ router.post('/edit',
         }
 
     })
+
+
+
+router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
+    passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
+    async (req, res, next) => {
+        // Check name isn't null
+        if (hasNull(req.body, ['firstname', 'lastname', 'gradYear'])) {
+            return res.status(400).json({error: 'Null values for name not allowed'})
+        }
+
+        if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
+            return res.status(400).json({error: 'Invalid graduation year'})
+        }
+
+        if (req.body.mobile_number) {
+            try {
+                if (!(validateNumber(parseNumberEntireString(
+                    req.body.dial_code + '-' + req.body.mobile_number
+                )))) {
+                    return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
+                }
+            } catch (e) {
+                return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
+            }
+        }
+
+
+        try {
+            const user = await findUserById(req.params.id, [models.Demographic])
+            // user might have demographic, if not make empty
+            const demographic = user.demographic || {};
+
+
+            user.firstname = req.body.firstname
+            user.lastname = req.body.lastname
+            if (req.body.gender) {
+                user.gender = req.body.gender
+            }
+
+            if (req.body.gradYear) {
+                user.graduationYear = req.body.gradYear
+            }
+
+            if (req.body.apparelGoodiesSize) {
+                user.apparelGoodiesSize = req.body.apparelGoodiesSize
+            }
+
+            if (req.body.mobile_number) {
+                // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
+                if (user.verifiedmobile && user.verifiedmobile !== req.body.dial_code + '-' + req.body.mobile_number) {
+                    user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+                    user.verifiedmobile = null
+                    // If mobile is verified and there no change on update, just update mobile_number
+                } else if (user.verifiedmobile && user.verifiedmobile === req.body.dial_code + '-' + req.body.mobile_number) {
+                    user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+                } else {
+                    //If mobile is not verified, update mobile_number and set verifiedmobile = null
+                    user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+                    user.verifiedmobile = null
+                }
+            }
+
+
+            await user.save()
+
+
+            // If am empty demographic, then insert userid
+            if (!demographic.userId) {
+                demographic.userId = req.user.id
+            }
+
+            if (req.body.branchId) {
+                demographic.branchId = +req.body.branchId
+            }
+            if (req.body.collegeId) {
+                demographic.collegeId = +req.body.collegeId
+            }
+
+            await upsertDemographic(
+                demographic.id,
+                demographic.userId,
+                demographic.collegeId,
+                demographic.branchId
+            )
+
+
+            res.status(200).json({success: 'User details updated'})
+        } catch (err) {
+            Raven.captureException(err)
+            return res.status(400).send(err)
+        }
+
+    })
+
 
 
 router.post(
