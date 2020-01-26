@@ -466,10 +466,12 @@ router.post(
     makeGaEvent('POST', 'clientAPI', 'sendVerifyemail'),
     passport.authenticate('bearer', {session: false}),
     async (req, res, next) => {
-
+        console.log('== = = = = verifyemail = = = = \n\n\n')
+        console.log(req.body)
         try {
             if (!req.body.email || req.body.email.trim() === '') {
                 req.flash('error', 'Email cannot be empty')
+                console.log({error:' Email cannot be empty'})
                 return res.status(400).json({error:' Email cannot be empty'})
             }
             let user = await findUserByParams({
@@ -477,12 +479,15 @@ router.post(
             })
             if (!user) {
                 //Email not verified, go to next middleware
+                console.log('next')
                 return next()
             } else {
                 // Email already verified, take person to profile page
+                console.log({error:'Email already verified with codingblocks account ID:' + user.get('id')})
                 return res.status(400).json({error:'Email already verified with codingblocks account ID:' + user.get('id')})
             }
         } catch (err) {
+            console.error(err)
             Raven.captureException(err)
             return res.status(400).json({error:'Something went wrong. Please try again with your registered email.'})
         }
@@ -495,14 +500,17 @@ router.post(
             })
             if (!user) {
                 // No user with this email
+                console.log({error:'This email is not registered with this codingblocks account.'})
                 return res.status(400).json({error:'This email is not registered with this codingblocks account.'})
             }
             await createVerifyEmailEntry(user, true,
                 req.body.returnTo? req.body.returnTo: null
             )
+            console.log({success:'Verification email sent'})
             return res.status(200).json({success:'Verification email sent'})
 
         } catch (err) {
+            console.error(err)
             Raven.captureException(err)
             return res.status(400).json({error:'Something went wrong. Please try again with your registered email.'})
         }
