@@ -76,18 +76,6 @@ function upsertAddress(values) {
   return models.Address.upsert(values);
 }
 
-const setVerifiedMobileNull = (verifiedmobile, mobile) => {
-  // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
-  if (verifiedmobile && verifiedmobile !== mobile) {
-    return true
-    // If mobile is verified and there no change on update, just update mobile_number
-  } else if (verifiedmobile && verifiedmobile === mobile) {
-    return false
-  } else {
-    return false
-  }
-}
-
 module.exports = {
   findOrCreateDemographic,
   updateAddressbyDemoId,
@@ -101,6 +89,5 @@ module.exports = {
   findAllBranches,
   findAllColleges,
   upsertDemographic,
-  upsertAddress,
-  setVerifiedMobileNull
+  upsertAddress
 };
