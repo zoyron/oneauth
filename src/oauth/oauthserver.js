@@ -1,7 +1,6 @@
 /**
  * Created by championswimmer on 10/03/17.
  */
-
 const {createVerifyEmailEntry} = require("../controllers/verify_emails");
 const passutils = require("../utils/password");
 const {findUserByParams} = require("../controllers/user");
@@ -21,10 +20,8 @@ const {
     findOrCreateAuthToken
 } = require('../controllers/oauth');
 const {findClientById} = require('../controllers/clients');
-const {isValidOtpForTempUser} = require("../passport/helpers");
 
-
-const {isValidPasswordForUser, isValidOtpForUser, makeTempOTPUserPermanent} = require('../passport/helpers')
+const {isValidPasswordForUser, isValidOtpForUser} = require('../passport/helpers')
 
 const server = oauth.createServer()
 
@@ -107,7 +104,7 @@ server.exchange(oauth.exchange.code(
 server.exchange(oauth.exchange.password(async (client, username, password, done) => {
     try {
 
-        const [user, userMobile, tempUser] = await Promise.all([
+        const [user, userMobile] = await Promise.all([
             models.User.findOne({
                 where: {
                     [Sequelize.Op.or]: [
@@ -119,13 +116,12 @@ server.exchange(oauth.exchange.password(async (client, username, password, done)
                     model: models.UserLocal
                 }
             }),
-            findUserByParams({verifiedmobile: username}),
-            isNaN(username) ? null : findUserByParams({id: username})
+            findUserByParams({verifiedmobile: username})
         ])
 
         // user -> user with either this username or this verifiedemail
         // userMobile -> user with this verifiedmobile as username
-        if (!user && !userMobile && !tempUser) {
+        if (!user && !userMobile) {
             return done(null, false)
         }
 
@@ -153,16 +149,6 @@ server.exchange(oauth.exchange.password(async (client, username, password, done)
             }
             const token = await createAuthToken(client.id, userMobile.get().id)
             return done(null, token.get().token)
-        } else if (tempUser) {
-            // trying to login using oneauthId temporarily generated
-            const valid = await isValidOtpForUser(tempUser, password)
-            if (!valid) {
-                return done(null, false)
-            }
-            const updatedUser = await makeTempOTPUserPermanent(tempUser)
-            const token = await createAuthToken(client.id, tempUser.get().id)
-            return done(null, token.get().token)
-
         }
 
     } catch (e) {
