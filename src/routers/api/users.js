@@ -619,11 +619,7 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
 
             // If an empty demographic, then insert userid
             if (!demographic.userId) {
-<<<<<<< HEAD
                 demographic.userId = req.params.id
-=======
-                demographic.userId = user.id
->>>>>>> a837cb7145c6c49d52df901447c8d26ae6726829
             }
 
             await upsertDemographic(
