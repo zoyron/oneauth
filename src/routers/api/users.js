@@ -438,7 +438,7 @@ router.post('/add',
             mail.setANewPassword(user.dataValues, setNewPassword.key)
 
             delete user.password
-            res.status(200).json({success: 'Registration Successful', user: user})
+            res.status(200).json(user)
 
         } catch (err) {
             Raven.captureException(err)
@@ -572,7 +572,7 @@ router.post('/edit',
             res.status(200).json({success: 'Profile updated successfully'})
         } catch (err) {
             Raven.captureException(err)
-            return res.status(400).send(err)
+            return res.status(400).send({err: 'Failed to update user details'})
         }
 
     })
@@ -619,7 +619,7 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
 
             // If an empty demographic, then insert userid
             if (!demographic.userId) {
-                demographic.userId = req.user.id
+                demographic.userId = user.id
             }
 
             await upsertDemographic(
@@ -631,7 +631,7 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
             res.status(200).json({success: 'User details updated'})
         } catch (err) {
             Raven.captureException(err)
-            return res.status(400).send(err)
+            return res.status(400).send({err: 'Failed to update user details'})
         }
 
     })
