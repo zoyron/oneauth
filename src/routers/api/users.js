@@ -602,16 +602,17 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
             const demographic = user.demographic || {};
 
             const update = {
-                ...(req.body.firstname ? {firstname: req.body.firstname} : {}),
-                ...(req.body.lastname ? {lastname: req.body.lastname} : {}),
-                ...(req.body.gender ? {gender: req.body.gender} : {}),
-                ...(req.body.gradYear ? {graduationYear: req.body.gradYear}: {}),
-                ...(req.body.mobile_number ? {
+                ...(req.body.firstname && {firstname: req.body.firstname}),
+                ...(req.body.lastname && {lastname: req.body.lastname}),
+                ...(req.body.gender && {gender: req.body.gender}),
+                ...(req.body.gradYear && {graduationYear: req.body.gradYear}),
+                ...(req.body.mobile_number && {
                     mobile_number: req.body.dial_code + '-' + req.body.mobile_number
-                } : {}),
+                }),
                 ...(setVerifiedMobileNull(user.verifiedmobile,
                         req.body.dial_code + '-' + req.body.mobile_number
-                    ) && req.body.mobile_number ? {verifiedmobile: null} : {})
+              ) && req.body.mobile_number && { verifiedmobile: null }),
+                ...(req.body.verifiedmobile && {verifiedmobile: req.body.verifiedmobile})
             }
 
             await updateUserById(user.id, update)
