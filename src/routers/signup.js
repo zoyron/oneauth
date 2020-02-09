@@ -17,8 +17,8 @@ const {
 const {
     createVerifyEmailEntry
 } = require('../controllers/verify_emails')
-const { parseNumberEntireString, validateNumber } = require('../utils/mobile_validator')
-const {generateReferralCode}  = require('../utils/referral')
+const {parseNumberEntireString, validateNumber} = require('../utils/mobile_validator')
+const {generateReferralCode} = require('../utils/referral')
 
 router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
@@ -31,7 +31,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         mobile_number: req.body.mobile_number,
         email: req.body.email,
         refCode: req.body.refcode,
-        gradYear: req.body.gradYear ?  req.body.gradYear : null,
+        gradYear: req.body.gradYear ? req.body.gradYear : null,
         demographic: {
             branchId: req.body.branchId,
             collegeId: req.body.collegeId,
@@ -113,9 +113,9 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             return res.redirect('/signup')
         }
 
-        if(!(validateNumber(parseNumberEntireString(
+        if (!(validateNumber(parseNumberEntireString(
             req.body.dial_code + '-' + req.body.mobile_number
-        )))){
+        )))) {
             req.flash('error', 'Please provide a Valid Contact Number.')
             req.ga.event({
                 action: 'signup',
@@ -154,16 +154,30 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
 
         query.referralCode = generateReferralCode(req.body.username)
 
-        if(req.body.refcode){
-           const userReferredBy = await findUserByParams({referralCode: req.body.refcode })
-           query.referredBy = userReferredBy ? userReferredBy.get().id : null
+        if (req.body.refcode) {
+            const userReferredBy = await findUserByParams({referralCode: req.body.refcode})
+            query.referredBy = userReferredBy ? userReferredBy.get().id : null
         }
 
 
         let includes = [{model: models.User, include: [models.Demographic]}]
-        let userLocal = await createUserLocal(query, passhash, includes)
-        if (!userLocal) {
-            req.flash('error', 'Error creating account! Please try in some time')
+
+        try {
+            let userLocal = await createUserLocal(query, passhash, includes)
+            if (!userLocal) {
+                req.flash('error', 'Error creating account! Please try in some time')
+                req.ga.event({
+                    action: 'signup',
+                    category: 'unsuccessful',
+                    label: 'Error creating account! Please try in some time'
+                }, e => {
+                })
+                return res.redirect('/signup')
+            }
+
+            user = userLocal.user
+        } catch (userCreationError) {
+            req.flash('error', 'Error creating account! ' + userCreationError.message)
             req.ga.event({
                 action: 'signup',
                 category: 'unsuccessful',
@@ -172,8 +186,6 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             })
             return res.redirect('/signup')
         }
-
-        user = userLocal.user
 
         // Send welcome email
         mail.welcomeEmail(user.dataValues)
