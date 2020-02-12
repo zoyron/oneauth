@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS whitelist_domains (
+  id SERIAL PRIMARY KEY,
+  domain VARCHAR(256) NOT NULL
+)

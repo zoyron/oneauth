@@ -271,6 +271,18 @@ const EventSubscription = db.define('event_subscription', {
     type: {type: Sequelize.DataTypes.ENUM('create', 'update', 'delete')}
 })
 
+const WhitelistDomains = db.define('whitelist_domain', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    domain: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
+
 if (!process.env.ONEAUTH_DB_NO_SYNC) {
     db.sync({
         alter: process.env.ONEAUTH_ALTER_TABLES || false,
@@ -310,7 +322,8 @@ module.exports = {
         Country,
         EventSubscription,
         VerifyMobile,
-        UserMobileOTP
+        UserMobileOTP,
+        WhitelistDomains
     },
     db
 };

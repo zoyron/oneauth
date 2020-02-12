@@ -1,4 +1,4 @@
-const { User, UserLocal, Demographic, College, Branch, Address} = require("../db/models").models;
+const { User, UserLocal, Demographic, College, Branch, Address, WhitelistDomains} = require("../db/models").models;
 const sequelize = require('sequelize');
 const Raven = require('raven');
 
@@ -39,7 +39,21 @@ async function createUserLocal(userParams, pass, includes) {
     return userLocal
 }
 
-function createUserWithoutPassword(userParams) {
+async function createUserWithoutPassword(userParams) {
+    const email = userParams.email
+
+    const isWhitelisted = await WhitelistDomains.count({
+        where: {
+            domain: {
+                $iLike: email.split('@')[1]
+            }
+        }
+    })
+
+    if (!isWhitelisted) {
+        throw new Error('Email domain not whitelisted')
+    }
+
     return User.create(userParams, {
         include: [{
             association: User.Demographic
