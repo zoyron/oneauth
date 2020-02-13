@@ -26,6 +26,19 @@ function findUserByParams(params) {
 }
 
 async function createUserLocal(userParams, pass, includes) {
+    const email = userParams.email
+
+    const isWhitelisted = await WhitelistDomains.count({
+        where: {
+            domain: {
+                $iLike: email.split('@')[1]
+            }
+        }
+    })
+
+    if (!isWhitelisted) {
+        throw new Error('Email domain not whitelisted')
+    }
     const errorMessage = validateUsername(userParams.username) 
     if (errorMessage) throw new Error(errorMessage)
     let userLocal
