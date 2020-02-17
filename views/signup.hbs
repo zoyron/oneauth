@@ -1,7 +1,8 @@
 <div class="row no-gutters work-area">
-    <div class="col-5 b-right py-5">
+    <div class="col-lg-5 d-none d-lg-flex b-right py-5 all-center">
+        <img src="https://hack.codingblocks.com/images/beginner.gif" alt="">
     </div>
-    <div class="col-7 pb-5 px-5">
+    <div class="col-lg-7 py-5 px-5">
       <div class="tab-nav-underline w-100 justify-content-start">
         <a href="/login" class="tab px-0 font-md extra-bold">Login</a>
         <a href="/signup" class="tab px-0 mx-5 font-md extra-bold active">Sign Up</a>
@@ -56,9 +57,9 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-4">
-                <div class="select">
-                    <select name="gender" id="gender" class="font-sm bold" required>
+            <div class="col-md-4">
+                <div class="select-container">
+                    <select name="gender" id="gender" class="font-sm bold underline-select pb-4" required>
                         <option selected disabled hidden>Choose Gender</option>
                         <option value="MALE" class="py-2">MALE</option>
                         <option value="FEMALE" class="py-2">FEMALE</option>
@@ -66,9 +67,9 @@
                     </select>
                 </div>
             </div>
-            <div class="col-2">
-                <div class="select">
-                    <select name="dial_code" class="font-sm bold" required>
+            <div class="col-md-2 col-4 mt-md-0 mt-4">
+                <div class="select-container">
+                    <select name="dial_code" class="font-sm bold underline-select pb-4" required>
                         {{#each countries}}
                             {{#ifeq expected=dial_code val=../prevForm.dial_code}}
                                 <option class="py-2" value="{{dial_code}}" selected>
@@ -83,7 +84,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 col-8 mt-md-0 mt-4">
                 <input 
                     type="text" 
                     class="underline-input font-sm bold w-100"
@@ -94,8 +95,8 @@
             </div>
         </div>
 
-        <div class="select mt-4">
-            <select name="collegeId" class="pb-4 font-sm bold" required>
+        <div class="select-container mt-4">
+            <select name="collegeId" class="font-sm bold underline-select pb-4" required>
                 <option selected disabled hidden>Choose College</option>
                 {{#each colleges}}
                       {{../prevForm.demographic.collegeId}}
@@ -110,8 +111,8 @@
 
         <div class="row mt-4">
             <div class="col-md-6">
-                <div class="select">
-                    <select name="branchId" class="pb-4 font-sm bold" required>
+                <div class="select-container">
+                    <select name="branchId" class="font-sm bold underline-select pb-4" required>
                         <option selected disabled hidden>Choose Branch</option>
                         {{#each branches}}
                             {{#ifeq expected=id val=../prevForm.demographic.branchId}}
@@ -123,9 +124,9 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="select">
-                    <select name="gradYear" class="font-sm bold" required>
+            <div class="col-md-6 mt-md-0 mt-4">
+                <div class="select-container">
+                    <select name="gradYear" class="font-sm bold underline-select pb-4" required>
                         <option selected disabled hidden>Choose Graduation Year</option>
                         {{#each gradYears}}
                             {{#ifeq expected=this val=../prevForm.gradYear}}

@@ -1,8 +1,8 @@
 <div class="row no-gutters">
   <div class="col-12 b-bottom position-fixed tl bg-white z-pos topbar">
     <div class="row align-items-center h-100 py-2">
-      <div class="col-3 px-5">
-        <div class="hamburger-menu mr-3 d-md-none d-block" id="hamburger-toggle">
+      <div class="col-md-3 col-sm-6 col-10 px-5 v-align-ma">
+        <div class="hamburger-menu mr-3 d-md-none d-inline-block" id="hamburger-toggle">
           <div class="ham-toggle">
             <div class="hamburger">
               <span></span>
@@ -11,9 +11,9 @@
             </div>
           </div>
         </div>
-        <img src="/img/account-logo.png" alt="Online CB Logo" class="w-50 mx-5">
+        <img src="/img/account-logo.png" alt="Online CB Logo" class="w-80">
       </div>
-      <div class="col-9">
+      <div class="col-md-9 d-none d-md-block">
         <ul class="clear-list">
           <li class="px-4 float-left"><a href="#" class="hover-pink active">Classroom Courses</a></li>
           <li class="px-4 float-left"><a href="#" class="hover-pink">Online Courses</a></li>
@@ -23,10 +23,52 @@
       </div>
     </div>
   </div>
+  <div class="col-3 border-right hamburger-nav hamburger-nav--hidden overflow-y-auto no-scrollbar" id="hamburger-nav">
+    <div class="d-flex py-4 justify-content-between align-items-center hamburger-nav__top-bar z-pos">
+      <img src="/img/account-logo.png" alt="HB" class="hamburger-nav__ham-logo ml-4">
+      <button class="mr-4 hamburger-nav__cross pointer" id="hamburger-close">
+        <img src="http://minio-i.codingblocks.com/img/wrong.png" alt="#">
+      </button>
+    </div>
+    <div class="img-ring p-1 mx-auto">
+      {{#if userPhoto}}
+        <img class="round img" src="{{userPhoto}}">
+      {{else}}
+        <img class="round img" src="/img/user.svg">
+      {{/if}}
+    </div>
+    <div class="px-5 mx-auto work-area__side-menu">
+      <h4 class="bold pt-3 pb-4">
+        {{#if userName}}
+          Hi, {{userName}}
+        {{else}}
+          Hi, Guest User
+        {{/if}}
+      </h4>
+      <div class="font-md py-4"><a href="/users/me" class="hover-pink {{#ifeq  val=currentUrl expected="users"}}active{{/ifeq}}">My Profile</a></div>
+      <div class="font-md py-4"><a href="/address" class="hover-pink {{#ifeq  val=currentUrl expected="address"}}active{{/ifeq}}">My Addresses</a></div>
+      <div class="font-md py-4"><a href="/users/me/organisations" class="hover-pink {{#ifeq  val=currentUrl expected="organisations"}}active{{/ifeq}}">My Organizations</a></div>
+      <div class="font-md py-4"><a href="/apps" class="hover-pink {{#ifeq  val=currentUrl expected="apps"}}active{{/ifeq}}">My Applications</a></div>
+      <div class="font-md py-4"><a href="/users/me/clients" class="hover-pink {{#ifeq  val=currentUrl expected="clients"}}active{{/ifeq}}">My Clients</a></div>
+      <div class="font-md py-4"><a href="/logout" class="hover-pink">Logout</a></div>
+
+      <div class="divider-h my-4"></div>
+
+      <div class="font-md py-4"><a href="#" class="hover-pink">Classroom Courses</a></div>
+      <div class="font-md py-4"><a href="#" class="hover-pink">Online Courses</a></div>
+      <div class="font-md py-4"><a href="#" class="hover-pink">Hacker Blocks</a></div>
+      <div class="font-md py-4"><a href="#" class="hover-pink">Hiring Blocks</a></div>
+    </div>
+  </div>
 </div>
 
 <script>
-  $("#hamburger-toggle").click(function() {
-    $("#hamburger-nav").toggleClass("hamburger-nav--hidden")
+  $(document).ready(() => {
+    $("#hamburger-toggle").click(function() {
+      $("#hamburger-nav").toggleClass("hamburger-nav--hidden")
+    })
+    $("#hamburger-close").click(function() {
+      $("#hamburger-nav").toggleClass("hamburger-nav--hidden")
+    })
   })
 </script>
