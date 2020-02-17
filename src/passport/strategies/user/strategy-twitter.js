@@ -119,6 +119,12 @@ module.exports = new TwitterStrategy({
                 }, {
                     include: [models.User],
                 })
+                req.ga.event({
+                    action: 'signup',
+                    category: 'successful',
+                    label: 'twitter'
+                }, e => {
+                })
                 if (!userTwitter) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }

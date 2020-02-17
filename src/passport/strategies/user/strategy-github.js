@@ -115,6 +115,12 @@ module.exports = new GithubStrategy({
                 }, {
                     include: [models.User],
                 })
+                req.ga.event({
+                    action: 'signup',
+                    category: 'successful',
+                    label: 'github'
+                }, e => {
+                })
                 if (!userGithub) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }

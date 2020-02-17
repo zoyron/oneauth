@@ -1,6 +1,8 @@
 /**
  * Created by Tridev on 31/01/2019.
  */
+const {isValidOtpForUser}  = require ("../../helpers");
+
 const Raven = require('raven');
 const LocalStrategy = require('passport-local').Strategy;
 const models = require('../../../db/models').models;
@@ -25,29 +27,12 @@ module.exports = new LocalStrategy({
             return cb(null, false, {message: 'Invalid Username or Unverified Mobile Number'})
         }
 
-        let lastLoginOTP = await models.UserMobileOTP.findOne({
-            where: {
-                mobile_number: mobile_number,
-            },
-            order: [['createdAt', 'DESC']]
-        });
-
-        if (!lastLoginOTP) {
-            return cb(null, false, {message: 'Resend an OTP Again'});
-        }
-
-        if (lastLoginOTP.get('login_otp') === otp && !new Date(lastLoginOTP.dataValues.createdAt).getTime() < (new Date().getTime() - 10 * 60 * 1000)) {
-
-            await lastLoginOTP.update({
-                used_at: new Date()
-            });
-
-            return cb(null, user.get())
-
-        } else {
-
+        const valid = await isValidOtpForUser(user, otp)
+        if (!valid) {
             return cb(null, false, {message: 'You have entered an incorrect OTP.'});
         }
+
+        return cb(null, user.get())
 
     } catch (err) {
         Raven.captureException(err);

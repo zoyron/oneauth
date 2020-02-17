@@ -52,7 +52,8 @@ const User = db.define('user', {
     verifiedmobile: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true},
     referralCode: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:true, allowNull: true},
     referredBy: {type: Sequelize.DataTypes.BIGINT, defaultValue: null, unique:false, allowNull:true},
-    graduationYear: {type: Sequelize.DataTypes.SMALLINT, defaultValue: null, unique:false, allowNull:true}
+    graduationYear: {type: Sequelize.DataTypes.SMALLINT, defaultValue: null, unique:false, allowNull:true},
+    apparelGoodiesSize: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:false, allowNull:true}
 }, {
     paranoid: true
 })
@@ -126,6 +127,7 @@ Verifyemail.belongsTo(User)
 VerifyMobile.belongsTo(User)
 UserMobileOTP.belongsTo(User)
 
+
 const Client = db.define('client', {
     id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true},
     name: Sequelize.DataTypes.STRING,
@@ -135,9 +137,12 @@ const Client = db.define('client', {
     webhookURL: {type: Sequelize.DataTypes.STRING, default: null},
     trusted: {type: Sequelize.DataTypes.BOOLEAN, default: false},
     defaultURL: {type: Sequelize.DataTypes.STRING, allowNull: false, default: 'https://codingblocks.com/'},
+    androidOTPHash:  {type: Sequelize.DataTypes.STRING, default: null},
 }, {
     paranoid: true
 })
+
+UserMobileOTP.belongsTo(Client)
 
 Client.belongsTo(User)
 User.hasMany(Client)
@@ -266,6 +271,18 @@ const EventSubscription = db.define('event_subscription', {
     type: {type: Sequelize.DataTypes.ENUM('create', 'update', 'delete')}
 })
 
+const WhitelistDomains = db.define('whitelist_domain', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    domain: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
+
 if (!process.env.ONEAUTH_DB_NO_SYNC) {
     db.sync({
         alter: process.env.ONEAUTH_ALTER_TABLES || false,
@@ -305,7 +322,8 @@ module.exports = {
         Country,
         EventSubscription,
         VerifyMobile,
-        UserMobileOTP
+        UserMobileOTP,
+        WhitelistDomains
     },
     db
 };

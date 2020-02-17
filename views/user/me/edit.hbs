@@ -37,52 +37,6 @@
         <div class="col-md-6 mt-5">
           <div class="row">
             <div class="col-4">
-              <i class="far fa-envelope"></i>
-              <span class="font-sm ml-2">Verified Email</span>
-            </div>
-            <div class="col-8">
-              {{#if user.verifiedemail}}
-                <span class="font-sm bold salmon mr-2">{{user.verifiedemail}}</span>
-                <i class="fas fa-check"></i>
-              {{else}}
-                <form action="/verifyemail" method="POST">
-                  <input 
-                    type="text"
-                    class="underline-input font-sm bold"
-                    placeholder="Email to verify"
-                    name="email"
-                    value="{{user.email}}"
-                    required />
-                  <button type="submit" class="salmon">
-                    Verify
-                  </button>
-                </form>
-              {{/if}}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mt-5">
-          <div class="row">
-            <div class="col-4">
-              <i class="fas fa-phone"></i>
-              <span class="font-sm ml-2">Verified Mobile Number</span>
-            </div>
-            <div class="col-8">
-              {{#if user.verifiedmobile}}
-                <span class="font-sm bold salmon mr-2">{{user.verifiedmobile}}</span>
-                <i class="fas fa-check"></i>
-              {{else}}
-                <span class="font-sm bold mr-2">{{user.mobile_number}}</span>
-                <a class="salmon" href="/verifymobile">Verify</a> 
-              {{/if}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mt-5">
-          <div class="row">
-            <div class="col-4">
               <span class="font-sm">User ID</span>
             </div>
             <div class="col-8">
@@ -238,7 +192,7 @@
             </div>
             <div class="col-8">
               <div class="row">
-                <div class="col-4 select">
+                <div class="col-4 select-container">
                   <select name="dial_code" class="font-sm bold underline-select" required>
                     {{#each countries}}
                       <option class="py-2" value="{{dial_code}}">
@@ -257,6 +211,37 @@
                     placeholder="Phone Number" />
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mt-5">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <label class="font-sm">Your T-shirt Size</label>
+            </div>
+            <div class="col-8 select-container">
+              <select class="underline-select font-sm bold w-100" name="apparelGoodiesSize" id="apparelGoodiesSize">
+                  <option class="py-2" value="" {{#ifeq expected='' val=user.apparelGoodiesSize}}
+                          selected={{true}}
+                  {{/ifeq}}>Choose your fit
+                  </option>
+                  <option class="py-2" value="S" {{#ifeq expected='S' val=user.apparelGoodiesSize}}
+                          selected
+                  {{/ifeq}}>S - Small
+                  </option>
+                  <option class="py-2" value="M" {{#ifeq expected='M' val=user.apparelGoodiesSize}}
+                          selected
+                  {{/ifeq}}>M - Medium
+                  </option>
+                  <option class="py-2" value="L" {{#ifeq expected='L' val=user.apparelGoodiesSize}}
+                          selected
+                  {{/ifeq}}>L - Large
+                  </option>
+                  <option class="py-2" value="XL" {{#ifeq expected='XL' val=user.apparelGoodiesSize}}
+                          selected
+                  {{/ifeq}}>XL - Extra Large
+                  </option>
+              </select>
             </div>
           </div>
         </div>

@@ -44,8 +44,14 @@ router.post('/', cel.ensureNotLoggedIn('/'), async (req, res, next) => {
 
         } else {
 
-            if (!validateNumber(parseNumberByCountry(req.body.username, 'IN'))) {
-                console.log('Invalid Mobile Number')
+            try {
+                if (!validateNumber(parseNumberByCountry(req.body.username, 'IN'))) {
+                    console.log('Invalid Mobile Number')
+                    req.flash('error', 'Please enter a valid 10 digit Mobile number.')
+                    return res.redirect('/')
+                }
+            } catch (error) {
+                console.log('Invalid Mobile Number Format')
                 req.flash('error', 'Please enter a valid 10 digit Mobile number.')
                 return res.redirect('/')
             }

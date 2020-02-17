@@ -1,4 +1,4 @@
-const { User, UserLocal, Demographic, College, Branch, Address} = require("../db/models").models;
+const { User, UserLocal, Demographic, College, Branch, Address, WhitelistDomains} = require("../db/models").models;
 const sequelize = require('sequelize');
 const Raven = require('raven');
 
@@ -26,6 +26,19 @@ function findUserByParams(params) {
 }
 
 async function createUserLocal(userParams, pass, includes) {
+    const email = userParams.email
+
+    const isWhitelisted = await WhitelistDomains.count({
+        where: {
+            domain: {
+                $iLike: email.split('@')[1]
+            }
+        }
+    })
+
+    if (!isWhitelisted) {
+        throw new Error('Email domain not whitelisted')
+    }
     const errorMessage = validateUsername(userParams.username) 
     if (errorMessage) throw new Error(errorMessage)
     let userLocal
@@ -39,7 +52,21 @@ async function createUserLocal(userParams, pass, includes) {
     return userLocal
 }
 
-function createUserWithoutPassword(userParams) {
+async function createUserWithoutPassword(userParams) {
+    const email = userParams.email
+
+    const isWhitelisted = await WhitelistDomains.count({
+        where: {
+            domain: {
+                $iLike: email.split('@')[1]
+            }
+        }
+    })
+
+    if (!isWhitelisted) {
+        throw new Error('Email domain not whitelisted')
+    }
+
     return User.create(userParams, {
         include: [{
             association: User.Demographic
@@ -142,7 +169,7 @@ function generateFilter(filterArgs) {
         let contact = filterArgs.contact
         if(/^\d+$/.test(contact)) {
             whereObj.mobile_number = {
-                like: `%${contact}`
+                like: `${contact}%`
             }
         } else {
             throw new Error("Invalid Phone Format")

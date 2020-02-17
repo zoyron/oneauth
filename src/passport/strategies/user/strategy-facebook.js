@@ -9,6 +9,7 @@ const models = require('../../../db/models').models
 const config = require('../../../../config')
 const secrets = config.SECRETS
 const { generateReferralCode}  = require('../../../utils/referral')
+
 // const debug = require('debug')('oauth:strategy:facebook')
 
 
@@ -127,6 +128,12 @@ module.exports = new FacebookStrategy({
                     }
                 }, {
                     include: [models.User],
+                })
+                req.ga.event({
+                    action: 'signup',
+                    category: 'successful',
+                    label: 'facebook'
+                }, e => {
                 })
                 if (!userFacebook) {
                     return cb(null, false, {message: 'Authentication Failed'})
