@@ -14,8 +14,8 @@ router.get('/',
     cel.ensureLoggedIn('/login'),
     async function (req, res, next) {
         try{
-            const apps = await findAuthTokensByUserId(req.user.id);
-            return res.render('apps/all', {apps: apps})
+            const tokens = await findAuthTokensByUserId(req.user.id);
+            return res.render('apps/all', {tokens})
         } catch(err){
             Raven.captureException(err)
             req.flash('error','No Clients registered')

@@ -1,113 +1,57 @@
-<div class="login-signup">
-    <div class="card c-login">
-        <h1 class="heading-u-red">
-            LOGIN: Step into the world of coding
-        </h1>
-
-        <form method="post" action="/login">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            {{> error-snippet}}
-            <div class="input-btn">
-                <input type="text" class="input-text icon user-bg"
-                       placeholder="Username or Verfied Email ID or Verified Mobile No" name="username" required>
-                <a href="/forgot/username">
-                    <button type="button" class="grey">Forgot?</button>
-                </a>
-            </div>
-
-            <div class="input-btn">
-                <input type="password" class="input-text icon fingerprint-bg"
-                       placeholder="Enter Password (Leave blank for OTP Login)" name="password">
-                <a href="/forgot/password">
-                    <button type="button" class="grey">Forgot?</button>
-                </a>
-            </div>
-
-            <input type="checkbox" id="remember" class="input-checkbox">
-            <label for="remember"> Remember me</label>
-
-            <div class="row">
-                
-                <button class="button-solid lg" type="submit"> LOGIN</button>
-                <button class="button-solid lg" type="submit" formaction="/login/otp" formmethod="post"> LOGIN with OTP</button>
-            
-
-                <div class="signup d-flex flex-column justify-content-center">
-                    New to Coding Blocks?
-                    <a href="/signup">
-                        <button type="button" class="red">SIGN UP NOW</button>
-                    </a>
-
-                </div>
-            </div>
-
-            <div class="divider row align-items-center">
-                OR <span class="bg-black"></span>
-            </div>
-
-            <p class="link-heading">You may also try login with:</p>
-
-            <div class="links flex-row no-gutters justify-content-around">
-                <div class="col-2 col-sm-1">
-                    <div class="auth-link">
-                        <a href="/login/facebook">
-                            <button type="button" class="button-circle facebook">
-                                <i class="fab fa-facebook-f fa-2x"></i>
-                            </button>
-                        </a>
-
-                        <div class="link-text">FACEBOOK</div>
-                    </div>
-                </div>
-                <div class="col-2 col-sm-1">
-                    <div class="auth-link">
-                        <a href="/login/google">
-                            <button type="button" class="button-circle google">
-                                <i class="fab fa-google-plus-g fa-2x"></i>
-                            </button>
-                        </a>
-
-                        <div class="link-text">GOOGLE</div>
-                    </div>
-                </div>
-                <div class="col-2 col-sm-1">
-                    <div class="auth-link">
-                        <a href="/login/twitter">
-                            <button type="button" class="button-circle twitter">
-                                <i class="fab fa-twitter fa-2x"></i>
-                            </button>
-                        </a>
-
-                        <div class="link-text">TWITTER</div>
-                    </div>
-                </div>
-                <div class="col-2 col-sm-1">
-                    <div class="auth-link">
-                        <a href="/login/github">
-                            <button type="button" class="button-circle github">
-                                <i class="fab fa-github fa-2x"></i>
-                            </button>
-                        </a>
-                        <div class="link-text">GITHUB</div>
-                    </div>
-                </div>
-
-                {{!-- <div class="col-2 col-sm-1">
-                    <div class="auth-link">
-                        <a href="/login/linkedin">
-                            <button type="button" class="button-circle linkedin">
-                                <i class="fab fa-linkedin fa-2x"></i>
-                            </button>
-                        </a>
-                        <div class="link-text">LINKEDIN</div>
-                    </div>
-                </div> --}}
-            </div>
-
-
-        </form>
-
+<div class="row no-gutters work-area">
+  <div class="col-lg-5 d-none d-lg-flex b-right py-5 all-center">
+    <img src="https://hack.codingblocks.com/images/beginner.gif" alt="">
+  </div>
+  <div class="col-lg-7 py-5 px-5">
+    <div class="tab-nav-underline w-100 justify-content-start">
+      <a href="/login" class="tab active px-0 font-md extra-bold">Login</a>
+      <a href="/signup" class="tab px-0 mx-5 font-md extra-bold">Sign Up</a>
     </div>
 
+    <div class="my-5 pt-4">
+      <h4 class="bold">Login to your account</h4>
+      <div class="font-mds dark-grey mt-1">Step into the world of coding</div>
+    </div>
 
+    <form action="/login" method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      {{> error-snippet}}
+
+      <div class="input-btn">
+        <input type="text" id="addtype" class="underline-input font-sm bold w-100 my-5"
+          placeholder="Username or Verfied Email ID or Verified Mobile No" name="username" required />
+        <a href="/forgot/username">Forgot?</a>
+      </div>
+
+      <div class="input-btn">
+        <input type="password" id="addtype" class="underline-input font-sm bold w-100 my-5"
+          placeholder="Enter Password (Leave blank for OTP Login)" name="password" required />
+        <a href="/forgot/password">Forgot?</a>
+      </div>
+
+      <label class="input-checkbox checkbox-solid font-sm" for="solid">
+        <input type="checkbox" id="solid">
+        <div class="d-inline-block mt-2">Remember Me</div>
+        <span class="salmon-gradient"></span>
+      </label>
+
+      <div class="mt-5">
+        <button class="button-solid lg" type="submit">Login Now</button>
+        <button class="font-sm salmon semi-bold ml-3" type="submit" formaction="/login/otp" formmethod="post">
+          Login with OTP
+        </button>
+      </div>
+    </form>
+
+
+    <div class="font-sm mt-5">You may also try login with:</div>
+    <div class="mt-4">
+      <a href="/login/facebook" class="mr-4"><i class="fa-2x fab fa-facebook-f"></i></a>
+      <a href="/login/google" class="mx-4"><i class="fa-2x fab fa-google"></i></a>
+      <a href="/login/github" class="mx-4"><i class="fa-2x fab fa-github"></i></a>
+      <a href="/login/linkedin" class="mx-4"><i class="fa-2x fab fa-linkedin-in"></i></a>
+      <a href="/login/twitter" class="mx-4"><i class="fa-2x fab fa-twitter"></i></a>
+    </div>
+  </div>
 </div>

@@ -1,35 +1,24 @@
-{{!< centercolumn}}
-
-<div class="offset-md-4 col-md-8 c-app-page">
-    <div class="card">
-        <h1 class="heading-u-red">My Apps</h1>
-        <div class="attributes">
-            <div class="row justify-content-between">
-                {{#each apps as |app|}}
-                    <div class="border-card">
-                        <div class="app-row heading">{{app.client.name}}</div>
-                        <div class="app-row">
-                            <span class="faded">Connected on {{formatDate app.createdAt}}</span>
-                        </div>
-                        <div class="row justify-content-between button-row align-items-center">
-                            <a href="/apps/{{app.client.id}}/delete">
-                                <div class="grey">
-                                    <button>Remove App  <i class="far fa-window-close"></i></button>
-                                </div>
-                            </a>
-                            <a href="{{app.client.defaultURL}}">
-                                <div class="button-dashed">
-                                    <button>View</button>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                {{else}}
-                    <div class="border-card">
-                        <div class="app-row heading">You have no authorized apps yet.</div>
-                    </div>
-                {{/each}}
-            </div>
-        </div>
+<div class="row no-gutters work-area">
+  {{> side-nav}}
+  <div class="col-md-9 py-5 work-area__main-area">
+    <div class="tab-nav-underline w-100 justify-content-start">
+      <div class="tab active px-0 font-md extra-bold">My Applications</div>
     </div>
+
+    <div class="border-card p-5 mt-5">
+      {{#each tokens as |token|}}
+        <div class="row no-gutters justify-content-between align-items-center">
+          <div class="col-md-6">
+            <h5 class="bold">{{token.client.name}}</h5>
+            <div class="card-md mt-1">Connected on {{token.createdAt}}</div>
+          </div>
+          <div>
+            <a href={{token.client.defaultURL}} class="salmon"><span class="semi-bold mr-3">View App</span></a>
+            <a href="/apps/{{token.client.id}}/delete" class="med-grey"><span>Remove App</span></a>
+          </div>
+        </div>
+        <div class="divider-h my-5"></div>
+      {{/each}}
+    </div>
+  </div>
 </div>

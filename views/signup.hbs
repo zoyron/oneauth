@@ -1,117 +1,163 @@
-<div class="login-signup">
-    <div class="card c-signup">
-        <h1 class="heading-u-red">
-            SIGNUP: Get access to Coding Blocks courses
-        </h1>
-
-        <form method="post" action="/signup">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            <input type="hidden" name="refcode" value="{{refCode}}">
-            {{> error-snippet}}
-
-            <input type="text" class="input-text icon user-bg tooltip-button" name="username" placeholder="Username" value="{{prevForm.username}}" required>
-
-            <div class="border-card w-100 p-4 mb-4 tooltip-popper">
-                - Username should be of length 3-50 characters<br>
-                - Username can only start with alphabets<br>
-                - Username can only contain alhpabets, numbers, - (hyphen), _ (underscore), .(dot)<br>
-                - Username should not end with confusing extensions like .js, .ts<br>
-            </div>
-
-            <div class="row no-gutters">
-                <div class="col-sm-12 col-md-6 first-name">
-                    <input type="text" class="input-text icon lines-bg" name="firstname" placeholder="First Name" value="{{prevForm.firstname}}" required>
-                </div>
-                <div class="col-sm-12 col-md-6 last-name">
-                    <input type="text" class="input-text icon lines-bg" name="lastname" placeholder="Last Name" value="{{prevForm.lastname}}" required>
-                </div>
-            </div>
-            <select class="form-control input-text inputvalidation" name="gender" required>
-                <option>MALE</option>
-                <option>FEMALE</option>
-                <option selected>UNDISCLOSED</option>
-            </select>
-            <div class="row">
-                <select name="dial_code" class="input-text col-4">
-                    {{#each countries}}
-                        {{#ifeq expected=dial_code val=../prevForm.dial_code}}
-                            <option class="dropdown-li" value="{{dial_code}}" selected>
-                                {{name}} ({{dial_code}})
-                            </option>
-                        {{else}}
-                            <option class="dropdown-li" value="{{dial_code}}">
-                                {{name}} ({{dial_code}})
-                            </option>
-                        {{/ifeq}}
-                    {{/each}}
-                </select>
-                <input class="input-text col-8" type="text"
-                    name="mobile_number" id="mobile_number" value="{{prevForm.mobile_number}}"/>
-            </div>
-
-
-            <div class="row no-gutters align-items-center justify-content-between detail-row">
-                <div class="label-input col-2">College</div>
-                <select name="collegeId" class="input-text col-10" required>
-                    {{#each colleges}}
-                        {{../prevForm.demographic.collegeId}}
-                        {{#ifeq expected=id val=../prevForm.demographic.collegeId}}
-                            <option class="dropdown-li" value="{{id}}" selected>{{name}}</option>
-                        {{else}}
-                            <option class="dropdown-li" value="{{id}}">{{name}}</option>
-                        {{/ifeq}}
-                    {{/each}}
-                </select>
-            </div>
-
-            <div class="row no-gutters align-items-center justify-content-between detail-row">
-                <div class="label-input col-2">Branch / Course</div>
-                <select name="branchId" class="input-text col-10" required>
-                    {{#each branches}}
-                        {{#ifeq expected=id val=../prevForm.demographic.branchId}}
-                            <option class="dropdown-li" value="{{id}}" selected>{{name}}</option>
-                        {{else}}
-                            <option class="dropdown-li" value="{{id}}">{{name}}</option>
-                        {{/ifeq}}
-                    {{/each}}
-                </select>
-            </div>
-
-            <div class="row no-gutters align-items-center justify-content-between detail-row">
-                <div class="label-input col-2">Graduation Year</div>
-                <select name="gradYear" class="input-text col-10" required>
-                    {{#each gradYears}}
-                        {{#ifeq expected=this val=../prevForm.gradYear}}
-                            <option class="dropdown-li" value="{{this}}" selected>{{this}}</option>
-                        {{else}}
-                            <option class="dropdown-li" value="{{this}}">{{this}}</option>
-                        {{/ifeq}}
-                    {{/each}}
-                </select>
-            </div>
-
-            <input type="email"  style="text-transform: lowercase;" class="input-text icon mail-bg" name="email" placeholder="Email Address" value="{{prevForm.email}}" required>
-
-            <input type="password" class="input-text icon fingerprint-bg" name="password" placeholder="Password" required>
-
-            <div class="row footer">
-                <button class="button-solid lg" type="submit"> SIGNUP NOW</button>
-               
-                <div class="signup d-flex flex-column justify-content-center">
-                    Already have an account?
-                    <a href="/login">
-                        <button type="button" class="red">LOGIN NOW</button>
-                    </a>
-                </div>
-            </div>
-
-        </form>
-
+<div class="row no-gutters work-area">
+    <div class="col-lg-5 d-none d-lg-flex b-right py-5 all-center">
+        <img src="https://hack.codingblocks.com/images/beginner.gif" alt="">
     </div>
-</div>
+    <div class="col-lg-7 py-5 px-5">
+      <div class="tab-nav-underline w-100 justify-content-start">
+        <a href="/login" class="tab px-0 font-md extra-bold">Login</a>
+        <a href="/signup" class="tab px-0 mx-5 font-md extra-bold active">Sign Up</a>
+      </div>
 
-<script>
-    const reference = document.querySelector('.tooltip-button');
-    const popper = document.querySelector('.tooltip-popper');
-    const popperInstance = new Popper(reference, popper, {});
-</script>
+      <div class="my-5 pt-4">
+        <h4 class="bold">New to Coding Blocks?</h4>
+        <div class="font-mds dark-grey mt-1">Get access to all applications now</div>
+      </div>
+
+      <form action="/signup" method="post">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <input type="hidden" name="refcode" value="{{refCode}}">
+        {{> error-snippet}}
+        <input 
+            type="text" 
+            id="username" 
+            class="underline-input font-sm bold w-100 mt-4"
+            name="username"
+            value="{{prevForm.username}}"
+            placeholder="Choose Username"
+            required />
+
+        <div class="card-sm light med-grey mt-2">
+            Username should be of length 3-50 characters &amp; can only start with alphabets
+            Username can only contain alhpabets, numbers, - (hyphen), _ (underscore), .(dot) &amp; should not end with
+            confusing
+            extensions like .js, .ts
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+            <input 
+                type="text" 
+                id="firstname" 
+                class="underline-input font-sm bold w-100 mt-4" 
+                name="firstname"
+                value="{{prevForm.firstname}}"
+                placeholder="First Name"
+                required />
+            </div>
+            <div class="col-md-6">
+            <input 
+                type="text" 
+                id="addtype" 
+                class="underline-input font-sm bold w-100 mt-4" 
+                name="lastname"
+                value="{{prevForm.lastname}}"
+                placeholder="Last Name"
+                required />
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="select-container">
+                    <select name="gender" id="gender" class="font-sm bold underline-select pb-4" required>
+                        <option selected disabled hidden>Choose Gender</option>
+                        <option value="MALE" class="py-2">MALE</option>
+                        <option value="FEMALE" class="py-2">FEMALE</option>
+                        <option value="UNDISCLOSED" class="py-2">UNDISCLOSED</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2 col-4 mt-md-0 mt-4">
+                <div class="select-container">
+                    <select name="dial_code" class="font-sm bold underline-select pb-4" required>
+                        {{#each countries}}
+                            {{#ifeq expected=dial_code val=../prevForm.dial_code}}
+                                <option class="py-2" value="{{dial_code}}" selected>
+                                    {{name}} ({{dial_code}})
+                                </option>
+                            {{else}}
+                                <option class="py-2" value="{{dial_code}}">
+                                    {{name}} ({{dial_code}})
+                                </option>
+                            {{/ifeq}}
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-8 mt-md-0 mt-4">
+                <input 
+                    type="text" 
+                    class="underline-input font-sm bold w-100"
+                    id="mobile_number"
+                    name="mobile_number"
+                    value="{{prevForm.mobile_number}}"
+                    placeholder="Phone Number" />
+            </div>
+        </div>
+
+        <div class="select-container mt-4">
+            <select name="collegeId" class="font-sm bold underline-select pb-4" required>
+                <option selected disabled hidden>Choose College</option>
+                {{#each colleges}}
+                      {{../prevForm.demographic.collegeId}}
+                      {{#ifeq expected=id val=../prevForm.demographic.collegeId}}
+                          <option class="py-2" value="{{id}}" selected>{{name}}</option>
+                      {{else}}
+                          <option class="py-2" value="{{id}}">{{name}}</option>
+                      {{/ifeq}}
+                  {{/each}}
+            </select>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="select-container">
+                    <select name="branchId" class="font-sm bold underline-select pb-4" required>
+                        <option selected disabled hidden>Choose Branch</option>
+                        {{#each branches}}
+                            {{#ifeq expected=id val=../prevForm.demographic.branchId}}
+                                <option class="py-2" value="{{id}}" selected>{{name}}</option>
+                            {{else}}
+                                <option class="py-2" value="{{id}}">{{name}}</option>
+                            {{/ifeq}}
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 mt-md-0 mt-4">
+                <div class="select-container">
+                    <select name="gradYear" class="font-sm bold underline-select pb-4" required>
+                        <option selected disabled hidden>Choose Graduation Year</option>
+                        {{#each gradYears}}
+                            {{#ifeq expected=this val=../prevForm.gradYear}}
+                                <option class="py-2" value="{{this}}" selected>{{this}}</option>
+                            {{else}}
+                                <option class="py-2" value="{{this}}">{{this}}</option>
+                            {{/ifeq}}
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <input 
+            type="text"
+            class="underline-input font-sm bold w-100 mt-4" 
+            name="email"
+            value="{{prevForm.email}}"
+            placeholder="Email Address"
+            required />
+
+        <input 
+            type="password" 
+            class="underline-input font-sm bold w-100 mt-4" 
+            name="password"
+            placeholder="Password"
+            required />
+
+        <div class="mt-5">
+            <button class="button-solid lg" type="submit">Sign Up Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
