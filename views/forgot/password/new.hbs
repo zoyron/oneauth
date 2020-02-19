@@ -1,28 +1,39 @@
-<div class="row no-gutters work-area">
-	<div class="col-5 b-right py-5">
-	</div>
-	<div class="col-7 py-5 px-5">
-		<div class="tab-nav-underline w-100 justify-content-start">
-			<div class="tab active px-0 font-md extra-bold">Reset Password</div>
-		</div>
+{{!< centercolumn}}
+    <div class="offset-md-4 col-md-8 col-lg-7 c-profile">
+        <div class="card">
+            <div class="details">
+                <div class="flex-row justify-content-between">
+                    <h1 class="heading-u-red">New Password</h1>
+                </div>
+            </div>
+            <div class="attributes">
+                <div class="flex-row">
+                    <form action="/forgot/password/new" method="post">
+                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                        {{> error-snippet}}
+                        <div class="attributes">
+                            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                                <div class="label-input col-md-4 col-sm-3">New Password</div>
+                                <input type="password" class="input-text col-8" placeholder="Password" name="password"
+                                    required />
+                            </div>
 
-		<div class="my-4 pt-4">
-			<div class="font-mds dark-grey">Reset your Password below.</div>
-		</div>
+                            <div class="row no-gutters align-items-center justify-content-between detail-row">
+                                <div class="label-input col-md-4 col-sm-3">Re-enter Password</div>
+                                <input type="password" class="input-text col-8" placeholder="Retype Password" name="passwordagain"
+                                    required />
+                                <input name="key" value="{{key}}" type="hidden"> <br>
+                            </div>
+                        </div>
 
-		<form action="/forgot/password/new" method="POST">
-			<input type="hidden" name="_csrf" value="{{csrfToken}}">
-			{{> error-snippet}}
 
-			<input type="password" class="underline-input font-sm bold w-100 my-5" name="password"
-				placeholder="Enter New Password" required />
-
-			<input type="password" class="underline-input font-sm bold w-100 my-5" name="passwordagain"
-				placeholder="Re-Enter New Password" required />
-
-			<input type="key" value="{{key}}" type="hidden">
-
-			<button class="button-solid lg mt-4" type="submit">Reset</button>
-		</form>
-	</div>
-</div>
+                        <div class="row justify-content-end">
+                            <div class="button-solid mt-4">
+                                <button type="submit"> Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

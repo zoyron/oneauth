@@ -1,47 +1,48 @@
-<div class="row no-gutters work-area">
-	<div class="col-5 b-right py-5">
-	</div>
-	<div class="col-7 py-5 px-5">
-		<div class="tab-nav-underline w-100 justify-content-start">
-			<div class="tab active px-0 font-md extra-bold">Login using OTP</div>
-		</div>
+<div class="login-signup">
+    <div class="card c-login">
+        <h1 class="heading-u-red">
+            LOGIN: Step into the world of coding
+        </h1>
 
-		<div class="my-4 pt-4">
-			<div class="font-mds dark-grey mt-1">Step into the world of coding</div>
-		</div>
+        <form method="post" action="/login/otp">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            {{> error-snippet}}
 
-		<form action="/login/otp" method="POST">
-			<input type="hidden" name="_csrf" value="{{csrfToken}}" />
 
-			{{> error-snippet}}
 
-			<div class="input-btn">
-				<input type="text" class="underline-input font-sm bold w-100 my-5" placeholder="Enter Username" name="username"
-					value={{mobile_number}} required readonly />
-			</div>
+            <div class="input-btn">
+                <input type="text" class="input-text icon user-bg" readonly
+                       value= {{mobile_number}} name="username" required>
+            </div>
 
-			<div class="input-btn">
-				<input type="password" class="underline-input font-sm bold w-100 my-5" placeholder="Enter 6 digit OTP"
-					name="password" required />
-			</div>
+            <div class="input-btn">
+                <input type="password" class="input-text icon fingerprint-bg"
+                       placeholder="Enter 6 Digit OTP" name="password" required>
+            </div>
 
-			<div class="mt-5">
-				<button class="button-solid lg" type="submit">Login</button>
-				<button class="font-sm salmon semi-bold ml-3" type="submit" form="second">
-					Resend OTP
-				</button>
-			</div>
+            <div class="row">
+                <button class="button-solid lg" type="submit"> LOGIN</button>
+                <button class="button-solid lg" type="submit" form="second"> Resend OTP</button>
+            </div>
 
-			<div class="mt-4 font-mds dark-grey bold">
-				OTP is valid for only 10 minutes.
-			</div>
-		</form>
+            <div>
+                <h4>OTP is valid only for 10 minutes.</h4>
+            </div>
+        </form>
 
-		<form action="/login/otp/resend" id="second" method="POST">
-			<input type="hidden" name="_csrf" value="{{csrfToken}}">
-			<div class="input_btn">
-				<input type="hidden" value="{{mobile_number}}" name="username" readonly required />
-			</div>
-		</form>
-	</div>
+        <form method="post" action="/login/otp/resend" id="second">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+            <div class="input-btn">
+                <input type="hidden" class="input-text icon user-bg" readonly
+                       value= {{mobile_number}} name="username" required>
+            </div>
+
+        </form>
+
+
+    </div>
 </div>
+
+
+

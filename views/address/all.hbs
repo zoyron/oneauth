@@ -1,43 +1,65 @@
-<div class="row no-gutters work-area">
-  {{> side-nav}}
-  <div class="col-md-9 py-5 work-area__main-area">
-    <div class="row no-gutters align-items-center justify-content-between">
-      <div class="col-4">
-        <div class="tab-nav-underline w-100 justify-content-start">
-          <div class="tab active px-0 font-md extra-bold">My Addresses</div>
+{{!< centercolumn}}
+{{> error-snippet}}
+
+<div class="offset-md-4 col-md-8 c-address-page">
+  <div class="card">
+    <div class="flex-row justify-content-between">
+      <h1 class="heading-u-red">My Addresses</h1>
+        <div class="button-solid align-self-start">
+          <a class="white" href="/address/add">
+            <button>+ Add New Address</button>
+          </a>
         </div>
       </div>
-      <a href="/address/add" class="button-solid lg">Add Address</a>
-    </div>
-
-    {{> error-snippet}}
-
-    <div class="row mt-5">
-      {{#each addresses as |address index|}}
-        <div class="col-6 mb-5">
-          <div class="border-card p-5 position-relative">
-            <h6 class="bold card-tag salmon pr-2">
-              {{address.label}}
-            </h6>
-            <h5 class="bold mb-3">{{address.first_name}} {{address.last_name}}</h5>
-            <div>
-              <i class="far fa-envelope fa-lg"></i>
-              <span class="pl-3">{{address.email}}</span>
-            </div>
-            <div class="mt-3">
-              <i class="fas fa-phone fa-lg"></i>
-              <span class="pl-3">{{address.mobile_number}}</span>
-            </div>
-            <div class="my-4 grey">
-              {{address.street_address}} Near {{address.landmark}}, {{address.city}}<br> {{address.state.name}}: {{address.pincode}}
-              <br>{{address.country.name}}
-            </div>
-            <div class="semi-bold">
-              <a href="/address/{{address.id}}/edit" class="salmon">Edit Address</a>
-            </div>
-          </div>
+      <div class="attributes">
+        <div class="row justify-content-between">
+          {{#each addresses as |address index|}}
+            <div class="border-card">
+              <a href="/address/{{address.id}}">
+                <div class="address-row heading red">{{address.label}}</div>
+                  <div class="address-row heading">
+                      {{address.first_name}} {{address.last_name}} {{address.email}} |({{address.dial_code}}){{address.mobile_number}}
+                      {{#if address.whatsapp_number}}
+                        | {{address.whatsapp_number}}
+                      {{/if}}
+                </div>
+                <div class="address-row grey">
+                  {{address.street_address}} Near {{address.landmark}}, {{address.city}}<br> {{address.state.name}}: {{address.pincode}}
+                    <br>{{address.country.name}}
+                </div>
+              </a>
+                <div class="row justify-content-between button-row align-items-center">
+                  <div class="grey">
+                    <button class="removeAddress" id={{address.id}}>Remove Address  <i class="far fa-window-close" id={{address.id}}></i></button>
+                  </div>
+                  <a href="/address/{{address.id}}/edit">
+                    <div class="button-dashed">
+                      <button>Edit Address</button>
+                    </div>
+                  </a>
+                </div>
+              </div>
+          {{/each}}
         </div>
-      {{/each}}
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  $(function() {
+    $(".removeAddress").click(function(event) {
+      swal({
+        title: "Delete Address",
+        text: "Are you sure you want to this address?",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          window.location.href = `/address/${event.target.id}/delete`;
+        }
+      });
+    })
+  })
+</script>

@@ -1,89 +1,133 @@
-<div class="row no-gutters work-area">
-  {{> side-nav}}
-  <div class="col-md-9 py-5 work-area__main-area">
-    <div class="tab-nav-underline w-100 justify-content-start">
-      <div class="tab active px-0 font-md extra-bold">Edit Client {{client.id}}</div>
+{{!< centercolumn}}
+
+<div class="offset-md-4 col-md-8 c-client-add">
+    <div class="card">
+        <h1 class="heading-u-red">Edit Details for {{client.id}}</h1>
+        <div class="attributes d-flex flex-column">
+            <form method="post" action="/api/clients/edit/{{client.id}}">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                {{> error-snippet}}
+                <div class="row justify-content-between">
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Client Name</div>
+                        <input type="text" class="input-text col-8" placeholder="Client Name" name="clientname" value="{{client.name}}"/>
+                    </div>
+
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Domain</div>
+                        <input type="text" class="input-text col-8" placeholder="Domains" name="domain" value="{{client.clientDomains}}"/>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between">
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">CallBack Url</div>
+                        <input type="text" class="input-text col-8" placeholder="Callback URL" name="callback" value="{{client.clientCallbacks}}"/>
+                    </div>
+
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Default Url</div>
+                        <input type="text" class="input-text col-8" placeholder="Default URL" name="defaulturl" value="{{client.clientdefaultURL}}"/>
+                    </div>
+                </div>
+
+                <div class="row no-gutters align-items-center justify-content-between detail-row">
+                    <div class="label-input col-md-4 col-sm-3">Webhook Url</div>
+                    <input type="url" class="input-text col-8" placeholder="Webhook URL" name="webhookurl" value="{{client.webhookURL}}"/>
+                </div>
+
+                <div class="row no-gutters align-items-center justify-content-between detail-row">
+                    <div class="label-input col-md-4 col-sm-3">Android OTP Hash</div>
+                    <input type="text" maxlength="11" class="input-text col-8" placeholder="OTP Hash for Android" name="androidOTPHash" value="{{client.androidOTPHash}}"/>
+                </div>
+                {{#if client.trusted}}
+                {{#if client.webhookURL}}
+                Manage Rights:
+                    <div class="row align-items-center justify-content-between pt-3">
+                        <div class="label-input col-md-4 col-sm-3">Users</div>
+                        <div class="col-8 row justify-content-between">
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.cUser}}checked{{/if}} type="checkbox" name="event_c_user" value="1">
+                                CREATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.uUser}}checked{{/if}} type="checkbox" name="event_u_user" value="1">
+                                UPDATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.dUser}}checked{{/if}} type="checkbox" name="event_d_user" value="1">
+                                DELETE
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-between pt-3">
+                        <div class="label-input col-md-4 col-sm-3">Demographics</div>
+                        <div class="col-8 row justify-content-between">
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.cDemographic}}checked{{/if}} type="checkbox" name="event_c_demographics" value="1">
+                                CREATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.uDemographic}}checked{{/if}} type="checkbox" name="event_u_demographics" value="1">
+                                UPDATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.dDemographic}}checked{{/if}} type="checkbox" name="event_d_demographics" value="1">
+                                DELETE
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-between pt-3">
+                        <div class="label-input col-md-4 col-sm-3">Addresses</div>
+                        <div class="col-8 row justify-content-between">
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.cAddress}}checked{{/if}} type="checkbox" name="event_c_address" value="1">
+                                CREATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.uAddress}}checked{{/if}} type="checkbox" name="event_u_address" value="1">
+                                UPDATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.dAddress}}checked{{/if}} type="checkbox" name="event_d_address" value="1">
+                                DELETE
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-between pt-3">
+                        <div class="label-input col-md-4 col-sm-3">Clients</div>
+                        <div class="col-8 row justify-content-between">
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.cClient}}checked{{/if}} type="checkbox" name="event_c_client" value="1">
+                                CREATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.uClient}}checked{{/if}} type="checkbox" name="event_u_client" value="1">
+                                UPDATE
+                            </span>
+                            <span>
+                                <input class="input-checkbox" {{#if event_subscription.dClient}}checked{{/if}} type="checkbox" name="event_d_client" value="1">
+                                DELETE
+                            </span>
+                        </div>
+                    </div>
+                {{/if}}
+                {{/if}}
+
+                {{#ifeq val=userRole expected="admin"}}
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Trusted Client</div>
+                        <input type="checkbox" class="input-checkbox col-7" placeholder="Default URL" name="trustedClient" {{#if client.trusted}}checked{{/if}}/>
+                    </div>
+                {{/ifeq}}
+
+                <div class="row justify-content-end">
+                    <div class="button-solid">
+                        <button type="submit">SAVE CHANGES</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
-
-    <form action="/api/clients/edit/{{client.id}}" method="post">
-      <input type="hidden" name="_csrf" value="{{csrfToken}}">
-      {{> error-snippet}}
-      <div class="row">
-        <div class="col-md-6 mt-5">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <label for="addtype" class="font-sm">Client Name</label>
-            </div>
-            <div class="col-8">
-              <input type="text" name="clientname" value="{{client.name}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Client Name">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mt-5">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <label for="addtype" class="font-sm">Domain</label>
-            </div>
-            <div class="col-8">
-              <input type="text" name="domain" value="{{client.clientDomains}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Domain">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mt-5">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <label for="addtype" class="font-sm">Callback URL</label>
-            </div>
-            <div class="col-8">
-              <input type="text" name="callback" value="{{client.clientCallbacks}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Callback URL">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mt-5">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <label for="addtype" class="font-sm">Default URL</label>
-            </div>
-            <div class="col-8">
-              <input type="text" name="defaulturl" value="{{client.clientdefaultURL}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Default URL">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mt-5">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <label class="font-sm">Android OTP Hash</label>
-            </div>
-            <div class="col-8">
-              <input type="text" maxlength="11" class="underline-input pb-3 font-sm bold w-100" placeholder="OTP Hash for Android" name="androidOTPHash" value="{{client.androidOTPHash}}"/>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mt-5">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <label for="addtype" class="font-sm">Webhook URL</label>
-            </div>
-            <div class="col-8">
-              <input type="text" name="webhookurl" value="{{client.webhookURL}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Webhook URL">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-5">
-        <button class="button-solid lg">Save Client</button>
-        <span class="font-sm ml-4"><a href="#" class="dark-grey">Reset</a></span>
-      </div>
-    </form>
-  </div>
 </div>

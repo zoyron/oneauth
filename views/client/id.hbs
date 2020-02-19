@@ -1,93 +1,70 @@
-<div class="row no-gutters work-area">
-  {{> side-nav}}
-  <div class="col-md-9 py-5 work-area__main-area">
-    <div class="row no-gutters align-items-center justify-content-between">
-      <div class="col-4">
-        <div class="tab-nav-underline w-100 justify-content-start">
-          <div class="tab active px-0 font-md extra-bold">Client {{client.name}}</div>
-        </div>
+{{!< centercolumn}}
+<div class="offset-md-4 col-md-8 c-client-add">
+    <div class="card">
+        <h1 class="heading-u-red">Details for {{client.name}}</h1>
+            <div class="attributes d-flex flex-column">
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Client Name</div>
+                        <input type="text" class="input-text col-8" value="{{client.name}}" disabled/>
+                    </div>
+                <div class="row justify-content-between">
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Client ID</div>
+                        <input type="text" class="input-text col-8" value="{{client.id}}" disabled/>
+                    </div>
+
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Client Secret</div>
+                        <input type="text" class="input-text col-8" value="{{client.secret}}" disabled/>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between">
+                  {{#each client.domain as |domain|}}
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Domain</div>
+                        <input type="text" class="input-text col-8" value="{{domain}}" disabled/>
+                    </div>
+                  {{/each}}
+                </div>
+
+                <div class="row justify-content-between">
+                  {{#each client.callbackURL as |callback|}}
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">CallBack Url</div>
+                        <input type="text" class="input-text col-8" value="{{callback}}" disabled/>
+                    </div>
+                  {{/each}}
+                </div>
+
+                <div class="row justify-content-between">
+                  <div class="row no-gutters align-items-center justify-content-between detail-row">
+                      <div class="label-input col-md-4 col-sm-3">Default Url</div>
+                      <input type="text" class="input-text col-8" value="{{client.defaultURL}}" disabled/>
+                  </div>
+
+                  {{#ifeq val=userRole expected="admin"}}
+                      <div class="row no-gutters align-items-center justify-content-between detail-row">
+                          <div class="label-input col-md-4 col-sm-3">Trusted Client</div>
+                          <input type="checkbox" class="input-checkbox col-7" {{#if client.trusted}} checked {{/if}} disabled/>
+                      </div>
+                  {{/ifeq}}
+                </div>
+
+                <br>
+                <div class="row justify-content-end">
+                  <div class="reset-button mr-5">
+                    <a class="grey" href="/users/me/clients/">
+                      <button>BACK </button>
+                    </a>
+                  </div>
+
+                  <div class="button-solid">
+                    <a class="white" href="/clients/{{client.id}}/edit/">
+                      <button>EDIT CLIENT</button>
+                    </a>
+                  </div>
+              </div>
+          </div>
       </div>
-      <a href="/clients/{{client.id}}/edit" class="button-solid lg">
-        Edit Client
-      </a>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Client ID</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold word-wrap">{{client.id}}</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Client Secret</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold word-wrap">{{client.secret}}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Default URL</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold word-wrap">{{client.defaultURL}}</span>
-          </div>
-        </div>
-      </div>
-      {{#ifeq val=userRole expected="admin"}}
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Trusted Client</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold word-wrap">{{client.trusted}}</span>
-          </div>
-        </div>
-      </div>
-      {{/ifeq}}
-    </div>
-    <div class="row">
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Domain</span>
-          </div>
-          <div class="col-8">
-            {{#each client.domain as |domain index|}}
-              <span class="font-sm bold word-wrap">
-                {{#if index}} , {{/if}}
-                {{domain}}
-              </span>
-            {{/each}}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Callback URL</span>
-          </div>
-          <div class="col-8">
-            {{#each client.callbackURL as |callback index|}}
-              <span class="font-sm bold word-wrap">
-                {{#if index}} , {{/if}}
-                {{callback}}
-              </span>
-            {{/each}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
