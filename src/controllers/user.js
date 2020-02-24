@@ -1,4 +1,5 @@
 const { User, UserLocal, Demographic, College, Branch, Address, WhitelistDomains} = require("../db/models").models;
+const db = require('../db/models')
 const sequelize = require('sequelize');
 const Raven = require('raven');
 
@@ -191,6 +192,11 @@ function generateFilter(filterArgs) {
 
 }
 
+async function clearSessionForUser (userId) {
+    return db.query(`DELETE FROM SESSIONS WHERE "userId" = ${+userId}`)
+}
+
+
 module.exports = {
     findAllUsers,
     findUserById,
@@ -200,5 +206,6 @@ module.exports = {
     updateUserByParams,
     findUserForTrustedClient,
     findAllUsersWithFilter,
-    createUserWithoutPassword
+    createUserWithoutPassword,
+    clearSessionForUser
 };

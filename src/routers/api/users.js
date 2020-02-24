@@ -23,7 +23,8 @@ const {hasNull} = require('../../utils/nullCheck')
 const {
     findUserByParams,
     createUserLocal,
-    createUserWithoutPassword
+    createUserWithoutPassword,
+    clearSessionForUser
 } = require('../../controllers/user')
 const {
     createVerifyEmailEntry
@@ -178,6 +179,11 @@ router.get('/me/logout',
         }
     }
 )
+
+router.get('/:id/logoutAll', passport.authenticate('basic', {session: false}), async function (req, res) {
+    await clearSessionForUser(req.params.id)
+    res.sendStatus(204)
+})
 
 router.get('/:id',
     passport.authenticate('bearer', {session: false}),
