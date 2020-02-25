@@ -1,5 +1,5 @@
 const { User, UserLocal, Demographic, College, Branch, Address, WhitelistDomains} = require("../db/models").models;
-const db = require('../db/models')
+const { db }= require('../db/models')
 const sequelize = require('sequelize');
 const Raven = require('raven');
 

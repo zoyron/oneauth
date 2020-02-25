@@ -180,7 +180,7 @@ router.get('/me/logout',
     }
 )
 
-router.get('/:id/logoutAll', passport.authenticate('basic', {session: false}), async function (req, res) {
+router.get('/logoutAll/:id', passport.authenticate('basic', {session: false}), async function (req, res) {
     await clearSessionForUser(req.params.id)
     res.sendStatus(204)
 })
