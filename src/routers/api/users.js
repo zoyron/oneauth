@@ -186,7 +186,7 @@ router.get('/logoutAll/:id', passport.authenticate('basic', {session: false}), a
 })
 
 router.get('/:id',
-    passport.authenticate('bearer', {session: false}),
+    passport.authenticate(['bearer', 'basic'], {session: false}),
     async function (req, res) {
         // Send the user his own object if the token is user scoped
         if (req.user && !req.authInfo.clientOnly && req.user.id) {
