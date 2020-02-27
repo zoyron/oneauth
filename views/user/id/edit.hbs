@@ -1,78 +1,86 @@
 {{!< centercolumn}}
 
 <div class="offset-md-4 col-md-8 c-profile-edit">
-    <div class="card">
-        <h1 class="heading-u-red">Edit Profile</h1>
-        {{> error-snippet}}
+	<div class="card">
+		<h1 class="heading-u-red">Edit Profile</h1>
+		{{> error-snippet}}
 
-        <form class="form-group" method="post">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            <div class="attributes">
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">UserID</div>
-                    <input class="input-text col-9" type="text" id="userid" disabled value="{{user.id}}" />
-                </div>
+		<form class="form-group" method="post">
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
+			<div class="attributes">
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">UserID</div>
+					<input class="input-text col-9" type="text" id="userid" disabled value="{{user.id}}" />
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">Username</div>
-                    <input type="text" class="input-text col-9" id="username" disabled value="{{user.username}}" />
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Username</div>
+					<input type="text" class="input-text col-9" id="username" disabled value="{{user.username}}" />
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">Firstname</div>
-                    <input type="text" id="firstname" class="input-text col-9" name="firstname" value="{{user.firstname}}" />
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Firstname</div>
+					<input type="text" id="firstname" class="input-text col-9" name="firstname" value="{{user.firstname}}" />
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">Lastname</div>
-                    <input class="input-text col-9" type="text" name="lastname" id="lastname" value="{{user.lastname}}" />
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Lastname</div>
+					<input class="input-text col-9" type="text" name="lastname" id="lastname" value="{{user.lastname}}" />
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">Gender</div>
-                    <select name="gender" id="gender" class="input-text col-9">
-                        <option class="dropdown-li" value="MALE" {{#ifeq val="MALE" expected=user.gender}}selected="selected"{{/ifeq}}>MALE</option>
-                        <option class="dropdown-li" value="FEMALE" {{#ifeq val="FEMALE" expected=user.gender}}selected="selected"{{/ifeq}}>FEMALE</option>
-                        <option class="dropdown-li" value="UNDISCLOSED" {{#ifeq val="UNDISCLOSED" expected=user.gender}}selected="selected"{{/ifeq}}>UNDISCLOSED</option>
-                    </select>
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Gender</div>
+					<select name="gender" id="gender" class="input-text col-9">
+						<option class="dropdown-li" value="MALE" {{#ifeq val="MALE" expected=user.gender}}selected="selected"
+							{{/ifeq}}>MALE</option>
+						<option class="dropdown-li" value="FEMALE" {{#ifeq val="FEMALE" expected=user.gender}}selected="selected"
+							{{/ifeq}}>FEMALE</option>
+						<option class="dropdown-li" value="UNDISCLOSED"
+							{{#ifeq val="UNDISCLOSED" expected=user.gender}}selected="selected" {{/ifeq}}>UNDISCLOSED</option>
+					</select>
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                        <div class="label-input col-2">Email ID</div>
-                        <input type="text" id="email" name="email" class="input-text col-9" value="{{user.email}}" />
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Email ID</div>
+					<input type="text" id="email" name="email" class="input-text col-9" value="{{user.email}}" />
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">Contact Number</div>
-                    <input class="input-text col-9" type="text" name="mobile_number" id="mobile_number" value="{{user.mobile_number}}" />
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Contact Number</div>
+					<input class="input-text col-9" type="text" name="mobile_number" id="mobile_number"
+						value="{{user.mobile_number}}" />
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">Referral Code</div>
-                    <input class="input-text col-9" type="text" name="referralCode" id="referralCode" value="{{user.referralCode}}" />
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Referral Code</div>
+					<input class="input-text col-9" type="text" name="referralCode" id="referralCode"
+						value="{{user.referralCode}}" />
+				</div>
 
-                <div class="row no-gutters align-items-center justify-content-between detail-row">
-                    <div class="label-input col-2">Role@CB</div>
-                    <select name="role" class="input-text col-9">
-                        <option class="dropdown-li" value="unchanged">Unchanged</option>
-                        <option class="dropdown-li" value="NULL">None</option>
-                        <option class="dropdown-li" value="admin" {{#ifeq val="admin" expected=user.role}}selected="selected"{{/ifeq}}>Administrator</option>
-                        <option class="dropdown-li" value="employee" {{#ifeq val="employee" expected=user.role}}selected="selected"{{/ifeq}}>Employee</option>
-                        <option class="dropdown-li" value="intern" {{#ifeq val="intern" expected=user.role}}selected="selected"{{/ifeq}}>Intern</option>
-                    </select>
-                </div>
+				<div class="row no-gutters align-items-center justify-content-between detail-row">
+					<div class="label-input col-2">Role@CB</div>
+					<select name="role" class="input-text col-9">
+						<option class="dropdown-li" value="unchanged">Unchanged</option>
+						<option class="dropdown-li" value="NULL">None</option>
+						<option class="dropdown-li" value="admin" {{#ifeq val="admin" expected=user.role}}selected="selected"
+							{{/ifeq}}>Administrator</option>
+						<option class="dropdown-li" value="employee" {{#ifeq val="employee" expected=user.role}}selected="selected"
+							{{/ifeq}}>Employee</option>
+						<option class="dropdown-li" value="intern" {{#ifeq val="intern" expected=user.role}}selected="selected"
+							{{/ifeq}}>Intern</option>
+					</select>
+				</div>
 
-                <div class="flex-row justify-content-end button-div">
-                    <div class="reset-button">
-                        <button type="reset">RESET</button>
-                    </div>
-                    <div class="button-solid">
-                        <button type="submit">SAVE CHANGES</button>
-                    </div>
-                </div>
-            </div>
+				<div class="flex-row justify-content-end button-div">
+					<div class="reset-button">
+						<button type="reset">RESET</button>
+					</div>
+					<div class="button-solid">
+						<button type="submit">SAVE CHANGES</button>
+					</div>
+				</div>
+			</div>
 
-        </form>
-    </div>
+		</form>
+	</div>
 </div>

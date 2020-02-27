@@ -1,5 +1,5 @@
 <div class="col-3 border-right py-5 d-md-block d-none">
-  <div class="img-ring p-1 mx-auto">
+  <div class="img-ring p-1 mx-auto mb-4">
     {{#if userPhoto}}
       <img class="round img" src="{{userPhoto}}">
     {{else}}
@@ -7,18 +7,18 @@
     {{/if}}
   </div>
   <div class="px-5 mx-auto work-area__side-menu">
-    <h4 class="bold pt-3 pb-4">
+    <h4 class="bold py-4">
       {{#if userName}}
         Hi, {{userName}}
       {{else}}
         Hi, Guest User
       {{/if}}
     </h4>
-    <div class="font-md py-4"><a href="/users/me" class="hover-pink {{#ifeq  val=currentUrl expected="users"}}active{{/ifeq}}">My Profile</a></div>
-    <div class="font-md py-4"><a href="/address" class="hover-pink {{#ifeq  val=currentUrl expected="address"}}active{{/ifeq}}">My Addresses</a></div>
-    <div class="font-md py-4"><a href="/users/me/organisations" class="hover-pink {{#ifeq  val=currentUrl expected="organisations"}}active{{/ifeq}}">My Organizations</a></div>
-    <div class="font-md py-4"><a href="/apps" class="hover-pink {{#ifeq  val=currentUrl expected="apps"}}active{{/ifeq}}">My Applications</a></div>
-    <div class="font-md py-4"><a href="/users/me/clients" class="hover-pink {{#ifeq  val=currentUrl expected="clients"}}active{{/ifeq}}">My Clients</a></div>
-    <div class="font-md py-4"><a href="/logout" class="hover-pink">Logout</a></div>
+    <div class="font-md py-2"><a href="/users/me" class="hover-pink {{#ifeq  val=currentUrl expected="users"}}active{{/ifeq}}">My Profile</a></div>
+    <div class="font-md py-2"><a href="/address" class="hover-pink {{#ifeq  val=currentUrl expected="address"}}active{{/ifeq}}">My Addresses</a></div>
+    <div class="font-md py-2"><a href="/users/me/organisations" class="hover-pink {{#ifeq  val=currentUrl expected="organisations"}}active{{/ifeq}}">My Organizations</a></div>
+    <div class="font-md py-2"><a href="/apps" class="hover-pink {{#ifeq  val=currentUrl expected="apps"}}active{{/ifeq}}">My Applications</a></div>
+    <div class="font-md py-2"><a href="/users/me/clients" class="hover-pink {{#ifeq  val=currentUrl expected="clients"}}active{{/ifeq}}">My Clients</a></div>
+    <div class="font-md py-2"><a href="/logout" class="hover-pink">Logout</a></div>
   </div>
 </div>
