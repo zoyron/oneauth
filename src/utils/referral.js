@@ -3,16 +3,13 @@
  */
 
 const generateReferralCode = function(username) {
-    if (!username) {
-        return 'username is required to generate referral'
-    }
-    let result = '';
+    let result = (typeof username === 'string') ? username.substring(0, 3).toUpperCase() : '';
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let charactersLength = characters.length;
-    for (let i = 0; i < 3; i++) {
+    while(result.length < 6) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    return username.substring(0, 3).toUpperCase() + result;
+    return result;
 }
 
 const validateReferralCode = function(code) {
