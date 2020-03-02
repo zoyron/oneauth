@@ -123,7 +123,7 @@ async function updateUserByParams(whereParams, newValues) {
 
 function findUserForTrustedClient(trustedClient, userId) {
     return User.findOne({
-        attributes: trustedClient ? undefined : ["id", "username", "photo"],
+        attributes: trustedClient ? undefined : ["id", "username", "photo", "graduationYear"],
         where: { id: userId },
         include: {
             model: Demographic,
