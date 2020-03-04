@@ -12,10 +12,10 @@
 
     <div class="row mt-5">
       {{#each clients as |client|}}
-        <div class="col-6 mb-5">
-          <div class="border-card p-5 position-relative">
+        <div class="col-lg-6 col-md-12 col-sm-6 mb-5">
+          <div class="border-card p-xl-5 p-4 position-relative">
             <div class="row justify-content-between no-gutters">
-              <div class="col-md-6">
+              <div class="mr-3">
                 <h5 class="bold mb-4">{{client.name}}</h5>
               </div>
               <a href="/clients/{{client.id}}/edit" class="salmon semi-bold">
@@ -27,7 +27,7 @@
                 <div>ID</div>
               </div>
               <div class="col-7">
-                <div class="med-grey">{{client.id}}</div>
+                <div class="med-grey text-ellipses">{{client.id}}</div>
               </div>
             </div>
             <div class="row mt-3">
@@ -35,7 +35,7 @@
                 <div>OTP Hash:</div>
               </div>
               <div class="col-7">
-                <div class="med-grey">{{client.androidOTPHash}}</div>
+                <div class="med-grey text-ellipses">{{client.androidOTPHash}}</div>
               </div>
             </div>
             <div class="row mt-3">
@@ -43,7 +43,7 @@
                 <div>Callback URL</div>
               </div>
               <div class="col-7">
-                <div class="med-grey">{{client.callbackURL}}</div>
+                <div class="med-grey text-ellipses">{{client.callbackURL}}</div>
               </div>
             </div>
             <div class="row mt-3">
@@ -51,7 +51,7 @@
                 <div>Domain</div>
               </div>
               <div class="col-7">
-                <div class="med-grey">{{client.domain}}</div>
+                <div class="med-grey text-ellipses">{{client.domain}}</div>
               </div>
             </div>
             <div class="row mt-3">
@@ -59,7 +59,7 @@
                 <div>Webhook URL</div>
               </div>
               <div class="col-7">
-                <div class="med-grey">{{client.webhookURL}}</div>
+                <div class="med-grey text-ellipses">{{client.webhookURL}}</div>
               </div>
             </div>
             <div class="row mt-3">
@@ -67,7 +67,7 @@
                 <div>Secret</div>
               </div>
               <div class="col-7">
-                <div class="med-grey word-wrap">{{client.secret}}</div>
+                <div class="med-grey text-ellipses word-wrap">{{client.secret}}</div>
               </div>
             </div>
           </div>

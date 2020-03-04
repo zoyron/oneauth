@@ -15,59 +15,74 @@
       </div>
       <div class="col-md-9 d-none d-md-block">
         <ul class="clear-list">
-          <li class="px-4 float-left"><a href="#" class="hover-pink active">Classroom Courses</a></li>
-          <li class="px-4 float-left"><a href="#" class="hover-pink">Online Courses</a></li>
-          <li class="px-4 float-left"><a href="#" class="hover-pink">Hiring Blocks</a></li>
-          <li class="px-4 float-left"><a href="#" class="hover-pink">Hacker Blocks</a></li>
+          <li class="px-4 float-left"><a href="https://codingblocks.com/classroom-courses/"
+              class="hover-pink active">Classroom Courses</a></li>
+          <li class="px-4 float-left"><a href="https://online.codingblocks.com/" class="hover-pink">Online Courses</a>
+          </li>
+          <li class="px-4 float-left"><a href="https://hire.codingblocks.com/applicants" class="hover-pink">Hiring
+              Blocks</a></li>
+          <li class="px-4 float-left"><a href="https://hack.codingblocks.com/" class="hover-pink">Hacker Blocks</a></li>
         </ul>
       </div>
     </div>
   </div>
   <div class="col-3 border-right hamburger-nav hamburger-nav--hidden overflow-y-auto no-scrollbar" id="hamburger-nav">
-    <div class="d-flex py-4 justify-content-between align-items-center hamburger-nav__top-bar z-pos">
+    <div class="d-flex py-4 justify-content-between align-items-center hamburger-nav__top-bar z-pos border-bottom">
       <img src="/img/account-logo.png" alt="HB" class="hamburger-nav__ham-logo ml-4">
       <button class="mr-4 hamburger-nav__cross pointer" id="hamburger-close">
         <img src="http://minio.codingblocks.com/img/wrong.png" alt="#">
       </button>
     </div>
-    <div class="img-ring p-1 mx-auto mb-4">
+    {{#if user}}
+    <div class="img-ring p-1 mx-auto my-4">
       {{#if userPhoto}}
-        <img class="round img" src="{{userPhoto}}">
+      <img class="round img" src="{{userPhoto}}">
       {{else}}
-        <img class="round img" src="/img/user.svg">
+      <img class="round img" src="/img/user.svg">
       {{/if}}
     </div>
+    {{/if}}
     <div class="px-5 mx-auto work-area__side-menu">
+      {{#if user}}
       <h4 class="bold py-4">
         {{#if userName}}
-          Hi, {{userName}}
+        Hi, {{userName}}
         {{else}}
-          Hi, Guest User
+        Hi, Guest User
         {{/if}}
       </h4>
-      <div class="font-md py-2"><a href="/users/me" class="hover-pink {{#ifeq  val=currentUrl expected="users"}}active{{/ifeq}}">My Profile</a></div>
-      <div class="font-md py-2"><a href="/address" class="hover-pink {{#ifeq  val=currentUrl expected="address"}}active{{/ifeq}}">My Addresses</a></div>
-      <div class="font-md py-2"><a href="/users/me/organisations" class="hover-pink {{#ifeq  val=currentUrl expected="organisations"}}active{{/ifeq}}">My Organizations</a></div>
-      <div class="font-md py-2"><a href="/apps" class="hover-pink {{#ifeq  val=currentUrl expected="apps"}}active{{/ifeq}}">My Applications</a></div>
-      <div class="font-md py-2"><a href="/users/me/clients" class="hover-pink {{#ifeq  val=currentUrl expected="clients"}}active{{/ifeq}}">My Clients</a></div>
-      <div class="font-md py-2"><a href="/logout" class="hover-pink">Logout</a></div>
+      <div class="font-md py-3"><a href="/users/me"
+          class="hover-pink {{#ifeq  val=currentUrl expected="users"}}active{{/ifeq}}">My Profile</a></div>
+      <div class="font-md py-3"><a href="/address"
+          class="hover-pink {{#ifeq  val=currentUrl expected="address"}}active{{/ifeq}}">My Addresses</a></div>
+      <div class="font-md py-3"><a href="/users/me/organisations"
+          class="hover-pink {{#ifeq  val=currentUrl expected="organisations"}}active{{/ifeq}}">My Organizations</a>
+      </div>
+      <div class="font-md py-3"><a href="/apps"
+          class="hover-pink {{#ifeq  val=currentUrl expected="apps"}}active{{/ifeq}}">My Applications</a></div>
+      <div class="font-md py-3"><a href="/users/me/clients"
+          class="hover-pink {{#ifeq  val=currentUrl expected="clients"}}active{{/ifeq}}">My Clients</a></div>
+      <div class="font-md py-3"><a href="/logout" class="hover-pink">Logout</a></div>
 
       <div class="divider-h my-4"></div>
+      {{/if}}
 
-      <div class="font-md py-2"><a href="#" class="hover-pink">Classroom Courses</a></div>
-      <div class="font-md py-2"><a href="#" class="hover-pink">Online Courses</a></div>
-      <div class="font-md py-2"><a href="#" class="hover-pink">Hacker Blocks</a></div>
-      <div class="font-md py-2"><a href="#" class="hover-pink">Hiring Blocks</a></div>
+      <div class="font-md py-3 {{#if user}}{{else}}mt-4{{/if}}"><a href="https://codingblocks.com/classroom-courses/" class="hover-pink">Classroom
+          Courses</a></div>
+      <div class="font-md py-3"><a href="https://online.codingblocks.com/" class="hover-pink">Online Courses</a></div>
+      <div class="font-md py-3"><a href="https://hire.codingblocks.com/applicants" class="hover-pink">Hacker Blocks</a>
+      </div>
+      <div class="font-md py-3"><a href="https://hack.codingblocks.com/" class="hover-pink">Hiring Blocks</a></div>
     </div>
   </div>
 </div>
 
 <script>
   $(document).ready(() => {
-    $("#hamburger-toggle").click(function() {
+    $("#hamburger-toggle").click(function () {
       $("#hamburger-nav").toggleClass("hamburger-nav--hidden")
     })
-    $("#hamburger-close").click(function() {
+    $("#hamburger-close").click(function () {
       $("#hamburger-nav").toggleClass("hamburger-nav--hidden")
     })
   })

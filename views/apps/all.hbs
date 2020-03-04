@@ -5,19 +5,19 @@
       <div class="tab active px-0 font-md extra-bold">My Applications</div>
     </div>
 
-    <div class="border-card p-5 mt-5">
+    <div class="border-card p-xl-5 p-4 mt-5">
       {{#each tokens as |token|}}
-        <div class="row no-gutters justify-content-between align-items-center">
-          <div class="col-md-6">
-            <h5 class="bold">{{token.client.name}}</h5>
-            <div class="card-md mt-1">Connected on {{token.createdAt}}</div>
-          </div>
-          <div>
-            <a href={{token.client.defaultURL}} class="salmon"><span class="semi-bold mr-3">View App</span></a>
-            <a href="/apps/{{token.client.id}}/delete" class="med-grey"><span>Remove App</span></a>
-          </div>
+      <div class="row no-gutters justify-content-between align-items-center">
+        <div class="col-md-6">
+          <h5 class="bold">{{token.client.name}}</h5>
+          <div class="card-md mt-1">Connected on {{token.createdAt}}</div>
         </div>
-        <div class="divider-h my-5"></div>
+        <div>
+          <a href={{token.client.defaultURL}} class="salmon"><span class="semi-bold mr-3">View App</span></a>
+          <a href="/apps/{{token.client.id}}/delete" class="med-grey"><span>Remove App</span></a>
+        </div>
+      </div>
+      <div class="divider-h my-5"></div>
       {{/each}}
     </div>
   </div>
