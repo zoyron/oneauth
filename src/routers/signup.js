@@ -209,6 +209,9 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             label: 'local'
         }, e => {
         })
+        
+        // session flag to identify new signup
+        req.session.isNewSignup = true
 
         // Login after signup automatically
         passport.authenticate('local', {

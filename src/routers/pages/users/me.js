@@ -54,9 +54,19 @@ router.get('/',
       if (!user) {
         res.redirect('/login')
       }
+
+      if (req.session.isNewSignup) {
+        res.render('user/me', {
+          user: user,
+          addSignupTrackerScript: true
+        })
+        return delete req.session.isNewSignup
+      }
+
       return res.render('user/me', {
         user: user
       })
+      
     } catch (error) {
       Raven.captureException(error)
       res.status(500).json({
