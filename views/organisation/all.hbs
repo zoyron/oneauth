@@ -12,15 +12,15 @@
 
       <div class="row mt-5">
         {{#each organisations as |org|}}
-          <div class="col-lg-4 col-md-6 mb-5">
-            <div class="border-card p-5 position-relative">
+          <div class="col-xl-4 col-sm-6 mb-5">
+            <div class="border-card p-4 position-relative">
               <h5 class="bold mb-4">{{org.name}}</h5>
               <div class="row">
                 <div class="col-5">
                   <div>ID</div>
                 </div>
                 <div class="col-7">
-                  <div class="med-grey">{{org.id}}</div>
+                  <div class="med-grey text-ellipses">{{org.id}}</div>
                 </div>
               </div>
               <div class="row mt-3">
@@ -28,7 +28,7 @@
                   <div>Full Name</div>
                 </div>
                 <div class="col-7">
-                  <div class="med-grey">{{org.full_name}}</div>
+                  <div class="med-grey text-ellipses">{{org.full_name}}</div>
                 </div>
               </div>
               <div class="row mt-3">
@@ -36,7 +36,7 @@
                   <div>Domain</div>
                 </div>
                 <div class="col-7">
-                  <div class="med-grey">{{org.domain}}</div>
+                  <div class="med-grey text-ellipses">{{org.domain}}</div>
                 </div>
               </div>
               <div class="row mt-3">
@@ -44,7 +44,7 @@
                   <div>Website</div>
                 </div>
                 <div class="col-7">
-                  <div class="med-grey">{{org.website}}</div>
+                  <div class="med-grey text-ellipses">{{org.website}}</div>
                 </div>
               </div>
               <div class="semi-bold mt-5">

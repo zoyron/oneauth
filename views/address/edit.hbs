@@ -16,51 +16,52 @@
       {{> error-snippet}}
 
       <div class="my-4 row align-items-center">
-        <div class="col-2">
+        <div class="col-md-2 col-4">
           <label for="addtype" class="font-sm">Label</label>
         </div>
-        <div class="col-4">
-          <input type="text" name="label" value="{{address.label}}" class="underline-input pb-3 font-sm bold w-100" placeholder="HOME | OFFICE | OTHER">
+        <div class="col-md-4 col-8">
+          <input type="text" name="label" value="{{address.label}}" class="underline-input pb-3 font-sm bold w-100"
+            placeholder="HOME | OFFICE | OTHER">
         </div>
       </div>
 
       <div class="my-4 divider-h"></div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">First Name</label>
             </div>
             <div class="col-8">
-              <input type="text" name="first_name" value="{{address.first_name}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="First Name">
+              <input type="text" name="first_name" value="{{address.first_name}}"
+                class="underline-input pb-3 font-sm bold w-100" placeholder="First Name">
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Last Name</label>
             </div>
             <div class="col-8">
-              <input type="text" name="last_name" value="{{address.last_name}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Last Name">
+              <input type="text" name="last_name" value="{{address.last_name}}"
+                class="underline-input pb-3 font-sm bold w-100" placeholder="Last Name">
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Mobile</label>
             </div>
             <div class="col-8">
-              <input type="text" name="number" value="{{address.mobile_number}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Mobile Number">
+              <input type="text" name="number" value="{{address.mobile_number}}"
+                class="underline-input pb-3 font-sm bold w-100" placeholder="Mobile Number">
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Email</label>
@@ -71,40 +72,40 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Address</label>
             </div>
             <div class="col-8">
-              <input type="text" name="street_address" value="{{address.street_address}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Address">
+              <input type="text" name="street_address" value="{{address.street_address}}"
+                class="underline-input pb-3 font-sm bold w-100" placeholder="Address">
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Landmark</label>
             </div>
             <div class="col-8">
-              <input type="text" name="landmark" value="{{address.landmark}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Landmark">
+              <input type="text" name="landmark" value="{{address.landmark}}"
+                class="underline-input pb-3 font-sm bold w-100" placeholder="Landmark">
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Pincode</label>
             </div>
             <div class="col-8">
-              <input type="text" name="pincode" value="{{address.pincode}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Pincode">
+              <input type="text" name="pincode" value="{{address.pincode}}"
+                class="underline-input pb-3 font-sm bold w-100" placeholder="Pincode">
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">City</label>
@@ -115,58 +116,67 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">State</label>
             </div>
-            <div class="col-8 select-container">
-              <select name="stateId" class="font-sm bold underline-select" required>
-                {{#each states}}
-                  <option class="py-2" value="{{id}}" {{#ifeq val=id expected=../address.stateId}} selected="selected"{{/ifeq}}>{{name}}</option>
-                {{/each}}
-              </select>
+            <div class="col-8">
+              <div class="select-container">
+                <select name="stateId" class="font-sm bold underline-select" required>
+                  {{#each states}}
+                  <option class="py-2" value="{{id}}" {{#ifeq val=id expected=../address.stateId}} selected="selected"
+                    {{/ifeq}}>{{name}}</option>
+                  {{/each}}
+                </select>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Country</label>
             </div>
-            <div class="col-8 select-container">
-              <select name="countryId" class="font-sm bold underline-select" required>
-                {{#each countries}}
-                  <option class="py-2" value="{{id}}" {{#ifeq val=id expected=../address.countryId}} selected="selected"{{/ifeq}}>{{name}}</option>
-                {{/each}}
-              </select>
+            <div class="col-8">
+              <div class="select-container">
+                <select name="countryId" class="font-sm bold underline-select" required>
+                  {{#each countries}}
+                  <option class="py-2" value="{{id}}" {{#ifeq val=id expected=../address.countryId}} selected="selected"
+                    {{/ifeq}}>{{name}}</option>
+                  {{/each}}
+                </select>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Country Code</label>
             </div>
-            <div class="col-8 select-container">
-              <select name="dial_code" class="font-sm bold underline-select" required>
-                {{#each countries}}
-                  <option class="py-2" value="{{dial_code}}" {{#ifeq val=id expected=../address.dial_code}} selected="selected"{{/ifeq}}>
+            <div class="col-8">
+              <div class="select-container">
+                <select name="dial_code" class="font-sm bold underline-select" required>
+                  {{#each countries}}
+                  <option class="py-2" value="{{dial_code}}" {{#ifeq val=id expected=../address.dial_code}}
+                    selected="selected" {{/ifeq}}>
                     {{name}} ({{dial_code}})
                   </option>
-                {{/each}}
-              </select>
+                  {{/each}}
+                </select>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="my-4 row align-items-center">
             <div class="col-4">
               <label for="addtype" class="font-sm">Whatsapp No.</label>
             </div>
             <div class="col-8">
-              <input type="text" name="whatsapp_number" value="{{address.whatsapp_number}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Whatsapp No.">
+              <input type="text" name="whatsapp_number" value="{{address.whatsapp_number}}"
+                class="underline-input pb-3 font-sm bold w-100" placeholder="Whatsapp No.">
             </div>
           </div>
         </div>
