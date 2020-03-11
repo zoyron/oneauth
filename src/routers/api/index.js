@@ -25,5 +25,7 @@ router.use('/organisations', require('./organisations'))
 router.use('/demographics', require('./demographics'))
 router.use('/signup_check', require('./signupcheck'))
 router.use('/otp', require('./otp'))
+router.use('/colleges', require('./colleges'))
+router.use('/branches', require('./branches'))
 
 module.exports = router
