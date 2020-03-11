@@ -7,8 +7,8 @@
 
     {{> error-snippet}}
 
-    <div class="row align-items-center">
-      <div class="col-lg-2 col-3">
+    <div class="row align-items-center mt-4 no-gutters">
+      <div>
         <div class="img-ring img-ring--profile p-1">
           {{#if user.photo}}
             <img class="round img"
@@ -21,7 +21,7 @@
           {{/if}}
         </div>
       </div>
-      <div class="col-9">
+      <div class="flex-1 ml-4">
         <h5 class="bold mb-1">Hi, {{user.firstname}} {{user.lastname}}</h5>
         <a href="#" class="salmon mt-1">
           <div class="font-sm">Change Profile Picture</div>
