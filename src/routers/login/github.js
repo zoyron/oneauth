@@ -28,6 +28,8 @@ function authnOrAuthzGithub(req, res, next) {
 router.get('/', passport.authenticate('github'))
 
 router.get('/callback', authnOrAuthzGithub, function (req, res, next) {
+    req.session.isNewSignup = true
+
     res.redirect('/users/me')
 })
 
