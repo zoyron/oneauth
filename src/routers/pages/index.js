@@ -20,6 +20,7 @@ router.use(function (req, res, next) {
     res.locals.userId = req.user && req.user.id
     res.locals.userName= req.user && req.user.firstname
     res.locals.userPhoto= req.user && req.user.photo
+    res.locals.user = req.user
     res.locals.title = "Coding Blocks Account"
 
     if(req.url.includes("address")) {
