@@ -159,6 +159,11 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             query.referredBy = userReferredBy ? userReferredBy.get().id : null
         }
 
+        if (req.session.marketingMeta) {
+            console.log(req.session)
+            query.marketing_meta = req.session.marketingMeta
+        }
+
 
         let includes = [{model: models.User, include: [models.Demographic]}]
 
