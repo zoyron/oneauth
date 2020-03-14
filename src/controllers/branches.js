@@ -1,7 +1,7 @@
 const { models } = require('../db/models')
 
 module.exports = {
-  getAllBranches(req, res) {
+  getAllBranches() {
     return models.Branch.findAll()
   }
 }

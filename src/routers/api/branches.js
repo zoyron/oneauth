@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const controller = require('../../controllers/branches')
 
-router.get('/', async (req, res) => {
-  const result = await controller.getAllBranches(req, res)
-  res.json(result)
+router.get('/', (req, res) => {
+  controller.getAllBranches(req).then(result => {
+    return res.json(result)
+  })
 })
 
 module.exports = router

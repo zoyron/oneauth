@@ -1,7 +1,7 @@
 const { models } = require('../db/models')
 
 module.exports = {
-  getAllColleges(req, res) {
+  getAllColleges() {
     return models.College.findAll()
   }
 }
