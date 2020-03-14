@@ -45,6 +45,12 @@ app.use(expresstracer)
 const redirectToHome = function (req, res, next) {
 
     if (req.path == '/') {
+        const { utm_campaign } = req.query
+
+        req.session.marketingMeta = {
+            utm_campaign
+        }
+
         return res.redirect('/users/me')
     }
 

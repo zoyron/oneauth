@@ -53,7 +53,8 @@ const User = db.define('user', {
     referralCode: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:true, allowNull: true},
     referredBy: {type: Sequelize.DataTypes.BIGINT, defaultValue: null, unique:false, allowNull:true},
     graduationYear: {type: Sequelize.DataTypes.SMALLINT, defaultValue: null, unique:false, allowNull:true},
-    apparelGoodiesSize: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:false, allowNull:true}
+    apparelGoodiesSize: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:false, allowNull:true},
+    marketing_meta : {type: Sequelize.DataTypes.JSON, defaultValue: null, unique:false, allowNull:true}
 }, {
     paranoid: true
 })
