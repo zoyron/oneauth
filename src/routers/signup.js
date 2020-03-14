@@ -160,7 +160,6 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         }
 
         if (req.session.marketingMeta) {
-            console.log(req.session)
             query.marketing_meta = req.session.marketingMeta
         }
 
