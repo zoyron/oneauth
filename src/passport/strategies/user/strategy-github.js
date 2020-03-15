@@ -110,7 +110,8 @@ module.exports = new GithubStrategy({
                         lastname: profileJson.name ? profileJson.name.split(' ').pop() : profileJson.login,
                         email: profileJson.email,
                         referralCode: generateReferralCode(profileJson.email).toUpperCase(),
-                        photo: profileJson.avatar_url
+                        photo: profileJson.avatar_url,
+                        marketing_meta: req.session.marketingMeta
                     }
                 }, {
                     include: [models.User],

@@ -124,7 +124,8 @@ module.exports = new FacebookStrategy({
                         lastname: profileJson.last_name,
                         email: profileJson.email,
                         referralCode: generateReferralCode(profileJson.email).toUpperCase(),
-                        photo: "https://graph.facebook.com/" + profileJson.id + "/picture?type=large"
+                        photo: "https://graph.facebook.com/" + profileJson.id + "/picture?type=large",
+                        marketing_meta : req.session.marketingMeta
                     }
                 }, {
                     include: [models.User],

@@ -16,6 +16,12 @@ const { generateReferralCode}  = require('../../../utils/referral')
  * Authenticate _users_ using their Twitter accounts
  */
 
+ console.log({
+    consumerKey: secrets.TWITTER_CONSUMER_KEY,
+    consumerSecret: secrets.TWITTER_CONSUMER_SECRET,
+    callbackURL: config.SERVER_URL + config.TWITTER_CALLBACK,
+    passReqToCallback: true
+})
 module.exports = new TwitterStrategy({
     consumerKey: secrets.TWITTER_CONSUMER_KEY,
     consumerSecret: secrets.TWITTER_CONSUMER_SECRET,
@@ -103,6 +109,7 @@ module.exports = new TwitterStrategy({
                  * we use a `username-t` policy
                  */
                 const existCount = await models.User.count({where: {username: profileJson.screen_name}})
+                console.log(req.session.marketingMeta)
                 userTwitter = await models.UserTwitter.create({
                     id: profileJson.id,
                     token: token,
@@ -114,7 +121,8 @@ module.exports = new TwitterStrategy({
                         lastname: profileJson.name.split(' ').pop(),
                         email: profileJson.email || undefined,
                         referralCode: generateReferralCode(profileJson.email || profileJson.screen_name).toUpperCase(),
-                        photo: profileJson.profile_image_url_https.replace('_normal', '_400x400')
+                        photo: profileJson.profile_image_url_https.replace('_normal', '_400x400'),
+                        marketing_meta : req.session.marketingMeta
                     }
                 }, {
                     include: [models.User],
@@ -123,7 +131,7 @@ module.exports = new TwitterStrategy({
                     action: 'signup',
                     category: 'successful',
                     label: 'twitter'
-                }, e => {
+                }, e => {``
                 })
                 if (!userTwitter) {
                     return cb(null, false, {message: 'Authentication Failed'})
