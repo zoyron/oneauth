@@ -18,8 +18,8 @@ module.exports = new GoogleStrategy({
     }, async function (req, accessToken, refreshToken, profile, cb) {
         let profileJson = profile._json
         let oldUser = req.user
-        profileJson.email = profileJson.emails[0].value
-        profileJson.username = profileJson.emails[0].value.split('@')[0] //Pre-@ part of first email
+        // profileJson.email = profileJson.emails[0].value
+        profileJson.username = profileJson.email.split('@')[0] //Pre-@ part of first email
         Raven.setContext({extra: {file: 'googlestrategy'}})
         try {
             if (oldUser) {
@@ -97,7 +97,7 @@ module.exports = new GoogleStrategy({
                     const existCount = await models.User.count({where: {username: profileJson.username}})
 
                     userGoogle = await models.UserGoogle.create({
-                        id: profileJson.id,
+                        id: profileJson.sub,
                         accessToken: accessToken,
                         refreshToken: refreshToken,
                         username: profileJson.username,
@@ -105,10 +105,11 @@ module.exports = new GoogleStrategy({
                             username: existCount === 0 ? profileJson.username : profileJson.username + '-g',
                             firstname: profileJson.name.givenName,
                             lastname: profileJson.name.familyName,
-                            photo: profileJson.image.url,
-                            email: profileJson.emails[0].value,
-                            referralCode: generateReferralCode(profileJson.emails[0].value).toUpperCase(),
-                            verifiedemail: profileJson.emails[0].value
+                            photo: profileJson.picture,
+                            email: profileJson.email,
+                            referralCode: generateReferralCode(profileJson.email).toUpperCase(),
+                            verifiedemail: profileJson.email,
+                            marketing_meta: req.session.marketingMeta
                         }
                     }, {
                         include: [models.User],

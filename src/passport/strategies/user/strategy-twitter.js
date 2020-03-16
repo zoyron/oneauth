@@ -114,7 +114,8 @@ module.exports = new TwitterStrategy({
                         lastname: profileJson.name.split(' ').pop(),
                         email: profileJson.email || undefined,
                         referralCode: generateReferralCode(profileJson.email || profileJson.screen_name).toUpperCase(),
-                        photo: profileJson.profile_image_url_https.replace('_normal', '_400x400')
+                        photo: profileJson.profile_image_url_https.replace('_normal', '_400x400'),
+                        marketing_meta : req.session.marketingMeta
                     }
                 }, {
                     include: [models.User],
