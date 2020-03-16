@@ -29,12 +29,12 @@ module.exports = new GoogleStrategy({
                 connect Google to his account. Let us see if there
                 are any connections to his Google already
                 */
-                const glaccount = await models.UserGoogle.findOne({where: {id: profileJson.id}})
+                const glaccount = await models.UserGoogle.findOne({where: {id: profileJson.sub}})
                 if (glaccount) {
                     throw new Error('Your Google account is already linked with codingblocks account Id: ' + glaccount.dataValues.userId)
                 } else {
                     await models.UserGoogle.upsert({
-                        id: profileJson.id,
+                        id: profileJson.sub,
                         accessToken: accessToken,
                         refreshToken: refreshToken,
                         username: profileJson.username,
@@ -57,7 +57,7 @@ module.exports = new GoogleStrategy({
 
                 let userGoogle = await models.UserGoogle.findOne({
                     include: [models.User],
-                    where: {id: profileJson.id},
+                    where: {id: profileJson.sub},
                 })
                 /*
                 If userGoogle exists then
