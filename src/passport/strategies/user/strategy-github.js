@@ -121,6 +121,9 @@ module.exports = new GithubStrategy({
                     label: 'github'
                 }, e => {
                 })
+
+                req.session.isNewSignup = true
+
                 if (!userGithub) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }

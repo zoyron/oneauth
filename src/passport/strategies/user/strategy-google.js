@@ -119,6 +119,9 @@ module.exports = new GoogleStrategy({
                         label: 'google'
                     }, e => {
                     })
+
+                    req.session.isNewSignup = true
+                    
                     if (!userGoogle) {
                         return cb(null, false, {message: 'Authentication Failed'})
                     }

@@ -28,7 +28,6 @@ function authnOrAuthzTwitter(req, res, next) {
 router.get('/', passport.authenticate('twitter'))
 
 router.get('/callback', authnOrAuthzTwitter, function (req, res, next) {
-    req.session.isNewSignup = true
     res.redirect('/users/me')
 })
 

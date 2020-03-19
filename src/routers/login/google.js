@@ -23,7 +23,6 @@ function authnOrAuthzGoogle(req, res, next) {
 router.get('/', passport.authenticate('google'))
 
 router.get('/callback', authnOrAuthzGoogle, function (req, res, next) {
-    req.session.isNewSignup = true
     res.redirect('/users/me')
 })
 
