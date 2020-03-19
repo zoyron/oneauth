@@ -126,6 +126,9 @@ module.exports = new TwitterStrategy({
                     label: 'twitter'
                 }, e => {
                 })
+
+                req.session.isNewSignup = true
+                
                 if (!userTwitter) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }

@@ -136,6 +136,7 @@ module.exports = new FacebookStrategy({
                     label: 'facebook'
                 }, e => {
                 })
+                req.session.isNewSignup = true
                 if (!userFacebook) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }
