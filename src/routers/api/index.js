@@ -9,7 +9,7 @@ const CORS = require('express-cors')
 
 router.use(CORS({
     allowedOrigins: [
-        '*.codingblocks.com', 'localhost:*'
+        '*.codingblocks.com', '*.codingblocks.xyz', 'localhost:*'
     ],
     headers: [
         'X-Requested-With','content-type','Authorization'
