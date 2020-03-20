@@ -218,7 +218,11 @@ User.hasMany(AuthToken)
 AuthToken.belongsTo(Client)
 Client.hasMany(AuthToken)
 
-const Demographic = db.define('demographic', {})
+const Demographic = db.define('demographic', {
+    otherCollege: {
+        type: Sequelize.DataTypes.STRING
+    }
+})
 
 Demographic.belongsTo(User)     // Demographic has userId
 User.Demographic = User.hasOne(Demographic)        // One user has only one demographic, so userId is UNIQUE

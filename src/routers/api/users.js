@@ -670,7 +670,7 @@ router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'),
 
             // If an empty demographic, then insert userid
             if (!demographic.userId) {
-                demographic.userId = req.params.id
+                demographic.userId = req.user.id
             }
 
             await upsertDemographic(
@@ -678,6 +678,7 @@ router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'),
                 demographic.userId,
                 req.body.collegeId ? +req.body.collegeId : demographic.collegeId,
                 req.body.branchId ? +req.body.branchId : demographic.branchId,
+                req.body.otherCollege ? req.body.otherCollege : demographic.otherCollege
             )
             res.status(200).json({success: 'User details updated'})
         } catch (err) {
