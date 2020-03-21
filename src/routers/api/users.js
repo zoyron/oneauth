@@ -664,7 +664,10 @@ router.post(
                 return next()
             } else {
                 // Email already verified, take person to profile page
-                return res.status(400).json({error:'Email already verified with codingblocks account ID:' + user.get('id')})
+                Raven.captureException(new Error('Email already verified with codingblocks account ID:' + user.get('id')))
+                return res.status(409).json({
+                    error:'Email already verified with codingblocks account ID: ' + user.get('id')
+                })
             }
         } catch (err) {
             Raven.captureException(err)
