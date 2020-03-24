@@ -117,14 +117,14 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(setuserContext)
 app.use(redirectToHome)
+app.use(datadogRouter)
+app.use('/api', apirouter)
+app.use(profilePhotoMiddleware)
 app.use(expressGa(
     'UA-83327907-12',
     '_ga',
     (req) => (req.user ? req.user.id : null)
 ))
-app.use(datadogRouter)
-app.use('/api', apirouter)
-app.use(profilePhotoMiddleware)
 app.use('/oauth', oauthrouter)
 app.use('/verifyemail', verifyemailrouter)
 // app.use(csurf({cookie: false}))
