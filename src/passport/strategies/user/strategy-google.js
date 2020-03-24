@@ -114,10 +114,10 @@ module.exports = new GoogleStrategy({
                     }, {
                         include: [models.User],
                     })
-                    req.ga.event({
-                        action: 'signup',
-                        category: 'successful',
-                        label: 'google'
+                    req.visitor.event({
+                        ea: 'signup',
+                        ec: 'successful',
+                        el: 'google'
                     }, e => {
                     })
 

@@ -116,10 +116,10 @@ module.exports = new GithubStrategy({
                 }, {
                     include: [models.User],
                 })
-                req.ga.event({
-                    action: 'signup',
-                    category: 'successful',
-                    label: 'github'
+                req.visitor.event({
+                    ea: 'signup',
+                    ec: 'successful',
+                    el: 'github'
                 }, e => {
                 })
 

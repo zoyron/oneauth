@@ -120,10 +120,10 @@ module.exports = new TwitterStrategy({
                 }, {
                     include: [models.User],
                 })
-                req.ga.event({
-                    action: 'signup',
-                    category: 'successful',
-                    label: 'twitter'
+                req.visitor.event({
+                    ea: 'signup',
+                    ec: 'successful',
+                    el: 'twitter'
                 }, e => {
                 })
 
