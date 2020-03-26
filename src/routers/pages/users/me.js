@@ -1,7 +1,7 @@
 const Raven = require('raven')
 const cel = require('connect-ensure-login')
 const router = require('express').Router()
-
+const request = require('request')
 const models = require('../../../db/models').models
 const {
   hasNull
@@ -263,6 +263,31 @@ router.post('/edit',
           password: passHash
         })
       }
+
+      request({
+            url: 'http://localhost:3000/api/v2/webhooks/oneauth',
+            method: "POST",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: {  // <--- I have also tried calling this as "body"
+              type: 'UPDATED',
+              model: req.user,
+              success: 'true',
+              id: req.user.id,
+              userId: req.user.id
+            },
+            json: true
+          },
+          function(err, res, data) {
+            console.log('err', err) // <---- never prints any thing from here!
+            console.log('res', res)
+            console.log('data', data)
+            if (!err && res.statusCode == 200) {
+              console.log(data);
+            }
+          }
+      )
       res.redirect(returnTo)
     } catch (err) {
       Raven.captureException(err)

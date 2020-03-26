@@ -10,6 +10,7 @@ const passutils = require('../utils/password')
 const makeGaEvent = require('../utils/ga').makeGaEvent
 const mail = require('../utils/email')
 const passport = require('passport')
+const request = require('request')
 const {
     findUserByParams,
     createUserLocal
@@ -216,6 +217,31 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         
         // session flag to identify new signup
         req.session.isNewSignup = true
+
+        request({
+                url: 'http://localhost:3000/api/v2/webhooks/oneauth',
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: {  // <--- I have also tried calling this as "body"
+                    type: 'CREATED',
+                    model: user,
+                    success: 'true',
+                    id: user.id,
+                    userId: user.id
+                },
+                json: true
+            },
+            function(err, res, data) {
+                console.log('err', err) // <---- never prints any thing from here!
+                console.log('res', res)
+                console.log('data', data)
+                if (!err && res.statusCode == 200) {
+                    console.log(data);
+                }
+            }
+        )
 
         // Login after signup automatically
         passport.authenticate('local', {

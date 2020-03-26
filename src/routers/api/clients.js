@@ -7,6 +7,7 @@ const Raven = require('raven')
 const router = require('express').Router()
 const cel = require('connect-ensure-login')
 const { isURL } = require('../../utils/urlutils')
+const request = require('request')
 const {
     createClient,
     updateClient
@@ -134,6 +135,34 @@ router.post('/edit/:id', cel.ensureLoggedIn('/login'),
             }
 
             await createEventSubscriptionBulk (event_subscription)
+
+            if(req.user.role === 'admin'){
+               const userId = req.user.id
+            }
+            request({
+                    url: 'http://localhost:3000/api/v2/webhooks/oneauth',
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body: {  // <--- I have also tried calling this as "body"
+                        type: 'UPDATED',
+                        model: req.user,
+                        success: 'true',
+                        id: req.user.id,
+                        userId: userId
+                    },
+                    json: true
+                },
+                function(err, res, data) {
+                    console.log('err', err) // <---- never prints any thing from here!
+                    console.log('res', res)
+                    console.log('data', data)
+                    if (!err && res.statusCode == 200) {
+                        console.log(data);
+                    }
+                }
+            )
 
             res.redirect('/clients/' + clientId)
         } catch (err) {
