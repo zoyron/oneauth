@@ -45,7 +45,7 @@ const verifyClient = async function (req, clientId, clientSecret, done) {
  */
 const basicStrategy = new BasicStrategy({passReqToCallback: true}, verifyClient)
 
-const clientPasswordStrategy = new ClientPasswordStrategy(verifyClient)
+const clientPasswordStrategy = new ClientPasswordStrategy({passReqToCallback: true}, verifyClient)
 
 
 module.exports = {basicStrategy, clientPasswordStrategy}
