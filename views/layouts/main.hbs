@@ -47,12 +47,13 @@
         gtag('js', new Date())
         gtag('config', 'UA-83327907-12')
         {{#if user}}
-        gtag('set', {'user_id': {{userId}} }) // Set the user ID using signed-in user_id.
+        gtag('set', { 'user_id': {{userId}} }) // Set the user ID using signed-in user_id.
+        gtag('set', { 'uid': {{userId}} }) // Set the user ID using signed-in user_id.
+        gtag('set', { 'userId': {{userId}} }) // Set the user ID using signed-in user_id.
         {{/if}}
     </script>
 
     <link rel="icon" href="/img/favicon-16x16.png"  sizes="16x16">
-    <link rel="icon" href="/img/favicon-32x32.png"  sizes="32x32">
     <link rel="icon" href="/img/favicon-96x96.png" sizes="96x96">
     <link rel="stylesheet" href="/css/bootstrap-social.css">
     <link rel="stylesheet" href="https://unpkg.com/@coding-blocks/motley@0.3.43/dist/app.min.css">

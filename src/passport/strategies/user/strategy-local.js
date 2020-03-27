@@ -19,10 +19,10 @@ const { createVerifyEmailEntry } = require('../../../controllers/verify_emails')
 module.exports = new LocalStrategy({
     passReqToCallback: true,
 }, async function (req, username, password, cb) {
-    req.ga.event({
-        category: 'login',
-        action: 'attempt',
-        label: 'local'
+    req.visitor.event({
+        ec: 'login',
+        ea: 'attempt',
+        el: 'local'
     });
 
     Raven.setContext({extra: {file: 'localstrategy'}});

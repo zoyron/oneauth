@@ -130,12 +130,13 @@ module.exports = new FacebookStrategy({
                 }, {
                     include: [models.User],
                 })
-                req.ga.event({
-                    action: 'signup',
-                    category: 'successful',
-                    label: 'facebook'
+                req.visitor.event({
+                    ea: 'signup',
+                    ec: 'successful',
+                    el: 'facebook'
                 }, e => {
                 })
+                req.session.isNewSignup = true
                 if (!userFacebook) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }

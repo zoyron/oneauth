@@ -1,9 +1,9 @@
 function makeGaEvent(act, cat, lbl) {
     return ((req, res, next) => {
-        req.ga.event({
-            action: act,
-            category: cat,
-            label: lbl
+        req.visitor.event({
+            ea: act,
+            ec: cat,
+            el: lbl
         }, e => {
         })
         next()
