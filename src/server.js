@@ -118,13 +118,26 @@ app.use(passport.session())
 app.use(setuserContext)
 app.use(redirectToHome)
 app.use(datadogRouter)
+app.use(expressGa({
+    uaCode: 'UA-83327907-12',
+    autoTrackPages: false,
+    cookieName: '_ga',
+    reqToUserId: (req) => req.user && req.user.id
+}))
 app.use('/api', apirouter)
 app.use(profilePhotoMiddleware)
-app.use(expressGa(
-    'UA-83327907-12',
-    '_ga',
-    (req) => (req.user ? req.user.id : null)
-))
+app.use((req, res, next) => {
+    req.visitor.pageview({
+        dp: req.originalUrl,
+        dr: req.get('Referer'),
+        ua: req.headers['user-agent'],
+        uip: (req.connection.remoteAddress
+            || req.socket.remoteAddress
+            || req.connection.remoteAddress
+            || (req.headers['x-forwarded-for']).split(',').pop())
+    }).send()
+    next()
+})
 app.use('/oauth', oauthrouter)
 app.use('/verifyemail', verifyemailrouter)
 // app.use(csurf({cookie: false}))
