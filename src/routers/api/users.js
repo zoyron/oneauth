@@ -686,7 +686,6 @@ router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'),
             })
             res.status(200).json({success: 'User details updated'})
         } catch (err) {
-            console.log(err)
             Raven.captureException(err)
             return res.status(400).send({err: 'Failed to update user details'})
         }
