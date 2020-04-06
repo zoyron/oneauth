@@ -88,11 +88,14 @@ async function createUser(user) {
  * @param newValues object has to merge into old user
  * @returns Promise<User>
  */
-async function updateUserById(userid, newValues) {
+async function updateUserById(userid, newValues, opts = {}) {
+    const { 
+      transaction = null 
+    } = opts
     const updated = await User.update(newValues, {
         where: { id: userid },
         returning: true
-    });
+    }, { transaction });
     eventUserUpdated(userid).catch(Raven.captureException)
     return updated
 }

@@ -6,7 +6,7 @@
 
 const router = require('express').Router()
 const passport = require('../../passport/passporthandler')
-const models = require('../../db/models').models
+const { db: sequelize, models } = require('../../db/models')
 const makeGaEvent = require('../../utils/ga').makeGaEvent
 const Raven = require('raven');
 const { findUserById , findUserForTrustedClient, findAllUsersWithFilter} = require('../../controllers/user');
@@ -647,41 +647,46 @@ router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'),
     passport.authenticate('session'),
     async (req, res, next) => {
         try {
-            const user = await findUserById(req.user.id, [models.Demographic])
-            // user might have demographic, if not make empty
-            const demographic = user.demographic || {};
-
-            const update = {
-                ...(req.body.firstname && {firstname: req.body.firstname}),
-                ...(req.body.lastname && {lastname: req.body.lastname}),
-                ...(req.body.gender && {gender: req.body.gender}),
-                ...(req.body.gradYear && {graduationYear: req.body.gradYear}),
-                ...(req.body.mobile_number && {
-                    mobile_number: req.body.dial_code + '-' + req.body.mobile_number
-                }),
-                ...(setVerifiedMobileNull(user.verifiedmobile,
-                        req.body.dial_code + '-' + req.body.mobile_number
-              ) && req.body.mobile_number && { verifiedmobile: null }),
-                ...(req.body.verifiedmobile && {verifiedmobile: req.body.verifiedmobile})
-            }
-
-            await updateUserById(user.id, update)
-
-
-            // If an empty demographic, then insert userid
-            if (!demographic.userId) {
-                demographic.userId = req.user.id
-            }
-
-            await upsertDemographic(
-                demographic.id,
-                demographic.userId,
-                req.body.collegeId ? +req.body.collegeId : demographic.collegeId,
-                req.body.branchId ? +req.body.branchId : demographic.branchId,
-                req.body.otherCollege ? req.body.otherCollege : demographic.otherCollege
-            )
+            const result = await sequelize.transaction(async t => {
+                const user = await findUserById(req.user.id, [models.Demographic])
+                // user might have demographic, if not make empty
+                const demographic = user.demographic || {};
+    
+                const update = {
+                    ...(req.body.firstname && {firstname: req.body.firstname}),
+                    ...(req.body.lastname && {lastname: req.body.lastname}),
+                    ...(req.body.gender && {gender: req.body.gender}),
+                    ...(req.body.gradYear && {graduationYear: req.body.gradYear}),
+                    ...(req.body.mobile_number && {
+                        mobile_number: req.body.dial_code + '-' + req.body.mobile_number
+                    }),
+                    ...(setVerifiedMobileNull(user.verifiedmobile,
+                            req.body.dial_code + '-' + req.body.mobile_number
+                  ) && req.body.mobile_number && { verifiedmobile: null }),
+                    ...(req.body.verifiedmobile && {verifiedmobile: req.body.verifiedmobile})
+                }
+    
+                await updateUserById(user.id, update, { transaction: t})
+    
+                // If an empty demographic, then insert userid
+                if (!demographic.userId) {
+                    demographic.userId = req.user.id
+                }
+    
+                await upsertDemographic(
+                    demographic.id,
+                    demographic.userId,
+                    req.body.collegeId ? +req.body.collegeId : demographic.collegeId,
+                    req.body.branchId ? +req.body.branchId : demographic.branchId,
+                    req.body.otherCollege ? req.body.otherCollege : demographic.otherCollege,
+                    { transaction: t }
+                )
+  
+                // TODO: Dukaan credit hook
+            })
             res.status(200).json({success: 'User details updated'})
         } catch (err) {
+            console.log(err)
             Raven.captureException(err)
             return res.status(400).send({err: 'Failed to update user details'})
         }
