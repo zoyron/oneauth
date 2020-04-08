@@ -21,8 +21,8 @@ module.exports = new LmsStrategy({
         ec: 'login',
         ea: 'attempt',
         el: 'lms',
-        value: profileJson.id
-    })
+        cd1: profileJson.id
+    }).send()
     Raven.setContext({
         extra: {
             file: 'lmsstrategy'

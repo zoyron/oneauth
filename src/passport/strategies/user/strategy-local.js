@@ -23,7 +23,7 @@ module.exports = new LocalStrategy({
         ec: 'login',
         ea: 'attempt',
         el: 'local'
-    });
+    }).send()
 
     Raven.setContext({extra: {file: 'localstrategy'}});
     try {
