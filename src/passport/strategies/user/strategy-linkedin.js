@@ -18,7 +18,7 @@ module.exports = new LinkedinStrategy({
 
       let profileJson = profile._json
       let oldUser = req.user
-      profileJson.email = profileJson.emails[0].value
+      profileJson.email = profile.emails[0].value
       Raven.setContext({extra: {file: 'linkedinStrategy'}})
 
       try{
