@@ -103,8 +103,16 @@ router.get('/edit',
         } else {
           user.mobile_number = mobNoSplit[0]
         }
-
       }
+        if (user.dataValues.whatsapp_number) {
+            const mobNoSplit = user.dataValues.whatsapp_number.split('-')
+            if (mobNoSplit.length > 1) {
+                user.dial_code = mobNoSplit[0]
+                user.whatsapp_number = mobNoSplit[1]
+            } else {
+                user.whatsapp_number = mobNoSplit[0]
+            }
+        }
       const gradYears = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
         2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000]
 
@@ -158,6 +166,11 @@ router.post('/edit',
       return res.redirect('/users/me/edit')
     }
 
+    if (req.body.whatsapp_number.trim() === '') {
+      req.flash('error', 'whatsapp number cannot be empty')
+      return res.redirect('/users/me/edit')
+    }
+
     if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
       req.flash('error', 'Invalid Graduation year')
       return res.redirect('/users/me/edit')
@@ -166,7 +179,7 @@ router.post('/edit',
 
     try {
       if (!(validateNumber(parseNumberEntireString(
-          req.body.dial_code + '-' + req.body.mobile_number
+          req.body.dial_code[0] + '-' + req.body.mobile_number
       )))) {
         req.flash('error', 'Contact number is not a valid number')
         return res.redirect('/users/me/edit')
@@ -176,6 +189,17 @@ router.post('/edit',
       return res.redirect('/users/me/edit')
     }
 
+    try {
+      if (!(validateNumber(parseNumberEntireString(
+          req.body.dial_code[1] + '-' + req.body.whatsapp_number
+      )))) {
+        req.flash('error', 'Whatsapp number is not a valid number')
+        return res.redirect('/users/me/edit')
+      }
+    } catch (e) {
+      req.flash('error', 'Whatsapp number is not a valid number')
+      return res.redirect('/users/me/edit')
+    }
 
 
     try {
@@ -198,18 +222,21 @@ router.post('/edit',
         }
 
       // If mobile is verified and there is a change on update, update mobile_number, set verifiedmobile = null
-      if(user.verifiedmobile && user.verifiedmobile!==req.body.dial_code + '-' + req.body.mobile_number){
-          user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+      if(user.verifiedmobile && user.verifiedmobile!==req.body.dial_code[0] + '-' + req.body.mobile_number){
+          user.mobile_number = req.body.dial_code[0] + '-' + req.body.mobile_number
           user.verifiedmobile = null
           // If mobile is verified and there no change on update, just update mobile_number
-      }else if(user.verifiedmobile && user.verifiedmobile ===req.body.dial_code + '-' + req.body.mobile_number){
-            user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+      }else if(user.verifiedmobile && user.verifiedmobile ===req.body.dial_code[0] + '-' + req.body.mobile_number){
+            user.mobile_number = req.body.dial_code[0] + '-' + req.body.mobile_number
         }
       else{
           //If mobile is not verified, update mobile_number and set verifiedmobile = null
-          user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
+          user.mobile_number = req.body.dial_code[0] + '-' + req.body.mobile_number
           user.verifiedmobile = null
       }
+        if (req.body.whatsapp_number) {
+            user.whatsapp_number = req.body.dial_code[1] + '-' + req.body.whatsapp_number
+        }
 
       if (!user.verifiedemail && req.body.email !== user.email) {
         user.email = req.body.email

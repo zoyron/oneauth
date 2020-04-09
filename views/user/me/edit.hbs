@@ -139,6 +139,27 @@
                 </div>
 
                 <div class="row no-gutters align-items-center justify-content-between detail-row">
+                    <div class="label-input col-2">Whatsapp Number</div>
+                    <select name="dial_code" class="input-text col-3">
+                        {{#each countries}}
+                            {{#ifeq expected=dial_code val=../user.dial_code}}
+                                <option class="dropdown-li" value="{{dial_code}}" selected>
+                                    {{name}} ({{dial_code}})
+                                </option>
+                            {{else}}
+                                <option class="dropdown-li" value="{{dial_code}}">
+                                    {{name}} ({{dial_code}})
+                                </option>
+                            {{/ifeq}}
+                        {{/each}}
+                    </select>
+
+                    <input class="input-text col-5" type="text" name="whatsapp_number" id="whatsapp_number"
+                           value="{{user.whatsapp_number}}"/>
+                </div>
+
+
+                <div class="row no-gutters align-items-center justify-content-between detail-row">
                     <div class="label-input col-2">Password</div>
                     <input class="input-text col-9" type="password" name="password"
                            placeholder="Enter Password (keep empty for unchanged)" id="password"/>
