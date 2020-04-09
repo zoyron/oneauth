@@ -22,7 +22,21 @@ class Dukaan{
         ...payload
       }
     }, this._SECRET , { algorithm: 'HS256' })
-  
+
+  addCreditsToWallet({oneauthId, amount, comment = 'Added Via OneAuth'}) {
+    const jwt = this.jwtForPayload({
+      amount,
+      comment,
+      oneauth_id: oneauthId
+    })
+
+    return axios.post({
+      uri: this.urlForEndpoint('/users/wallet/credit'),
+      headers: {
+        'dukaan-token': jwt
+      }
+    })
+  }
 }
 
 module.exports = new Dukaan(
