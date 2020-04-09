@@ -12,13 +12,14 @@ module.exports = new LinkedinStrategy({
     clientSecret: secrets.LINKEDIN_CLIENT_SECRET,
     callbackURL: config.SERVER_URL + config.LINKEDIN_CALLBACK,
     passReqToCallback: true,
-    scope: ['r_emailaddress', 'r_basicprofile']
+    scope: ['r_emailaddress', 'r_liteprofile']
 
 }, async function (req, token, tokenSecret, profile, cb){
 
       let profileJson = profile._json
       let oldUser = req.user
-      profileJson.email = profileJson.emails[0].value
+      profileJson.email = profile.emails[0].value
+      profileJson.formattedName = profile.displayName
       Raven.setContext({extra: {file: 'linkedinStrategy'}})
 
       try{

@@ -30,6 +30,8 @@ const {
   parseNumberEntireString,
   validateNumber
 } = require('../../../utils/mobile_validator')
+const { eventUserUpdated } = require("../../../controllers/event/users")
+
 
 router.get('/',
   cel.ensureLoggedIn('/login'),
@@ -263,6 +265,7 @@ router.post('/edit',
           password: passHash
         })
       }
+      eventUserUpdated(req.user.id).catch(Raven.captureException.bind(Raven))
       res.redirect(returnTo)
     } catch (err) {
       Raven.captureException(err)

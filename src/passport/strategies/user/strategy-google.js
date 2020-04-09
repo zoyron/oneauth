@@ -118,8 +118,7 @@ module.exports = new GoogleStrategy({
                         ea: 'signup',
                         ec: 'successful',
                         el: 'google'
-                    }, e => {
-                    })
+                    }).send()
 
                     req.session.isNewSignup = true
                     
