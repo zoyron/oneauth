@@ -49,7 +49,7 @@ async function createUserLocal(userParams, pass, includes) {
         Raven.captureException(err)
         throw new Error('Unsuccessful registration. Please try again.')
     }
-    eventUserCreated(userLocal.user.id).catch(Raven.captureException)
+    eventUserCreated(userLocal.user.id).catch(Raven.captureException.bind(Raven))
     return userLocal
 }
 
@@ -77,7 +77,7 @@ async function createUserWithoutPassword(userParams) {
 
 async function createUser(user) {
     const userObj = await User.create(user)
-    eventUserCreated(userObj.id).catch(Raven.captureException)
+    eventUserCreated(userObj.id).catch(Raven.captureException.bind(Raven))
     return userObj
 }
 
@@ -93,7 +93,7 @@ async function updateUserById(userid, newValues) {
         where: { id: userid },
         returning: true
     });
-    eventUserUpdated(userid).catch(Raven.captureException)
+    eventUserUpdated(userid).catch(Raven.captureException.bind(Raven))
     return updated
 }
 
@@ -117,7 +117,7 @@ async function updateUserByParams(whereParams, newValues) {
         attributes: ['id'],
         where: whereParams
     })
-    eventUserUpdated(user.id).catch(Raven.captureException)
+    eventUserUpdated(user.id).catch(Raven.captureException.bind(Raven))
     return updated
 }
 
