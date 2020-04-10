@@ -164,7 +164,7 @@ router.get('/key/:key', function (req, res) {
 
             if (verifiedUser) {
                 try {
-                    eventUserUpdated(verifiedUser.id).catch(Raven.captureException)
+                    eventUserUpdated(verifiedUser.id).catch(Raven.captureException.bind(Raven))
                 } catch (e) {
                     Raven.captureException(e)
                 }

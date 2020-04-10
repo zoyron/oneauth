@@ -16,7 +16,7 @@ module.exports = new LocalStrategy({
         ec: 'login',
         ea: 'attempt',
         el: 'otp_login'
-    });
+    }).send()
 
     Raven.setContext({extra: {file: 'otp_login_strategy'}});
     try {

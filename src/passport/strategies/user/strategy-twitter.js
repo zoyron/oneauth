@@ -124,8 +124,7 @@ module.exports = new TwitterStrategy({
                     ea: 'signup',
                     ec: 'successful',
                     el: 'twitter'
-                }, e => {
-                })
+                }).send()
 
                 req.session.isNewSignup = true
                 

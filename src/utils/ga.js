@@ -4,8 +4,7 @@ function makeGaEvent(act, cat, lbl) {
             ea: act,
             ec: cat,
             el: lbl
-        }, e => {
-        })
+        }).send()
         next()
     })
 }

@@ -44,8 +44,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             ea: 'signup',
             ec: 'unsuccessful',
             el: 'Firstname and/or Lastname cannot be empty'
-        }, e => {
-        })
+        }).send()
         return res.redirect('/signup')
     }
     if ((req.body.gender.trim() === '')) {
@@ -54,8 +53,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             ea: 'signup',
             ec: 'unsuccessful',
             el: 'Gender cannot be empty'
-        }, e => {
-        })
+        }).send()
         return res.redirect('/signup')
     }
     if (req.body.email.trim() === '') {
@@ -64,8 +62,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             ea: 'signup',
             ec: 'unsuccessful',
             el: 'Email cannot be empty'
-        }, e => {
-        })
+        }).send()
         return res.redirect('/signup')
     }
     if (req.body.mobile_number.trim() === '') {
@@ -74,8 +71,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             ea: 'signup',
             ec: 'unsuccessful',
             el: 'Mobile cannot be empty'
-        }, e => {
-        })
+        }).send()
         return res.redirect('/signup')
     }
     if ((req.body.password.trim() === '') || req.body.password.length < 5) {
@@ -84,8 +80,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             ea: 'signup',
             ec: 'unsuccessful',
             el: 'Password too weak'
-        }, e => {
-        })
+        }).send()
         return res.redirect('/signup')
     }
     if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
@@ -94,8 +89,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             ea: 'signup',
             ec: 'unsuccessful',
             el: 'Invalid Graduation year'
-        }, e => {
-        })
+        }).send()
         return res.redirect('/signup')
     }
 
@@ -108,8 +102,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
                 ea: 'signup',
                 ec: 'unsuccessful',
                 el: 'Username already exists. Please try again.'
-            }, e => {
-            })
+            }).send()
             return res.redirect('/signup')
         }
 
@@ -121,8 +114,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
                 ea: 'signup',
                 ec: 'unsuccessful',
                 el: 'Please provide a Valid Contact Number.'
-            }, e => {
-            })
+            }).send()
             return res.redirect('/signup')
         }
 
@@ -133,8 +125,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
                 ea: 'signup',
                 ec: 'unsuccessful',
                 el: 'Email already exists. Please try again.'
-            }, e => {
-            })
+            }).send()
             return res.redirect('/signup')
         }
 
@@ -174,8 +165,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
                     ea: 'signup',
                     ec: 'unsuccessful',
                     el: 'Error creating account! Please try in some time'
-                }, e => {
-                })
+                }).send()
                 return res.redirect('/signup')
             }
 
@@ -186,8 +176,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
                 ea: 'signup',
                 ec: 'unsuccessful',
                 el: 'Error creating account! Please try in some time'
-            }, e => {
-            })
+            }).send()
             return res.redirect('/signup')
         }
 
@@ -211,8 +200,7 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             ea: 'signup',
             ec: 'successful',
             el: 'local'
-        }, e => {
-        })
+        }).send()
         
         // session flag to identify new signup
         req.session.isNewSignup = true

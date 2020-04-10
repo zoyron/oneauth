@@ -329,6 +329,12 @@ router.post('/',
 
             user = createdUser
 
+            req.visitor.event({
+                ea: 'signup',
+                ec: 'successful',
+                el: 'API',
+            }).send()
+
             // Send welcome email
             mail.welcomeEmail(user.dataValues)
 
@@ -426,6 +432,12 @@ router.post('/add',
             const address = await createAddress(options)
 
             user = createdUser
+
+            req.visitor.event({
+                ea: 'signup',
+                ec: 'successful',
+                el: 'API',
+            }).send()
 
             // Send welcome email
             mail.welcomeEmail(user.dataValues)

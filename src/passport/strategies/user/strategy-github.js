@@ -120,8 +120,7 @@ module.exports = new GithubStrategy({
                     ea: 'signup',
                     ec: 'successful',
                     el: 'github'
-                }, e => {
-                })
+                }).send()
 
                 req.session.isNewSignup = true
 

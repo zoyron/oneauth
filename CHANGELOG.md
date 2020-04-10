@@ -1,6 +1,21 @@
 # CHANGELOG
 
 ## 1.0.0
+### 0.8.0
+
+#### 0.7.9
+
+- update LinkedIn scope and passport-linkedin
+
+#### 0.7.8
+
+- fix ga send events
+- remove manual view events
+
+#### 0.7.7
+
+ - add `express-universal-analytics`
+
 ### 0.7.0
 
 #### 0.6.4
