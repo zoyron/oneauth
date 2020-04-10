@@ -1,6 +1,8 @@
+const Binder = require('../utils/binder')
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const config = require('../config');
+const path = require('path')
+const config = require('../../config');
 
 class Dukaan{
   constructor({
@@ -11,27 +13,33 @@ class Dukaan{
     this._API = API
     this._NAMESPACE = NAMESPACE
     this._SECRET = SECRET
+
+    Binder.bind(this, Dukaan)
   }
 
-  uriForRequest = url => [this._API, this._NAMESPACE, url].join('/')
+  urlForEndpoint (url) {
+    return this._API + '/' + path.join(this._NAMESPACE, url)
+  }
 
-  jwtForPayload = (payload = {}) =>
-    jwt.sign({
+  jwtForPayload (payload = {}) {
+    return jwt.sign({
       data: {
         clientName: 'oneauth',
         ...payload
       }
     }, this._SECRET , { algorithm: 'HS256' })
+  }
 
-  addCreditsToWallet({oneauthId, amount, comment = 'Added Via OneAuth'}) {
+  addCreditsToWallet ({oneauthId, amount, comment = 'Added Via OneAuth'}) {
     const jwt = this.jwtForPayload({
       amount,
       comment,
       oneauth_id: oneauthId
     })
 
-    return axios.post({
-      uri: this.urlForEndpoint('/users/wallet/credit'),
+    return axios({
+      method: 'post',
+      url: this.urlForEndpoint('/users/wallet/credit'),
       headers: {
         'dukaan-token': jwt
       }
@@ -39,9 +47,8 @@ class Dukaan{
   }
 }
 
-module.exports = new Dukaan(
-  config.SECRETS.DUKAAN.ENDPOINT,
-  config.SECRETS.DUKAAN.NAMESPACE,
-  config.SECRETS.DUKAAN.SECRET
-);
-
+module.exports = new Dukaan({
+  API: config.SECRETS.DUKAAN.ENDPOINT,
+  NAMESPACE: config.SECRETS.DUKAAN.NAMESPACE,
+  SECRET: config.SECRETS.DUKAAN.SECRET
+});
