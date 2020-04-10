@@ -135,6 +135,21 @@ const forgotUsernameEmail = function (user) {
 
 }
 
+const profileCompletionCredits = user => {
+    let msgTemplate = {}
+    msgTemplate.template_id = config.PROFILE_COMPLETION_CREDITS
+    msgTemplate.from = senderEmail
+
+    msgTemplate.to = user.email
+
+    msgTemplate.substitutions = {
+        "subject": "Credits added for successfully completing profile",
+        "user": user.firstname,
+        "credits": 1000
+    }
+    return sgMail.send(msgTemplate)
+}
+
 
 module.exports = {
     welcomeEmail,
@@ -142,5 +157,6 @@ module.exports = {
     forgotPassEmail,
     forgotUsernameEmail,
     verifyMultipleEmails,
-    setANewPassword
+    setANewPassword,
+    profileCompletionCredits
 }
