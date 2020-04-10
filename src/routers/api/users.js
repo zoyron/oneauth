@@ -12,6 +12,7 @@ const Raven = require('raven');
 const { findUserById , findUserForTrustedClient, findAllUsersWithFilter} = require('../../controllers/user');
 const { deleteAuthToken } = require('../../controllers/oauth');
 const  { findAllAddresses } = require('../../controllers/demographics');
+const DukaanService = require('../../services/dukaan')
 
 const passutils = require('../../utils/password')
 const mail = require('../../utils/email')
@@ -683,6 +684,18 @@ router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'),
                 )
   
                 // TODO: Dukaan credit hook
+                if (
+                    (user.demographic.collegeId === 1 && !user.demographic.otherCollege) && // OLD State
+                    (req.body.collegeId !== 1 || req.body.otherCollege) // NEW State
+                ) {
+                    await DukaanService.addCreditsToWallet({ 
+                        oneauthId: user.id,
+                        amount: 1000,
+                        comment: 'Reward for Adding college'
+                    })
+                    // Send Email for credits added
+                    mail.profileCompletionCredits(user)
+                }
             })
             res.status(200).json({success: 'User details updated'})
         } catch (err) {

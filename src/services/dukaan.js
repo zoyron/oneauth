@@ -32,14 +32,16 @@ class Dukaan{
 
   addCreditsToWallet ({oneauthId, amount, comment = 'Added Via OneAuth'}) {
     const jwt = this.jwtForPayload({
-      amount,
-      comment,
-      oneauth_id: oneauthId
+      oneauthId
     })
 
     return axios({
       method: 'post',
-      url: this.urlForEndpoint('/users/wallet/credit'),
+      url: this.urlForEndpoint('/client/users/wallet'),
+      data: {
+        amount,
+        comment
+      },
       headers: {
         'dukaan-token': jwt
       }
