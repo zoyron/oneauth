@@ -144,8 +144,8 @@ const profileCompletionCredits = user => {
 
     msgTemplate.substitutions = {
         "subject": "Credits added for successfully completing profile",
-        "username": user.username,
-        "firstname": user.firstname
+        "user": user.firstname,
+        "credits": 1000
     }
     return sgMail.send(msgTemplate)
 }
