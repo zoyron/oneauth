@@ -105,8 +105,8 @@ router.get('/edit',
         } else {
           user.mobile_number = mobNoSplit[0]
         }
-
       }
+
       const gradYears = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
         2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000]
 
@@ -177,7 +177,19 @@ router.post('/edit',
       req.flash('error', 'Contact number is not a valid number')
       return res.redirect('/users/me/edit')
     }
-
+      if (req.body.whatsapp_number.trim() != '') {
+          try {
+              if (!(validateNumber(parseNumberEntireString(
+                  req.body.dial_code_wa + '-' + req.body.whatsapp_number
+              )))) {
+                  req.flash('error', 'Whatsapp number is not a valid number')
+                  return res.redirect('/users/me/edit')
+              }
+          } catch (e) {
+              req.flash('error', 'Whatsapp number is not a valid number')
+              return res.redirect('/users/me/edit')
+          }
+      }
 
 
     try {
@@ -212,6 +224,9 @@ router.post('/edit',
           user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
           user.verifiedmobile = null
       }
+        if (req.body.whatsapp_number) {
+            user.whatsapp_number = req.body.dial_code_wa + '-' + req.body.whatsapp_number
+        }
 
       if (!user.verifiedemail && req.body.email !== user.email) {
         user.email = req.body.email
