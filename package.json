@@ -35,7 +35,7 @@
     "body-parser": "^1.18.2",
     "connect-datadog": "^0.0.6",
     "connect-ensure-login": "^0.1.1",
-    "connect-session-sequelize": "^5.2.1",
+    "connect-session-sequelize": "^6.1.1",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.9.0",
     "datadog-tracer": "^0.4.2",
