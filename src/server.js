@@ -8,6 +8,7 @@ const express = require('express')
     , passport = require('./passport/passporthandler')
     , path = require('path')
     , exphbs = require('express-hbs')
+    , cookieParser = require('cookie-parser')
     , expressGa = require('express-universal-analytics')
     , flash = require('express-flash')
     , csurf = require('csurf')
@@ -99,6 +100,7 @@ app.use(express.static(path.join(__dirname, '../public_static')))
 app.use(express.static(path.join(__dirname, '../submodules/motley/examples/public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser())
 app.use(session({
     store: sessionStore,
     secret: secrets.EXPRESS_SESSION_SECRET,
@@ -127,7 +129,11 @@ app.use(expressGa({
 app.use('/api', apirouter)
 app.use(profilePhotoMiddleware)
 app.use((req, res, next) => {
+    if (!req.headers['x-forwarded-for']) {
+        req.headers['x-forwarded-for'] = '0.0.0.0';
+    }
     req.visitor.pageview({
+        dh: config.SERVER_URL,
         dp: req.originalUrl,
         dr: req.get('Referer'),
         ua: req.headers['user-agent'],
