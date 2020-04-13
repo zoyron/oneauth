@@ -121,8 +121,8 @@ module.exports = new TwitterStrategy({
                     include: [models.User],
                 })
                 req.visitor.event({
-                    ea: 'signup',
-                    ec: 'successful',
+                    ea: 'successful',
+                    ec: 'signup',
                     el: 'twitter'
                 }).send()
 

@@ -6,20 +6,20 @@
 
 const router = require('express').Router()
 const passport = require('../../passport/passporthandler')
-const { db: sequelize, models } = require('../../db/models')
+const {db: sequelize, models} = require('../../db/models')
 const makeGaEvent = require('../../utils/ga').makeGaEvent
-const Raven = require('raven');
-const { findUserById , findUserForTrustedClient, findAllUsersWithFilter} = require('../../controllers/user');
-const { deleteAuthToken } = require('../../controllers/oauth');
-const  { findAllAddresses } = require('../../controllers/demographics');
+const Raven = require('raven')
+const {findUserById, findUserForTrustedClient, findAllUsersWithFilter} = require('../../controllers/user')
+const {deleteAuthToken} = require('../../controllers/oauth')
+const {findAllAddresses} = require('../../controllers/demographics')
 const DukaanService = require('../../services/dukaan')
 
 const passutils = require('../../utils/password')
 const mail = require('../../utils/email')
-const {generateReferralCode}  =require('../../utils/referral')
+const {generateReferralCode} = require('../../utils/referral')
 const uid = require('uid2')
-const {upsertDemographic, upsertAddress} = require("../../controllers/demographics");
-const {createAddress} = require("../../controllers/demographics");
+const {upsertDemographic, upsertAddress} = require("../../controllers/demographics")
+const {createAddress} = require("../../controllers/demographics")
 const {hasNull} = require('../../utils/nullCheck')
 const {
     findUserByParams,
@@ -30,35 +30,35 @@ const {
 const {
     createVerifyEmailEntry
 } = require('../../controllers/verify_emails')
-const { parseNumberEntireString, validateNumber } = require('../../utils/mobile_validator')
-const  {setVerifiedMobileNull}  = require('../../controllers/demographics')
-const {updateUserById}  = require('../../controllers/user')
+const {parseNumberEntireString, validateNumber} = require('../../utils/mobile_validator')
+const {setVerifiedMobileNull} = require('../../controllers/demographics')
+const {updateUserById} = require('../../controllers/user')
 
 
 router.get('/',
-  passport.authenticate('bearer', {session: false}),
-  async function (req, res) {
-    // Send the user his own object if the token is user scoped
-    if (req.user && !req.authInfo.clientOnly && req.user.id) {
-      if (req.params.id == req.user.id) {
-        return res.send(req.user)
-      }
-    }
+    passport.authenticate('bearer', {session: false}),
+    async function (req, res) {
+        // Send the user his own object if the token is user scoped
+        if (req.user && !req.authInfo.clientOnly && req.user.id) {
+            if (req.params.id == req.user.id) {
+                return res.send(req.user)
+            }
+        }
 
-    let trustedClient = req.client && req.client.trusted
-    try {
-      let users = await findAllUsersWithFilter(trustedClient, req.query);
-      if (!users) {
-        throw new Error("User not found")
-      }
-      if (!Array.isArray(users)) {
-        users = [users]
-      }
-      res.send(users)
-    } catch (error) {
-      res.send('Unknown user or unauthorized request')
+        let trustedClient = req.client && req.client.trusted
+        try {
+            let users = await findAllUsersWithFilter(trustedClient, req.query)
+            if (!users) {
+                throw new Error("User not found")
+            }
+            if (!Array.isArray(users)) {
+                users = [users]
+            }
+            res.send(users)
+        } catch (error) {
+            res.send('Unknown user or unauthorized request')
+        }
     }
-  }
 )
 
 
@@ -74,34 +74,37 @@ router.get('/me',
                 for (let ia of includedAccounts) {
                     switch (ia) {
                         case 'facebook':
-                            includes.push({ model: models.UserFacebook, attributes: {exclude: ["accessToken","refreshToken"]}})
+                            includes.push({
+                                model: models.UserFacebook,
+                                attributes: {exclude: ["accessToken", "refreshToken"]}
+                            })
                             break
                         case 'twitter':
-                            includes.push({ model: models.UserTwitter, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserTwitter, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'github':
-                            includes.push({ model: models.UserGithub, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserGithub, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'google':
-                            includes.push({model: models.UserGoogle, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserGoogle, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'linkedin':
-                            includes.push({model: models.UserLinkedin, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserLinkedin, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'lms':
-                            includes.push({ model: models.UserLms, attributes: {exclude: ["accessToken"]}})
+                            includes.push({model: models.UserLms, attributes: {exclude: ["accessToken"]}})
                             break
                         case 'demographic':
-                            includes.push({ model: models.Demographic, include: [models.College] })
+                            includes.push({model: models.Demographic, include: [models.College]})
                             break
                         case 'organisation':
-                            includes.push({ model: models.Organisation })
+                            includes.push({model: models.Organisation})
                             break
                     }
                 }
             }
             try {
-                const user = await findUserById(req.user.id,includes);
+                const user = await findUserById(req.user.id, includes)
                 if (!user) {
                     throw new Error("User not found")
                 }
@@ -119,36 +122,40 @@ router.get('/me/address',
     passport.authenticate(['bearer', 'session']),
     async function (req, res) {
         if (req.user && req.user.id) {
-            let includes = [{model: models.Demographic,
-            include: [models.Address]
+            let includes = [{
+                model: models.Demographic,
+                include: [models.Address]
             }]
             if (req.query.include) {
                 let includedAccounts = req.query.include.split(',')
                 for (let ia of includedAccounts) {
                     switch (ia) {
                         case 'facebook':
-                            includes.push({ model: models.UserFacebook, attributes: {exclude: ["accessToken","refreshToken"]}})
+                            includes.push({
+                                model: models.UserFacebook,
+                                attributes: {exclude: ["accessToken", "refreshToken"]}
+                            })
                             break
                         case 'twitter':
-                            includes.push({ model: models.UserTwitter, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserTwitter, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'github':
-                            includes.push({ model: models.UserGithub, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserGithub, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'google':
-                            includes.push({model: models.UserGoogle, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserGoogle, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'linkedin':
-                            includes.push({model: models.UserLinkedin, attributes: {exclude: ["token","tokenSecret"]}})
+                            includes.push({model: models.UserLinkedin, attributes: {exclude: ["token", "tokenSecret"]}})
                             break
                         case 'lms':
-                            includes.push({ model: models.UserLms, attributes: {exclude: ["accessToken"]}})
+                            includes.push({model: models.UserLms, attributes: {exclude: ["accessToken"]}})
                             break
                     }
                 }
             }
             try {
-                const user = await findUserById(req.user.id,includes);
+                const user = await findUserById(req.user.id, includes)
                 if (!user) {
                     throw new Error("User not found")
                 }
@@ -165,7 +172,7 @@ router.get('/me/logout',
     passport.authenticate('bearer', {session: false}),
     async function (req, res) {
         if (req.user && req.user.id) {
-            let token = req.header('Authorization').split(' ')[1];
+            let token = req.header('Authorization').split(' ')[1]
             try {
                 await deleteAuthToken(token)
                 res.status(202).send({
@@ -181,10 +188,13 @@ router.get('/me/logout',
     }
 )
 
-router.get('/logoutAll/:id', passport.authenticate('basic', {session: false}), async function (req, res) {
-    await clearSessionForUser(req.params.id)
-    res.sendStatus(204)
-})
+router.get('/logoutAll/:id',
+    passport.authenticate('basic', {session: false}),
+    async function (req, res) {
+        await clearSessionForUser(req.params.id)
+        res.sendStatus(204)
+    }
+)
 
 router.get('/:id',
     passport.authenticate(['bearer', 'basic'], {session: false}),
@@ -197,7 +207,7 @@ router.get('/:id',
         }
         let trustedClient = req.client && req.client.trusted
         try {
-            const user = await findUserForTrustedClient(trustedClient, req.params.id);
+            const user = await findUserForTrustedClient(trustedClient, req.params.id)
             if (!user) {
                 throw new Error("User not found")
             }
@@ -211,8 +221,9 @@ router.get('/:id/address',
     // Only for server-to-server calls, no session auth
     passport.authenticate('bearer', {session: false}),
     async function (req, res) {
-        let includes = [{model: models.Demographic,
-            include: [{model: models.Address, include:[models.State, models.Country]}]
+        let includes = [{
+            model: models.Demographic,
+            include: [{model: models.Address, include: [models.State, models.Country]}]
         }]
 
         if (!req.authInfo.clientOnly) {
@@ -242,12 +253,12 @@ router.get('/:id/address',
 )
 
 router.post('/',
-    makeGaEvent('submit', 'form', 'addUserByAPI'),
+    makeGaEvent('create', 'user', 'api'),
     passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
     async (req, res, next) => {
 
         if (hasNull(req.body, ['username', 'firstname', 'lastname', 'mobile_number', 'email'])) {
-            res.status(400).json({error:'Missing required params'})
+            res.status(400).json({error: 'Missing required params'})
         }
 
         try {
@@ -259,9 +270,9 @@ router.post('/',
                 })
             }
 
-            if(!(validateNumber(parseNumberEntireString(
+            if (!(validateNumber(parseNumberEntireString(
                 req.body.dial_code + '-' + req.body.mobile_number
-            )))){
+            )))) {
                 return res.status(400).json({
                     err: 'INVALID_MOBILE_NUMBER',
                     description: 'please enter a valid mobile number'
@@ -270,16 +281,16 @@ router.post('/',
 
             user = await findUserByParams({
                 $or: [{
-                        email:
-                            {
-                                $eq: req.body.email
-                            }
-                    }, {
-                        verifiedemail:
-                            {
-                                $eq: req.body.email
-                            }
-                    }]
+                    email:
+                        {
+                            $eq: req.body.email
+                        }
+                }, {
+                    verifiedemail:
+                        {
+                            $eq: req.body.email
+                        }
+                }]
             })
             if (user) {
                 return res.status(400).json({
@@ -290,16 +301,16 @@ router.post('/',
 
             user = await findUserByParams({
                 $or: [{
-                        mobile_number:
-                            {
-                                $eq: req.body.dial_code + '-' + req.body.mobile_number
-                            }
-                    }, {
-                        verifiedmobile:
-                            {
-                                $eq: req.body.dial_code + '-' + req.body.mobile_number
-                            }
-                    }]
+                    mobile_number:
+                        {
+                            $eq: req.body.dial_code + '-' + req.body.mobile_number
+                        }
+                }, {
+                    verifiedmobile:
+                        {
+                            $eq: req.body.dial_code + '-' + req.body.mobile_number
+                        }
+                }]
             })
 
             if (user) {
@@ -309,9 +320,9 @@ router.post('/',
                 })
             }
 
-            let now = new Date();
-            now.setMinutes(now.getMinutes() + 20); // timestamp
-            now = new Date(now); // Date object
+            let now = new Date()
+            now.setMinutes(now.getMinutes() + 20) // timestamp
+            now = new Date(now) // Date object
             const query = {
                 username: req.body.username,
                 firstname: req.body.firstname,
@@ -330,9 +341,9 @@ router.post('/',
             user = createdUser
 
             req.visitor.event({
-                ea: 'signup',
-                ec: 'successful',
-                el: 'API',
+                ea: 'successful',
+                ec: 'signup',
+                el: 'api',
             }).send()
 
             // Send welcome email
@@ -364,13 +375,13 @@ router.post('/',
 
 
 router.post('/add',
-    makeGaEvent('submit', 'form', 'addUserByAPI'),
+    makeGaEvent('create', 'user', 'api'),
     passport.authenticate('bearer', {session: false}),
     async (req, res, next) => {
 
         if (hasNull(req.body, ['firstname', 'lastname', 'mobile_number', 'email', 'pincode', 'street_address', 'landmark', 'city', 'stateId',
             'countryId', 'dial_code', 'whatsapp_number', 'gender'])) {
-            res.status(400).json({error:'Missing required params'})
+            res.status(400).json({error: 'Missing required params'})
         }
 
         try {
@@ -379,9 +390,9 @@ router.post('/add',
                 return res.status(400).json({error: 'Username already exists. Please try again.'})
             }
 
-            if(!(validateNumber(parseNumberEntireString(
+            if (!(validateNumber(parseNumberEntireString(
                 req.body.dial_code + '-' + req.body.mobile_number
-            )))){
+            )))) {
                 return res.status(400).json({error: 'Please provide a Valid Contact Number.'})
             }
 
@@ -415,7 +426,7 @@ router.post('/add',
                 first_name: req.body.firstname,
                 last_name: req.body.lastname,
                 mobile_number: req.body.mobile_number,
-                email:  req.body.email.toLowerCase(),
+                email: req.body.email.toLowerCase(),
                 pincode: req.body.pincode,
                 street_address: req.body.street_address,
                 landmark: req.body.landmark,
@@ -434,9 +445,9 @@ router.post('/add',
             user = createdUser
 
             req.visitor.event({
-                ea: 'signup',
-                ec: 'successful',
-                el: 'API',
+                ea: 'successful',
+                ec: 'signup',
+                el: 'api',
             }).send()
 
             // Send welcome email
@@ -464,11 +475,11 @@ router.post('/add',
             return res.status(400).json({error: 'Unsuccessful registration. Please try again.'})
         }
 
-})
+    })
 
 
 router.post('/edit',
-    makeGaEvent('submit', 'form', 'editUserByAPI'),
+    makeGaEvent('update', 'user', 'api'),
     passport.authenticate('bearer', {session: false}),
     async function (req, res, next) {
 
@@ -512,7 +523,7 @@ router.post('/edit',
 
         try {
             // user might have demographic, if not make empty
-            const demographic = user.demographic || {};
+            const demographic = user.demographic || {}
 
             user.firstname = req.body.firstname
             user.lastname = req.body.lastname
@@ -597,12 +608,12 @@ router.post('/edit',
     })
 
 
-
-router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
+router.patch('/:id',
+    makeGaEvent('update', 'user', 'api'),
     passport.authenticate(['basic', 'oauth2-client-password'], {session: false}),
     async (req, res, next) => {
 
-        if (req.body.mobile_number){
+        if (req.body.mobile_number) {
             try {
                 if (!(validateNumber(parseNumberEntireString(
                     req.body.dial_code + '-' + req.body.mobile_number
@@ -618,7 +629,7 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
         try {
             const user = await findUserById(req.params.id, [models.Demographic])
             // user might have demographic, if not make empty
-            const demographic = user.demographic || {};
+            const demographic = user.demographic || {}
 
             const update = {
                 ...(req.body.firstname && {firstname: req.body.firstname}),
@@ -629,8 +640,8 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
                     mobile_number: req.body.dial_code + '-' + req.body.mobile_number
                 }),
                 ...(setVerifiedMobileNull(user.verifiedmobile,
-                        req.body.dial_code + '-' + req.body.mobile_number
-              ) && req.body.mobile_number && { verifiedmobile: null }),
+                    req.body.dial_code + '-' + req.body.mobile_number
+                ) && req.body.mobile_number && {verifiedmobile: null}),
                 ...(req.body.verifiedmobile && {verifiedmobile: req.body.verifiedmobile})
             }
 
@@ -656,15 +667,16 @@ router.patch('/:id', makeGaEvent('submit', 'form', 'addUserByAPI'),
 
     })
 
-router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'), 
+router.patch('/me/edit',
+    makeGaEvent('update', 'user_self', 'api'),
     passport.authenticate('session'),
     async (req, res, next) => {
         try {
             const result = await sequelize.transaction(async t => {
                 const user = await findUserById(req.user.id, [models.Demographic])
                 // user might have demographic, if not make empty
-                const demographic = user.demographic || {};
-    
+                const demographic = user.demographic || {}
+
                 const update = {
                     ...(req.body.firstname && {firstname: req.body.firstname}),
                     ...(req.body.lastname && {lastname: req.body.lastname}),
@@ -674,33 +686,33 @@ router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'),
                         mobile_number: req.body.dial_code + '-' + req.body.mobile_number
                     }),
                     ...(setVerifiedMobileNull(user.verifiedmobile,
-                            req.body.dial_code + '-' + req.body.mobile_number
-                  ) && req.body.mobile_number && { verifiedmobile: null }),
+                        req.body.dial_code + '-' + req.body.mobile_number
+                    ) && req.body.mobile_number && {verifiedmobile: null}),
                     ...(req.body.verifiedmobile && {verifiedmobile: req.body.verifiedmobile})
                 }
-    
-                await updateUserById(user.id, update, { transaction: t})
-    
+
+                await updateUserById(user.id, update, {transaction: t})
+
                 // If an empty demographic, then insert userid
                 if (!demographic.userId) {
                     demographic.userId = req.user.id
                 }
-    
+
                 await upsertDemographic(
                     demographic.id,
                     demographic.userId,
                     req.body.collegeId ? +req.body.collegeId : demographic.collegeId,
                     req.body.branchId ? +req.body.branchId : demographic.branchId,
                     req.body.otherCollege ? req.body.otherCollege : demographic.otherCollege,
-                    { transaction: t }
+                    {transaction: t}
                 )
-  
+
                 // TODO: Dukaan credit hook
                 if (
                     (user.demographic.collegeId === 1 && !user.demographic.otherCollege) && // OLD State
                     (req.body.collegeId !== 1 || req.body.otherCollege) // NEW State
                 ) {
-                    await DukaanService.addCreditsToWallet({ 
+                    await DukaanService.addCreditsToWallet({
                         oneauthId: user.id,
                         amount: 1000,
                         comment: 'Reward for Adding college'
@@ -719,14 +731,14 @@ router.patch('/me/edit', makeGaEvent('submit', 'form', 'updateUserByAPI'),
 
 router.post(
     '/verifyemail',
-    makeGaEvent('POST', 'clientAPI', 'sendVerifyemail'),
+    makeGaEvent('create', 'verifyemail', 'api'),
     passport.authenticate('bearer', {session: false}),
     async (req, res, next) => {
 
         try {
             if (!req.body.email || req.body.email.trim() === '') {
                 req.flash('error', 'Email cannot be empty')
-                return res.status(400).json({error:' Email cannot be empty'})
+                return res.status(400).json({error: ' Email cannot be empty'})
             }
             let user = await findUserByParams({
                 verifiedemail: req.body.email
@@ -736,11 +748,11 @@ router.post(
                 return next()
             } else {
                 // Email already verified, take person to profile page
-                return res.status(400).json({error:'Email already verified with codingblocks account ID:' + user.get('id')})
+                return res.status(400).json({error: 'Email already verified with codingblocks account ID:' + user.get('id')})
             }
         } catch (err) {
             Raven.captureException(err)
-            return res.status(400).json({error:'Something went wrong. Please try again with your registered email.'})
+            return res.status(400).json({error: 'Something went wrong. Please try again with your registered email.'})
         }
     },
     async (req, res) => {
@@ -751,16 +763,16 @@ router.post(
             })
             if (!user) {
                 // No user with this email
-                return res.status(400).json({error:'This email is not registered with this codingblocks account.'})
+                return res.status(400).json({error: 'This email is not registered with this codingblocks account.'})
             }
             await createVerifyEmailEntry(user, true,
-                req.body.returnTo? req.body.returnTo: null
+                req.body.returnTo ? req.body.returnTo : null
             )
-            return res.status(200).json({success:'Verification email sent'})
+            return res.status(200).json({success: 'Verification email sent'})
 
         } catch (err) {
             Raven.captureException(err)
-            return res.status(400).json({error:'Something went wrong. Please try again with your registered email.'})
+            return res.status(400).json({error: 'Something went wrong. Please try again with your registered email.'})
         }
     }
 )

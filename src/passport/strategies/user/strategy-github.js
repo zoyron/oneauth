@@ -117,8 +117,8 @@ module.exports = new GithubStrategy({
                     include: [models.User],
                 })
                 req.visitor.event({
-                    ea: 'signup',
-                    ec: 'successful',
+                    ea: 'successful',
+                    ec: 'signup',
                     el: 'github'
                 }).send()
 

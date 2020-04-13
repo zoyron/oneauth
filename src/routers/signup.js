@@ -20,7 +20,8 @@ const {
 const {parseNumberEntireString, validateNumber} = require('../utils/mobile_validator')
 const {generateReferralCode} = require('../utils/referral')
 
-router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
+router.post('/', makeGaEvent('attempt', 'signup', 'local'),
+    async (req, res) => {
 
     // store the posted data in the session
     req.session.prevForm = {
@@ -41,8 +42,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
     if ((req.body.firstname.trim() === '') || (req.body.lastname.trim() === '')) {
         req.flash('error', 'Firstname and/or Lastname cannot be empty')
         req.visitor.event({
-            ea: 'signup',
-            ec: 'unsuccessful',
+            ea: 'unsuccessful',
+                ec: 'signup',
             el: 'Firstname and/or Lastname cannot be empty'
         }).send()
         return res.redirect('/signup')
@@ -50,8 +51,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
     if ((req.body.gender.trim() === '')) {
         req.flash('error', 'Gender cannot be empty')
         req.visitor.event({
-            ea: 'signup',
-            ec: 'unsuccessful',
+            ea: 'unsuccessful',
+                ec: 'signup',
             el: 'Gender cannot be empty'
         }).send()
         return res.redirect('/signup')
@@ -59,8 +60,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
     if (req.body.email.trim() === '') {
         req.flash('error', 'Email cannot be empty')
         req.visitor.event({
-            ea: 'signup',
-            ec: 'unsuccessful',
+            ea: 'unsuccessful',
+                ec: 'signup',
             el: 'Email cannot be empty'
         }).send()
         return res.redirect('/signup')
@@ -68,8 +69,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
     if (req.body.mobile_number.trim() === '') {
         req.flash('error', 'Contact number cannot be empty')
         req.visitor.event({
-            ea: 'signup',
-            ec: 'unsuccessful',
+            ea: 'unsuccessful',
+                ec: 'signup',
             el: 'Mobile cannot be empty'
         }).send()
         return res.redirect('/signup')
@@ -77,8 +78,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
     if ((req.body.password.trim() === '') || req.body.password.length < 5) {
         req.flash('error', 'Password too weak. Use 5 characters at least.')
         req.visitor.event({
-            ea: 'signup',
-            ec: 'unsuccessful',
+            ea: 'unsuccessful',
+                ec: 'signup',
             el: 'Password too weak'
         }).send()
         return res.redirect('/signup')
@@ -86,8 +87,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
     if (!req.body.gradYear || (req.body.gradYear < 2000 || req.body.gradYear > 2025)) {
         req.flash('error', 'Invalid Graduation year')
         req.visitor.event({
-            ea: 'signup',
-            ec: 'unsuccessful',
+            ea: 'unsuccessful',
+                ec: 'signup',
             el: 'Invalid Graduation year'
         }).send()
         return res.redirect('/signup')
@@ -99,8 +100,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         if (user) {
             req.flash('error', 'Username already exists. Please try again.')
             req.visitor.event({
-                ea: 'signup',
-                ec: 'unsuccessful',
+                ea: 'unsuccessful',
+                ec: 'signup',
                 el: 'Username already exists. Please try again.'
             }).send()
             return res.redirect('/signup')
@@ -111,8 +112,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         )))) {
             req.flash('error', 'Please provide a Valid Contact Number.')
             req.visitor.event({
-                ea: 'signup',
-                ec: 'unsuccessful',
+                ea: 'unsuccessful',
+                ec: 'signup',
                 el: 'Please provide a Valid Contact Number.'
             }).send()
             return res.redirect('/signup')
@@ -122,8 +123,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         if (user) {
             req.flash('error', 'Email already exists. Please try again.')
             req.visitor.event({
-                ea: 'signup',
-                ec: 'unsuccessful',
+                ea: 'unsuccessful',
+                ec: 'signup',
                 el: 'Email already exists. Please try again.'
             }).send()
             return res.redirect('/signup')
@@ -162,8 +163,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
             if (!userLocal) {
                 req.flash('error', 'Error creating account! Please try in some time')
                 req.visitor.event({
-                    ea: 'signup',
-                    ec: 'unsuccessful',
+                    ea: 'unsuccessful',
+                ec: 'signup',
                     el: 'Error creating account! Please try in some time'
                 }).send()
                 return res.redirect('/signup')
@@ -173,8 +174,8 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         } catch (userCreationError) {
             req.flash('error', 'Error creating account! ' + userCreationError.message)
             req.visitor.event({
-                ea: 'signup',
-                ec: 'unsuccessful',
+                ea: 'unsuccessful',
+                ec: 'signup',
                 el: 'Error creating account! Please try in some time'
             }).send()
             return res.redirect('/signup')
@@ -197,11 +198,11 @@ router.post('/', makeGaEvent('submit', 'form', 'signup'), async (req, res) => {
         delete req.session.prevForm
 
         req.visitor.event({
-            ea: 'signup',
-            ec: 'successful',
+            ea: 'successful',
+                    ec: 'signup',
             el: 'local'
         }).send()
-        
+
         // session flag to identify new signup
         req.session.isNewSignup = true
 

@@ -131,8 +131,8 @@ module.exports = new FacebookStrategy({
                     include: [models.User],
                 })
                 req.visitor.event({
-                    ea: 'signup',
-                    ec: 'successful',
+                    ea: 'successful',
+                    ec: 'signup',
                     el: 'facebook'
                 }).send()
                 req.session.isNewSignup = true
