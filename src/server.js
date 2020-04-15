@@ -31,9 +31,10 @@ const config = require('../config')
     , oauthrouter = require('./routers/oauthrouter')
     , pagerouter = require('./routers/pages')
     , statusrouter = require('./routers/statusrouter')
-    , {expresstracer, datadogRouter} = require('./utils/ddtracer')
-    , {expressLogger} = require('./utils/logger')
+    , { expresstracer, datadogRouter } = require('./utils/ddtracer')
+    , { expressLogger } = require('./utils/logger')
     , handlebarsHelpers = require('./utils/handlebars')
+    , { setuserContextRaven, triggerGApageView, setUtmParamsInGa } = require('./middlewares/analytics')
     ,  { profilePhotoMiddleware } = require('./middlewares/profilephoto');
 
 const app = express()
@@ -58,25 +59,7 @@ const redirectToHome = function (req, res, next) {
     next()
 
 }
-const setuserContext = function (req, res, next) {
-    if (req.authInfo) {
-        if (req.authInfo.clientOnly) {
-            return next()
-        }
-    }
-    if (req.user) {
-        if (req.authInfo)
-            Raven.setContext({
-                user: {
-                    username: req.user.dataValues.username,
-                    id: req.user.dataValues.id
-                }
 
-            })
-
-    }
-    next()
-}
 // ====================== START SENTRY
 Raven.config(secrets.SENTRY_DSN).install()
 app.use(Raven.requestHandler())
@@ -117,7 +100,7 @@ app.use(saveIp)
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(setuserContext)
+app.use(setuserContextRaven)
 app.use(redirectToHome)
 app.use(datadogRouter)
 app.use(expressGa({
@@ -126,24 +109,10 @@ app.use(expressGa({
     cookieName: '_ga',
     reqToUserId: (req) => req.user && req.user.id
 }))
+app.use(setUtmParamsInGa)
 app.use('/api', apirouter)
 app.use(profilePhotoMiddleware)
-app.use((req, res, next) => {
-    if (!req.headers['x-forwarded-for']) {
-        req.headers['x-forwarded-for'] = '0.0.0.0';
-    }
-    req.visitor.pageview({
-        dh: config.SERVER_URL,
-        dp: req.originalUrl,
-        dr: req.get('Referer'),
-        ua: req.headers['user-agent'],
-        uip: (req.connection.remoteAddress
-            || req.socket.remoteAddress
-            || req.connection.remoteAddress
-            || (req.headers['x-forwarded-for']).split(',').pop())
-    }).send()
-    next()
-})
+app.use(triggerGApageView)
 app.use('/oauth', oauthrouter)
 app.use('/verifyemail', verifyemailrouter)
 // app.use(csurf({cookie: false}))
