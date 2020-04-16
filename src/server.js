@@ -94,6 +94,7 @@ app.use(session({
         domain: config.COOKIE_DOMAIN,
         secure: false,
         maxAge: 86400000,
+        sameSite: 'lax'
     }
 }))
 app.use(saveIp)
