@@ -51,11 +51,16 @@ const setUtmParamsInGa = (req, res, next) => {
       if (cs) req.visitor.set('cs', cs)
       if (cm) req.visitor.set('cm', cm)
       if (cn) req.visitor.set('cn', cn)
+
+      req.session.marketingMeta = {
+        utm_campaign: cn,
+        utm_source: cs,
+        utm_medium: cm,
+      }
     } catch (e) {
       Raven.captureException(e)
     }
   }
-
   next()
 }
 
