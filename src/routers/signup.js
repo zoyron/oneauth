@@ -132,7 +132,7 @@ router.post('/', makeGaEvent('attempt', 'signup', 'local'),
 
         const passhash = await passutils.pass2hash(req.body.password)
         const query = {
-            username: req.body.username,
+            username: req.body.username.toLowerCase(),
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             graduationYear: req.body.gradYear,
