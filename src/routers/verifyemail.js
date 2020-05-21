@@ -155,9 +155,9 @@ router.get('/key/:key', function (req, res) {
                             where: {id: user.dataValues.id},
                             returning: true
                         }
-                    )
+                    )[1][0]
             } else {
-                return
+                return req.user
             }
         })
         .then((verifiedUser) => {
