@@ -300,17 +300,9 @@ router.post('/',
             }
 
             user = await findUserByParams({
-                $or: [{
-                    mobile_number:
-                        {
-                            $eq: req.body.dial_code + '-' + req.body.mobile_number
-                        }
-                }, {
-                    verifiedmobile:
-                        {
-                            $eq: req.body.dial_code + '-' + req.body.mobile_number
-                        }
-                }]
+                verifiedmobile: {
+                    $eq: req.body.dial_code + '-' + req.body.mobile_number
+                } 
             })
 
             if (user) {
