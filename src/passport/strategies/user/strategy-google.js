@@ -70,18 +70,21 @@ module.exports = new GoogleStrategy({
                     First ensure there aren't already users with the same email
                     id that comes from Google
                      */
+                    let existingUsers = [];
+                    if (profileJson.email) {
+                        existingUsers = await models.User.findAll({
+                            include: [{
+                                model: models.UserGoogle,
+                                attributes: ['id'],
+                                required: false
+                            }],
+                            where: {
+                                email: profileJson.email,
+                                '$usergoogle.id$': {$eq: null}
+                            }
+                        })
+                    }
 
-                    const existingUsers = await models.User.findAll({
-                        include: [{
-                            model: models.UserGoogle,
-                            attributes: ['id'],
-                            required: false
-                        }],
-                        where: {
-                            email: profileJson.email,
-                            '$usergoogle.id$': {$eq: null}
-                        }
-                    })
                     if (existingUsers && existingUsers.length > 0) {
                         let oldIds = existingUsers.map(eu => eu.id).join(',')
                         return cb(null, false, {

@@ -300,17 +300,9 @@ router.post('/',
             }
 
             user = await findUserByParams({
-                $or: [{
-                    mobile_number:
-                        {
-                            $eq: req.body.dial_code + '-' + req.body.mobile_number
-                        }
-                }, {
-                    verifiedmobile:
-                        {
-                            $eq: req.body.dial_code + '-' + req.body.mobile_number
-                        }
-                }]
+                verifiedmobile: {
+                    $eq: req.body.dial_code + '-' + req.body.mobile_number
+                } 
             })
 
             if (user) {
@@ -324,7 +316,7 @@ router.post('/',
             now.setMinutes(now.getMinutes() + 20) // timestamp
             now = new Date(now) // Date object
             const query = {
-                username: req.body.username,
+                username: req.body.username.toLowerCase(),
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 mobile_number: req.body.dial_code + '-' + req.body.mobile_number,

@@ -280,8 +280,13 @@ router.post('/edit',
           password: passHash
         })
       }
-      eventUserUpdated(req.user.id).catch(Raven.captureException.bind(Raven))
       res.redirect(returnTo)
+      // do in side effects
+      try {
+        await eventUserUpdated(req.user.id)
+      } catch (hookErr) {
+        Raven.captureException(hookErr)
+      }
     } catch (err) {
       Raven.captureException(err)
       req.flash('error', 'Error in Server')
