@@ -9,5 +9,6 @@ router.use('/facebook', require('./facebook'))
 router.use('/twitter', require('./twitter'))
 router.use('/github', require('./github'))
 router.use('/linkedin',require('./linkedin'))
+router.use('/discord', require('./discord'))
 
 module.exports = router

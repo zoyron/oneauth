@@ -102,6 +102,7 @@ const UserGithub = db.define('usergithub', definitions.social.github)
 const UserGoogle = db.define('usergoogle', definitions.social.google)
 const UserLinkedin = db.define('userlinkedin', definitions.social.linkedin)
 const UserLms = db.define('userlms', definitions.social.lms)
+const UserDiscord = db.define('userdiscord', definitions.social.discord)
 
 UserLocal.belongsTo(User)
 User.hasOne(UserLocal, {foreignKey: {unique: true}})
@@ -123,6 +124,9 @@ User.hasOne(UserLinkedin, {foreignKey: {unique: true}})
 
 UserLms.belongsTo(User)
 User.hasOne(UserLms, {foreignKey: {unique: true}})
+
+UserDiscord.belongsTo(User)
+User.hasOne(UserDiscord, {foreignKey: {unique: true}})
 
 Resetpassword.belongsTo(User)
 Verifyemail.belongsTo(User)
@@ -311,6 +315,7 @@ module.exports = {
         UserGoogle,
         UserLinkedin,
         UserLms,
+        UserDiscord,
         Client,
         Organisation,
         OrgAdmin,

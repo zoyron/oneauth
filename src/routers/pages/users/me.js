@@ -44,6 +44,7 @@ router.get('/',
         models.UserLms,
         models.UserTwitter,
         models.UserLinkedin,
+        models.UserDiscord,
         {
           model: models.Demographic,
           include: [
