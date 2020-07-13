@@ -25,6 +25,7 @@ const config = require('../config')
     , disconnectrouter = require('./routers/disconnect')
     , logoutrouter = require('./routers/logoutrouter')
     , signuprouter = require('./routers/signup')
+    , destroysessionsrouter = require('./routers/destroysessions')
     , verifyemailrouter = require('./routers/verifyemail')
     , verifymobilerouter = require('./routers/verifymobile')
     , apirouter = require('./routers/api')
@@ -119,6 +120,7 @@ app.use('/verifymobile', verifymobilerouter)
 app.use('/logout', logoutrouter)
 app.use('/signup', signuprouter)
 app.use('/login', loginrouter)
+app.use('/destroysessions', destroysessionsrouter)
 app.use(redirectToEditProfile);
 app.use('/disconnect', disconnectrouter)
 app.use('/connect', connectrouter)
@@ -131,6 +133,6 @@ if(process.env.ONEAUTH_DEV === 'localhost'){
     Raven.captureException = (E) => console.error (E)
 }
 
-app.listen(process.env.PORT || 3838, function () {
+app.listen(process.env.PORT || 3000, function () {
     debug("Listening on " + config.SERVER_URL)
 })

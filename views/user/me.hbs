@@ -309,6 +309,22 @@
                     {{/if}}
                     </form>
                 </div>
+                <div class="row mt-4">
+                    {{#if multipleSessions}}
+                    <form method="post" action="/destroysessions" class="w-100">
+                        <div class="row mt-3 align-items-center">
+                            <div class="col-8">
+                                You are logged in at {{sessionCount}} more sessions.
+                            </div>
+                            <div class="col-3">
+                                <div class="button-solid">
+                                    <button type="submit">Close all</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    {{/if}}
+                </div>
             {{/unless}}
             {{> error-snippet}}
         </div>
