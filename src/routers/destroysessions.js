@@ -4,15 +4,20 @@
 
 const router = require('express').Router()
 const Raven = require('raven')
-const {closeOtherSessions} = require('../controllers/session')
+const {closeOtherSessions, deleteAuthTokens} = require('../controllers/session')
 
 router.post('/',(req,res) => {
     closeOtherSessions(req.user.id,JSON.stringify(req.session))
         .then(()=> {
-            res.redirect('/users/me')
-        }).catch((err=> {
+            deleteAuthTokens(req.user.id)
+                .then(() => {
+                    res.redirect('/users/me')
+                }) .catch(err=> {
+                    Raven.captureException(err)
+                })
+        }).catch(err=> {
             Raven.captureException(err)
-    }))
+    })
 })
 
 module.exports = router

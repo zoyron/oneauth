@@ -3,6 +3,7 @@
  */
 
 const {Session} = require('../middlewares/sessionstore')
+const {AuthToken} = require('../db/models').models
 const Op = require('sequelize').Op
 
 function closeOtherSessions(userId,data) {
@@ -25,7 +26,26 @@ function sessionsCount(userId) {
     })
 }
 
+function deleteAuthTokens(userId) {
+    return AuthToken.destroy({
+        where: {
+            'userId': userId
+        },
+        returning: true
+    })
+}
+
+function authTokensCount(userId) {
+    return AuthToken.count({
+        where: {
+            'userId': userId
+        }
+    })
+}
+
 module.exports = {
     closeOtherSessions,
-    sessionsCount
+    sessionsCount,
+    deleteAuthTokens,
+    authTokensCount
 };
