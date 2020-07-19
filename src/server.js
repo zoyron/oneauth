@@ -25,7 +25,6 @@ const config = require('../config')
     , disconnectrouter = require('./routers/disconnect')
     , logoutrouter = require('./routers/logoutrouter')
     , signuprouter = require('./routers/signup')
-    , destroysessionsrouter = require('./routers/destroysessions')
     , verifyemailrouter = require('./routers/verifyemail')
     , verifymobilerouter = require('./routers/verifymobile')
     , apirouter = require('./routers/api')
@@ -36,7 +35,8 @@ const config = require('../config')
     , { expressLogger } = require('./utils/logger')
     , handlebarsHelpers = require('./utils/handlebars')
     , { setuserContextRaven, triggerGApageView, setUtmParamsInGa } = require('./middlewares/analytics')
-    ,  { profilePhotoMiddleware } = require('./middlewares/profilephoto');
+    , { profilePhotoMiddleware } = require('./middlewares/profilephoto')
+    , destroysessionsrouter = require('./routers/destroysessions');
 
 const app = express()
 
