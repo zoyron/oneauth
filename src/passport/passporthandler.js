@@ -18,6 +18,7 @@ passport.use(UserStrategies.githubStrategy)
 passport.use(UserStrategies.googleStrategy)
 passport.use(UserStrategies.linkedInStrategy)
 passport.use(UserStrategies.lmsStrategy)
+passport.use(UserStrategies.discordStrategy)
 
 passport.use('otp', UserStrategies.otpLoginStrategy);  // passport.js named strategy
 

@@ -196,6 +196,21 @@
                         </div>
                     </div>
                 {{/if}}
+                {{#if user.userdiscord}}
+                    <div id="profile-row-discord" class="flex-row">
+                        <div>Discord Connected</div>
+                        <div>
+                            <span class="red">
+                                <!-- TODO(naman): add a link to cb discord guild -->
+                                {{user.userdiscord.username}}
+                                <a class="grey" href="/disconnect/discord" title="Disconnect discord">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                {{/if}}
+
                 {{#ifCond user.userfacebook user.usergithub user.usergoogle user.usertwitter user.userlinkedin}}
                     <div class="flex-row">
                         You may also connect to:
@@ -261,6 +276,18 @@
                                         <i class="fab fa-linkedin fa-2x"></i>
                                     </button>
                                     <div class="link-text">LINKEDIN</div>
+                                </a>
+                            </div>
+                        </div>
+                    {{/unless}}
+                    {{#unless user.userdiscord}}
+                        <div class="col-2">
+                            <div class="auth-link">
+                                <a href="/connect/discord">
+                                    <button class="button-circle discord" style="background-color: #7289DA;">
+                                        <i class="fab fa-discord fa-2x"></i>
+                                    </button>
+                                    <div class="link-text">DISCORD</div>
                                 </a>
                             </div>
                         </div>

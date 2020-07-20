@@ -94,6 +94,9 @@ router.get('/me',
                         case 'lms':
                             includes.push({model: models.UserLms, attributes: {exclude: ["accessToken"]}})
                             break
+                        case 'discord':
+                            includes.push({model: models.UserDiscord, attributes: {exclude: ["accessToken", "refreshToken"]}})
+                            break
                         case 'demographic':
                             includes.push({model: models.Demographic, include: [models.College]})
                             break
@@ -206,8 +209,42 @@ router.get('/:id',
             }
         }
         let trustedClient = req.client && req.client.trusted
+        const include = [];
+
+        if (trustedClient && req.query.include) {
+            let includedAccounts = req.query.include.split(',')
+            includedAccounts.forEach( account => {
+                switch (account) {
+                    case 'facebook':
+                        include.push({ model: models.UserFacebook })
+                        break
+                    case 'twitter':
+                        include.push({model: models.UserTwitter})
+                        break
+                    case 'github':
+                        include.push({model: models.UserGithub})
+                        break
+                    case 'google':
+                        include.push({model: models.UserGoogle})
+                        break
+                    case 'linkedin':
+                        include.push({model: models.UserLinkedin})
+                        break
+                    case 'lms':
+                        include.push({model: models.UserLms})
+                        break
+                    case 'discord':
+                        include.push({model: models.UserDiscord})
+                        break
+                    case 'organisation':
+                        include.push({model: models.Organisation})
+                        break
+                }
+            })
+        }
+
         try {
-            const user = await findUserForTrustedClient(trustedClient, req.params.id)
+            const user = await findUserForTrustedClient(trustedClient, req.params.id, { include })
             if (!user) {
                 throw new Error("User not found")
             }

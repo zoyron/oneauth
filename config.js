@@ -4,6 +4,8 @@ config = {
   "FACEBOOK_LOGIN_SCOPES": ["email", "public_profile"],
   "TWITTER_CALLBACK": "/login/twitter/callback",
   "GITHUB_CALLBACK": "/login/github/callback",
+  "DISCORD_CALLBACK": "/connect/discord/callback",
+  "DISCORD_LOGIN_SCOPES": ['identify', 'email', 'guilds.join', 'gdm.join'],
   "GOOGLE_CALLBACK": "/login/google/callback",
   "LINKEDIN_CALLBACK": "/connect/linkedin/callback",
   "GRANT_TOKEN_SIZE": 32,
