@@ -11,11 +11,11 @@ const db = require('../db/models').db
 // We trust local ips, first untrusted is outside this
 const proxyfilter = proxyaddr.compile(['loopback', 'linklocal', 'uniquelocal'])
 
-db.define('session', {
+const Session = db.define('session', {
     sid: {
         type: DataTypes.STRING,
         primaryKey: true
-    },
+    }, 
     user: DataTypes.JSONB,
     userId: DataTypes.INTEGER,
     ipAddr: DataTypes.STRING(39),
@@ -53,5 +53,6 @@ function saveIp (req, res, next) {
 
 module.exports = {
     sessionStore,
-    saveIp
+    saveIp,
+    Session
 }

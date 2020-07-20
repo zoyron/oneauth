@@ -35,7 +35,8 @@ const config = require('../config')
     , { expressLogger } = require('./utils/logger')
     , handlebarsHelpers = require('./utils/handlebars')
     , { setuserContextRaven, triggerGApageView, setUtmParamsInGa } = require('./middlewares/analytics')
-    ,  { profilePhotoMiddleware } = require('./middlewares/profilephoto');
+    , { profilePhotoMiddleware } = require('./middlewares/profilephoto')
+    , destroysessionsrouter = require('./routers/destroysessions');
 
 const app = express()
 
@@ -119,6 +120,7 @@ app.use('/verifymobile', verifymobilerouter)
 app.use('/logout', logoutrouter)
 app.use('/signup', signuprouter)
 app.use('/login', loginrouter)
+app.use('/destroysessions', destroysessionsrouter)
 app.use(redirectToEditProfile);
 app.use('/disconnect', disconnectrouter)
 app.use('/connect', connectrouter)

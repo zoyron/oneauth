@@ -31,6 +31,10 @@ const {
   validateNumber
 } = require('../../../utils/mobile_validator')
 const { eventUserUpdated } = require("../../../controllers/event/users")
+const { 
+  sessionsCount,
+  authTokensCount
+} = require('../../../controllers/session')
 
 
 router.get('/',
@@ -53,6 +57,9 @@ router.get('/',
           ]
         }
       ]);
+      const sessionCount = await sessionsCount(req.user.id);
+      const authTokenCount = await authTokensCount(req.user.id);
+      const multipleSessions = (sessionCount+authTokenCount > 1) ? true : false
       if (!user) {
         res.redirect('/login')
       }
@@ -60,13 +67,17 @@ router.get('/',
       if (req.session.isNewSignup) {
         res.render('user/me', {
           user: user,
-          addSignupTrackerScript: true
+          addSignupTrackerScript: true,
+          sessionCount: sessionCount+authTokenCount-1,
+          multipleSessions: multipleSessions
         })
         return delete req.session.isNewSignup
       }
 
       return res.render('user/me', {
-        user: user
+        user: user,
+        sessionCount: sessionCount+authTokenCount-1,
+        multipleSessions: multipleSessions
       })
       
     } catch (error) {
