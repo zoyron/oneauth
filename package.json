@@ -43,7 +43,7 @@
     "express": "^4.16.0",
     "express-cors": "0.0.3",
     "express-flash": "^0.0.2",
-    "express-hbs": "^1.1.1",
+    "express-hbs": "^2.3.4",
     "express-rate-limit": "^3.2.0",
     "express-session": "^1.15.6",
     "express-universal-analytics": "^0.7.1",
