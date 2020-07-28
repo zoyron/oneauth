@@ -52,6 +52,7 @@ switch (config.DEPLOY_CONFIG) {
     config.SERVER_URL = 'https://account.codingblocks.xyz'
     config.SECRETS = require('./secrets.json')
     config.COOKIE_DOMAIN = '.codingblocks.xyz'
+    break;
   case 'production': default:
     config.SERVER_URL = 'https://account.codingblocks.com'
     config.SECRETS = require('./secrets.json')
