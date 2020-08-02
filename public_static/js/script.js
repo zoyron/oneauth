@@ -1,4 +1,21 @@
 $(function () {
+//---------------------------------------------------------Modal--------------------------------------------------------
+    const triggerButton = $("#change-dp-trigger")
+    triggerButton.on("click", () => {
+        const modal = $("#profile-pic-modal")
+        const overlay = modal.find(".overlay")
+
+        overlay.on("click", () => {
+            modal.addClass("d-none")
+        })
+
+        if (modal.hasClass("d-none")) {
+            return modal.removeClass("d-none")
+        }
+
+        return modal.addClass("d-none")
+    })
+//---------------------------------------------------------Modal--------------------------------------------------------
 //------------------------------------------------Profile Picture Update------------------------------------------------
     var picInput = $("#userpic")
     var avatarPics = $("img.avatar")

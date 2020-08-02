@@ -1,45 +1,37 @@
-<div class="c-changedp">
-    <div class="modal fade c-modal" id="change-dp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="row justify-content-between no-gutters">
-                    <div class="heading">
-                        Change Profile Image
-                    </div>
-                    <span class="pointer" data-dismiss="modal" aria-hidden="true"><i class="fas fa-times"></i></span>
-
-                </div>
-
-                <p class="red">Choose from existing avatars</p>
-
-                <div class="row no-gutters">
-                    {{#for 1 36 1}}
-                        <div class="col-2 images">
-                            <img class="avatar" src="https://minio.codingblocks.com/img/avatar-{{this}}.svg">
-                        </div>
-                    {{/for}}
-
-                </div>
-
-                <p>OR</p>
-
-                <p class="red">Upload Image from your computer</p>
-
-                <input type="file" id="userpic" accept="image/jpeg, image/png" name="userpic">
-                <input id="avatar-selector" type="hidden" name="avatarselect" value="">
-
-                <div class="footer row justify-content-end no-gutters">
-                    <div class="button">
-                        <button id="btn-clear" type="button">RESET</button>
-                    </div>
-
-                    <div class="button-solid">
-                        <button type="button" data-dismiss="modal" data-target="#change-dp">SAVE CHANGES</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+<div class="all-center w-100 position-absolute tr d-none" style="height: 100vh;" id="profile-pic-modal">
+  <div class="overlay h-100 w-100 position-relative">
+    <div class="bg-white h-100 w-100 position-absolute tr" style="opacity: 0.5; z-index: 1;"></div>
+  </div>
+  <div class="border-card br-10 p-lg-5 p-4 h-60 w-60 overflow-y-auto position-absolute" style="z-index: 2;">
+    <div class="row no-gutters align-items-center justify-content-between">
+      <h5 class="bold">Change Profile Image</h5>
+      {{!-- Close button goes here --}}
     </div>
+    <div class="divider-h my-5"></div>
+    <h6 class="salmon mb-4">Choose from existing avatars</h6>
+    <div class="row no-gutters">
+      {{#for 1 36 1}}
+      <div class="col-2 p-2 pointer">
+        <img src="https://minio.codingblocks.com/img/avatar-{{this}}.svg" class="avatar">
+      </div>
+      {{/for}}
+    </div>
+
+    <div class="divider-h my-4"></div>
+
+    <h6 class="salmon mb-4">Upload image from your PC</h6>
+
+    <input type="file" id="userpic" accept="image/jpeg, image/png" name="userpic">
+    <input id="avatar-selector" type="hidden" name="avatarselect" value="">
+
+    <div class="row justify-content-end no-gutters align-items-center pt-4 border-top">
+      <div class="salmon mr-3">
+        <button id="btn-clear" type="button">RESET</button>
+      </div>
+
+      <div class="button-solid">
+        <button type="button" data-dismiss="modal" data-target="#change-dp">SAVE CHANGES</button>
+      </div>
+    </div>
+  </div>
 </div>

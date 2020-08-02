@@ -23,13 +23,15 @@
       </div>
       <div class="flex-1 ml-4">
         <h5 class="bold mb-1">Hi, {{user.firstname}} {{user.lastname}}</h5>
-        <a href="#" class="salmon mt-1">
-          <div class="font-sm">Change Profile Picture</div>
-        </a>
+        <button type="button" class="salmon mt-1 font-sm" id="change-dp-trigger">
+          Change Profile Picture
+        </button>
       </div>
     </div>
 
     <div class="divider-h mb-5 mt-4"></div>
+
+    {{>modal_profile_pic}}
 
     <form action="" method="post" enctype="multipart/form-data">
       <input type="hidden" name="_csrf" value="{{csrfToken}}">
