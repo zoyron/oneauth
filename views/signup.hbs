@@ -60,10 +60,10 @@
             <div class="col-md-4">
                 <div class="select-container">
                     <select name="gender" id="gender" class="font-sm bold underline-select pb-4" required>
-                        <option selected disabled hidden>Choose Gender</option>
-                        <option value="MALE" class="py-2">MALE</option>
-                        <option value="FEMALE" class="py-2">FEMALE</option>
-                        <option value="UNDISCLOSED" class="py-2">UNDISCLOSED</option>
+                        <option disabled hidden>Choose Gender</option>
+                        <option value="MALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>MALE</option>
+                        <option value="FEMALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>FEMALE</option>
+                        <option value="UNDISCLOSED" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>UNDISCLOSED</option>
                     </select>
                 </div>
             </div>
