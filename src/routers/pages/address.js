@@ -35,7 +35,9 @@ router.get('/add',
                 findAllStates(),
                 findAllCountries()
             ])
-            return res.render('address/add', {states, countries})
+
+            const userDetails = req.user;
+            return res.render('address/add', {states, countries, userDetails})
         } catch (error) {
             Raven.captureException(error)
             res.send("Error Fetching Data.")

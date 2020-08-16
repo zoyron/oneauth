@@ -8,7 +8,7 @@
       {{!-- Close button goes here --}}
     </div>
     <div class="divider-h my-5"></div>
-    <h6 class="salmon mb-4">Choose from existing avatars</h6>
+    <h6 class="gradient-text-orange mb-4">Choose from existing avatars</h6>
     <div class="row no-gutters">
       {{#for 1 36 1}}
       <div class="col-2 p-2 pointer">
@@ -19,18 +19,18 @@
 
     <div class="divider-h my-4"></div>
 
-    <h6 class="salmon mb-4">Upload image from your PC</h6>
+    <h6 class="gradient-text-orange mb-4">Upload image from your PC</h6>
 
     <input type="file" id="userpic" accept="image/jpeg, image/png" name="userpic">
     <input id="avatar-selector" type="hidden" name="avatarselect" value="">
 
     <div class="row justify-content-end no-gutters align-items-center pt-4 border-top">
-      <div class="salmon mr-3">
+      <div class="gradient-text-orange mr-3">
         <button id="btn-clear" type="button">RESET</button>
       </div>
 
-      <div class="button-solid">
-        <button type="button" data-dismiss="modal" data-target="#change-dp">SAVE CHANGES</button>
+      <div>
+        <button class="button-solid button-orange" type="button" data-dismiss="modal" data-target="#change-dp">SAVE CHANGES</button>
       </div>
     </div>
   </div>
