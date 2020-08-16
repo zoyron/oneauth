@@ -21,7 +21,8 @@
           </li>
           <li class="px-4 float-left"><a href="https://hire.codingblocks.com/applicants" class="hover-orange">Hiring
               Blocks</a></li>
-          <li class="px-4 float-left"><a href="https://hack.codingblocks.com/" class="hover-orange">Hacker Blocks</a></li>
+          <li class="px-4 float-left"><a href="https://hack.codingblocks.com/" class="hover-orange">Hacker Blocks</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -60,8 +61,12 @@
       </div> --}}
       <div class="font-md py-3"><a href="/apps"
           class="hover-orange {{#ifeq  val=currentUrl expected="apps"}}active{{/ifeq}}">My Applications</a></div>
-      <div class="font-md py-3"><a href="/users/me/clients"
-          class="hover-orange {{#ifeq  val=currentUrl expected="clients"}}active{{/ifeq}}">My Clients</a></div>
+      <div class="font-md py-3 v-align-ma">
+        <a href="/users/me/clients" class="hover-orange {{#ifeq  val=currentUrl expected="clients"}}active{{/ifeq}}">
+          My Clients
+          <span class="card-md orange ml-1">(DEV)</span>
+        </a>
+      </div>
       <div class="font-md py-3"><a href="/logout" class="hover-orange">Logout</a></div>
 
       <div class="divider-h my-4"></div>
@@ -71,7 +76,8 @@
           class="hover-orange">Classroom
           Courses</a></div>
       <div class="font-md py-3"><a href="https://online.codingblocks.com/" class="hover-orange">Online Courses</a></div>
-      <div class="font-md py-3"><a href="https://hire.codingblocks.com/applicants" class="hover-orange">Hacker Blocks</a>
+      <div class="font-md py-3"><a href="https://hire.codingblocks.com/applicants" class="hover-orange">Hacker
+          Blocks</a>
       </div>
       <div class="font-md py-3"><a href="https://hack.codingblocks.com/" class="hover-orange">Hiring Blocks</a></div>
     </div>
