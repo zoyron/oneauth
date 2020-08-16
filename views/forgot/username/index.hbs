@@ -1,23 +1,23 @@
 <div class="row no-gutters work-area">
-    <div class="col-5 border-right py-5">
-    </div>
-    <div class="col-7 py-5 px-5">
-        <div class="tab-nav-underline w-100 justify-content-start">
-            <a href="/forgot/username" class="tab active px-0 font-md extra-bold">Forgot Username</a>
-        </div>
+	<div class="col-5 border-right py-5">
+	</div>
+	<div class="col-7 py-5 px-5">
+		<div class="tab-nav-underline w-100 justify-content-start">
+			<a href="/forgot/username" class="tab active px-0 font-md extra-bold">Forgot Username</a>
+		</div>
 
-        <div class="my-4 pt-4">
-            <div class="font-mds dark-grey">Enter Your Registered Email ID.</div>
-        </div>
+		<div class="my-4 pt-4">
+			<div class="font-mds dark-grey">Enter Your Registered Email ID.</div>
+		</div>
 
-        <form action="/forgot/username" method="POST">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            {{> error-snippet}}
+		<form action="/forgot/username" method="POST">
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
+			{{> error-snippet}}
 
-            <input type="text" class="underline-input font-sm bold w-100 my-5" name="email" placeholder="abc@gmail.com"
-                required />
+			<input type="text" class="underline-input font-sm bold w-100 my-5" name="email" placeholder="abc@gmail.com"
+				required />
 
-            <button class="button-solid lg mt-4" type="submit">Submit</button>
-        </form>
-    </div>
+			<button class="button-solid button-orange lg mt-4" type="submit">Submit</button>
+		</form>
+	</div>
 </div>
