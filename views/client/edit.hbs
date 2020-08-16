@@ -15,8 +15,8 @@
               <label for="addtype" class="font-sm">Client Name</label>
             </div>
             <div class="col-8">
-              <input type="text" name="clientname" value="{{client.name}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Client Name">
+              <input type="text" name="clientname" value="{{client.name}}"
+                class="underline-input pb-4 font-sm bold w-100" placeholder="Client Name">
             </div>
           </div>
         </div>
@@ -26,8 +26,8 @@
               <label for="addtype" class="font-sm">Domain</label>
             </div>
             <div class="col-8">
-              <input type="text" name="domain" value="{{client.clientDomains}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Domain">
+              <input type="text" name="domain" value="{{client.clientDomains}}"
+                class="underline-input pb-4 font-sm bold w-100" placeholder="Domain">
             </div>
           </div>
         </div>
@@ -39,8 +39,8 @@
               <label for="addtype" class="font-sm">Callback URL</label>
             </div>
             <div class="col-8">
-              <input type="text" name="callback" value="{{client.clientCallbacks}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Callback URL">
+              <input type="text" name="callback" value="{{client.clientCallbacks}}"
+                class="underline-input pb-4 font-sm bold w-100" placeholder="Callback URL">
             </div>
           </div>
         </div>
@@ -50,8 +50,8 @@
               <label for="addtype" class="font-sm">Default URL</label>
             </div>
             <div class="col-8">
-              <input type="text" name="defaulturl" value="{{client.clientdefaultURL}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Default URL">
+              <input type="text" name="defaulturl" value="{{client.clientdefaultURL}}"
+                class="underline-input pb-4 font-sm bold w-100" placeholder="Default URL">
             </div>
           </div>
         </div>
@@ -63,7 +63,8 @@
               <label class="font-sm">Android OTP Hash</label>
             </div>
             <div class="col-8">
-              <input type="text" maxlength="11" class="underline-input pb-3 font-sm bold w-100" placeholder="OTP Hash for Android" name="androidOTPHash" value="{{client.androidOTPHash}}"/>
+              <input type="text" maxlength="11" class="underline-input pb-4 font-sm bold w-100"
+                placeholder="OTP Hash for Android" name="androidOTPHash" value="{{client.androidOTPHash}}" />
             </div>
           </div>
         </div>
@@ -73,16 +74,16 @@
               <label for="addtype" class="font-sm">Webhook URL</label>
             </div>
             <div class="col-8">
-              <input type="text" name="webhookurl" value="{{client.webhookURL}}" class="underline-input pb-3 font-sm bold w-100"
-                placeholder="Webhook URL">
+              <input type="text" name="webhookurl" value="{{client.webhookURL}}"
+                class="underline-input pb-4 font-sm bold w-100" placeholder="Webhook URL">
             </div>
           </div>
         </div>
       </div>
 
       <div class="mt-5">
-        <button class="button-solid lg">Save Client</button>
-        <span class="font-sm ml-4"><a href="#" class="dark-grey">Reset</a></span>
+        <button class="button-solid button-orange lg">Save Client</button>
+        <button class="font-sm ml-4 orange" type="reset">Reset</button>
       </div>
     </form>
   </div>
