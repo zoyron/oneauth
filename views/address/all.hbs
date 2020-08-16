@@ -7,7 +7,7 @@
           <div class="tab active px-0 font-md extra-bold">My Addresses</div>
         </div>
       </div>
-      <a href="/address/add" class="button-solid lg">Add Address</a>
+      <a href="/address/add" class="button-solid button-orange lg">Add Address</a>
     </div>
 
     {{> error-snippet}}
@@ -16,7 +16,7 @@
       {{#each addresses as |address index|}}
         <div class="col-lg-6 col-md-8 col-12 mb-5">
           <div class="border-card p-xl-5 p-4 position-relative">
-            <h6 class="bold card-tag salmon pr-2">
+            <h6 class="bold card-tag orange pr-2">
               {{address.label}}
             </h6>
             <h5 class="bold mb-3">{{address.first_name}} {{address.last_name}}</h5>
@@ -33,7 +33,7 @@
               <br>{{address.country.name}}
             </div>
             <div class="semi-bold">
-              <a href="/address/{{address.id}}/edit" class="salmon">Edit Address</a>
+              <a href="/address/{{address.id}}/edit" class="orange">Edit Address</a>
             </div>
           </div>
         </div>
