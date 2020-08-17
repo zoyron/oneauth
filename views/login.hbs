@@ -21,24 +21,25 @@
       <div class="input-btn">
         <input type="text" id="addtype" class="underline-input font-sm bold w-100 my-5"
           placeholder="Username or Verfied Email ID or Verified Mobile No" name="username" required />
-        <a href="/forgot/username">Forgot?</a>
+        <a href="/forgot/username" class="orange">Forgot?</a>
       </div>
 
       <div class="input-btn">
         <input type="password" id="addtype" class="underline-input font-sm bold w-100 my-5"
           placeholder="Enter Password (Leave blank for OTP Login)" name="password" />
-        <a href="/forgot/password">Forgot?</a>
+        <a href="/forgot/password" class="orange">Forgot?</a>
       </div>
 
       <label class="input-checkbox checkbox-solid font-sm" for="solid">
         <input type="checkbox" id="solid">
         <div class="d-inline-block mt-2">Remember Me</div>
-        <span class="salmon-gradient"></span>
+        <span></span>
       </label>
 
       <div class="mt-5">
-        <button class="button-solid lg" type="submit">Login Now</button>
-        <button class="font-sm salmon semi-bold ml-3" type="submit" formaction="/login/otp" formmethod="post">
+        <button class="button-solid button-orange lg" type="submit">Login Now</button>
+        <button class="font-sm gradient-text-orange semi-bold ml-3" type="submit" formaction="/login/otp"
+          formmethod="post">
           Login with OTP
         </button>
       </div>

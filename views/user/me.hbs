@@ -7,7 +7,7 @@
           <div class="tab active px-0 font-md extra-bold">My Profile</div>
         </div>
       </div>
-      <a href="/users/me/edit" class="button-solid lg">
+      <a href="/users/me/edit" class="button-solid button-orange lg">
         Edit Profile
       </a>
     </div>
@@ -15,20 +15,22 @@
       <div class="col-lg-6 mt-5">
         <div class="row align-items-center">
           <div class="col-xl-4 col-lg-12 col-sm-4 mb-xl-0 mb-lg-4 mb-sm-0 mb-4">
-            <i class="far fa-envelope"></i>
-            <span class="font-sm ml-2">Verified Email</span>
+            <div class="row no-gutters align-items-center">
+              <i class="far fa-envelope"></i>
+              <span class="font-sm flex-1 pl-2">Verified Email</span>
+            </div>
           </div>
           <div class="col-xl-8 col-lg-12 col-sm-8">
             {{#if user.verifiedemail}}
             <div class="row align-items-center justify-content-between no-gutters">
               <span class="font-sm bold flex-1 pb-4 border-bottom salmon">{{user.verifiedemail}}</span>
-              <i class="fas fa-check fa-lg salmon ml-4"></i>
+              <i class="fas fa-check fa-lg orange ml-4"></i>
             </div>
             {{else}}
             <form action="/verifyemail" method="POST" class="row no-gutters align-items-center justify-content-between">
-              <input type="text" class="underline-input font-sm bold flex-1" placeholder="Email to verify" name="email"
+              <input type="text" class="underline-input font-sm bold flex-1 pr-2" placeholder="Email to verify" name="email"
                 value="{{user.email}}" required />
-              <button type="submit" class="salmon ml-4">
+              <button type="submit" class="orange">
                 Verify
               </button>
             </form>
@@ -39,19 +41,21 @@
       <div class="col-lg-6 mt-5">
         <div class="row align-items-center">
           <div class="col-xl-4 col-lg-12 col-sm-4 mb-xl-0 mb-lg-4 mb-sm-0 mb-4">
-            <i class="fas fa-phone"></i>
-            <span class="font-sm ml-2">Verified Mobile Number</span>
+            <div class="row no-gutters align-items-center">
+              <i class="fas fa-phone"></i>
+              <span class="font-sm flex-1 pl-2">Verified Mobile Number</span>
+            </div>
           </div>
           <div class="col-xl-8 col-lg-12 col-sm-8">
             {{#if user.verifiedmobile}}
             <div class="row align-items-center justify-content-between no-gutters">
               <span class="font-sm bold salmon flex-1 pb-4 border-bottom">{{user.verifiedmobile}}</span>
-              <i class="fas fa-check fa-lg salmon ml-4"></i>
+              <i class="fas fa-check fa-lg orange ml-4"></i>
             </div>
             {{else}}
             <div class="row align-items-center justify-content-between no-gutters">
-              <span class="font-sm bold flex-1 pb-4 border-bottom">{{user.mobile_number}}</span>
-              <a class="salmon ml-4" href="/verifymobile">Verify</a>
+              <span class="font-sm bold flex-1 pb-4 border-bottom pr-2">{{user.mobile_number}}</span>
+              <a class="orange" href="/verifymobile">Verify</a>
             </div>
             {{/if}}
           </div>

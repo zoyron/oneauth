@@ -10,7 +10,7 @@
     "precodecov": "npm run test:report",
     "codecov": "codecov",
     "start": "node src/server.js",
-    "start:dev": "cross-env ONEAUTH_DEV=localhost npm start"
+    "start:dev": "cross-env ONEAUTH_DEV=localhost nodemon src/server.js -e js,hbs,json"
   },
   "files": [
     "src",
@@ -85,6 +85,7 @@
     "chai": "^4.1.2",
     "cross-env": "^5.1.5",
     "mocha": "^5.2.0",
+    "nodemon": "^2.0.4",
     "nyc": "^13.3.0",
     "rimraf": "^2.6.2"
   },

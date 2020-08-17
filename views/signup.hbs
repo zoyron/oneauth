@@ -1,163 +1,150 @@
 <div class="row no-gutters work-area">
-    <div class="col-lg-5 d-none d-lg-flex border-right py-5 all-center">
-        <img src="https://hack.codingblocks.com/images/beginner.gif" alt="">
-    </div>
-    <div class="col-lg-7 py-5 px-sm-5 px-4">
-      <div class="tab-nav-underline w-100 justify-content-start">
-        <a href="/login" class="tab px-0 font-md extra-bold">Login</a>
-        <a href="/signup" class="tab px-0 mx-5 font-md extra-bold active">Sign Up</a>
-      </div>
+	<div class="col-lg-5 d-none d-lg-flex border-right py-5 all-center">
+		<img src="https://hack.codingblocks.com/images/beginner.gif" alt="">
+	</div>
+	<div class="col-lg-7 py-5 px-sm-5 px-4">
+		<div class="tab-nav-underline w-100 justify-content-start">
+			<a href="/login" class="tab px-0 font-md extra-bold">Login</a>
+			<a href="/signup" class="tab px-0 mx-5 font-md extra-bold active">Sign Up</a>
+		</div>
 
-      <div class="my-5 pt-4">
-        <h4 class="bold">New to Coding Blocks?</h4>
-        <div class="font-mds dark-grey mt-1">Get access to all applications now</div>
-      </div>
+		<div class="my-5 pt-4">
+			<h4 class="bold">New to Coding Blocks?</h4>
+			<div class="font-mds dark-grey mt-1">Get access to all applications now</div>
+		</div>
 
-      <form action="/signup" method="post">
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <input type="hidden" name="refcode" value="{{refCode}}">
-        {{> error-snippet}}
-        <input 
-            type="text" 
-            id="username" 
-            class="underline-input font-sm bold w-100 mt-4"
-            name="username"
-            value="{{prevForm.username}}"
-            placeholder="Choose Username"
-            required />
+		<form action="/signup" method="post">
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
+			<input type="hidden" name="refcode" value="{{refCode}}">
+			{{> error-snippet}}
 
-        <div class="card-sm light med-grey mt-2">
-            Username should be of length 3-50 characters &amp; can only start with alphabets
-            Username can only contain alhpabets, numbers, - (hyphen), _ (underscore), .(dot) &amp; should not end with
-            confusing
-            extensions like .js, .ts
-        </div>
+			<div>
+				<input type="text" id="username" class="underline-input font-sm bold w-100 mt-4" name="username"
+					value="{{prevForm.username}}" placeholder="Choose Username" required />
+				<div class="card-md orange mt-2">*Required</div>
 
-        <div class="row mt-4">
-            <div class="col-md-6">
-            <input 
-                type="text" 
-                id="firstname" 
-                class="underline-input font-sm bold w-100 mt-4" 
-                name="firstname"
-                value="{{prevForm.firstname}}"
-                placeholder="First Name"
-                required />
-            </div>
-            <div class="col-md-6">
-            <input 
-                type="text" 
-                id="addtype" 
-                class="underline-input font-sm bold w-100 mt-4" 
-                name="lastname"
-                value="{{prevForm.lastname}}"
-                placeholder="Last Name"
-                required />
-            </div>
-        </div>
+				<div class="card-sm light med-grey mt-2">
+					Username should be of length 3-50 characters &amp; can only start with alphabets
+					Username can only contain alhpabets, numbers, - (hyphen), _ (underscore), .(dot) &amp; should not end with
+					confusing
+					extensions like .js, .ts
+				</div>
+			</div>
 
-        <div class="row mt-4">
-            <div class="col-md-4">
-                <div class="select-container">
-                    <select name="gender" id="gender" class="font-sm bold underline-select pb-4" required>
-                        <option disabled hidden>Choose Gender</option>
-                        <option value="MALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>MALE</option>
-                        <option value="FEMALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>FEMALE</option>
-                        <option value="UNDISCLOSED" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>UNDISCLOSED</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-2 mt-md-0 mt-4">
-                <div class="select-container">
-                    <select name="dial_code" class="font-sm bold underline-select pb-4" required>
-                        {{#each countries}}
-                            {{#ifeq expected=dial_code val=../prevForm.dial_code}}
-                                <option class="py-2" value="{{dial_code}}" selected>
-                                    {{name}} ({{dial_code}})
-                                </option>
-                            {{else}}
-                                <option class="py-2" value="{{dial_code}}">
-                                    {{name}} ({{dial_code}})
-                                </option>
-                            {{/ifeq}}
-                        {{/each}}
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6 mt-md-0 mt-4">
-                <input 
-                    type="text" 
-                    class="underline-input font-sm bold w-100"
-                    id="mobile_number"
-                    name="mobile_number"
-                    value="{{prevForm.mobile_number}}"
-                    placeholder="Phone Number" />
-            </div>
-        </div>
 
-        <div class="select-container mt-4">
-            <select name="collegeId" class="font-sm bold underline-select pb-4" required>
-                <option selected disabled hidden>Choose College</option>
-                {{#each colleges}}
-                      {{../prevForm.demographic.collegeId}}
-                      {{#ifeq expected=id val=../prevForm.demographic.collegeId}}
-                          <option class="py-2" value="{{id}}" selected>{{name}}</option>
-                      {{else}}
-                          <option class="py-2" value="{{id}}">{{name}}</option>
-                      {{/ifeq}}
-                  {{/each}}
-            </select>
-        </div>
+			<div class="row mt-5">
+				<div class="col-md-6">
+					<input type="text" id="firstname" class="underline-input font-sm bold w-100" name="firstname"
+						value="{{prevForm.firstname}}" placeholder="First Name" required />
+					<div class="card-md orange mt-2">*Required</div>
+				</div>
+				<div class="col-md-6">
+					<input type="text" id="addtype" class="underline-input font-sm bold w-100" name="lastname"
+						value="{{prevForm.lastname}}" placeholder="Last Name" required />
+					<div class="card-md orange mt-2">*Required</div>
+				</div>
+			</div>
 
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="select-container">
-                    <select name="branchId" class="font-sm bold underline-select pb-4" required>
-                        <option selected disabled hidden>Choose Branch</option>
-                        {{#each branches}}
-                            {{#ifeq expected=id val=../prevForm.demographic.branchId}}
-                                <option class="py-2" value="{{id}}" selected>{{name}}</option>
-                            {{else}}
-                                <option class="py-2" value="{{id}}">{{name}}</option>
-                            {{/ifeq}}
-                        {{/each}}
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6 mt-md-0 mt-4">
-                <div class="select-container">
-                    <select name="gradYear" class="font-sm bold underline-select pb-4" required>
-                        <option selected disabled hidden>Choose Graduation Year</option>
-                        {{#each gradYears}}
-                            {{#ifeq expected=this val=../prevForm.gradYear}}
-                                <option class="py-2" value="{{this}}" selected>{{this}}</option>
-                            {{else}}
-                                <option class="py-2" value="{{this}}">{{this}}</option>
-                            {{/ifeq}}
-                        {{/each}}
-                    </select>
-                </div>
-            </div>
-        </div>
+			<div class="row mt-5">
+				<div class="col-md-4">
+					<div class="select-container">
+						<select name="gender" id="gender" class="font-sm bold underline-select pb-4" required>
+							<option disabled hidden>Choose Gender</option>
+							<option value="MALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>MALE
+							</option>
+							<option value="FEMALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>FEMALE
+							</option>
+							<option value="UNDISCLOSED" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>
+								UNDISCLOSED</option>
+						</select>
+					</div>
+					<div class="card-md orange mt-2">*Required</div>
+				</div>
+				<div class="col-md-2 mt-md-0 mt-5">
+					<div class="select-container">
+						<select name="dial_code" class="font-sm bold underline-select pb-4 w-100" required>
+							{{#each countries}}
+							{{#ifeq expected=dial_code val=../prevForm.dial_code}}
+							<option class="py-2" value="{{dial_code}}" selected>
+								{{name}} ({{dial_code}})
+							</option>
+							{{else}}
+							<option class="py-2" value="{{dial_code}}">
+								{{name}} ({{dial_code}})
+							</option>
+							{{/ifeq}}
+							{{/each}}
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6 mt-md-0 mt-5">
+					<input type="text" class="underline-input font-sm bold w-100" id="mobile_number" name="mobile_number"
+						value="{{prevForm.mobile_number}}" placeholder="Phone Number" />
+					<div class="card-md orange mt-2">*Required</div>
+				</div>
+			</div>
 
-        <input 
-            type="text"
-            class="underline-input font-sm bold w-100 mt-4" 
-            name="email"
-            value="{{prevForm.email}}"
-            placeholder="Email Address"
-            required />
+			<div class="select-container mt-5">
+				<select name="collegeId" class="font-sm bold underline-select pb-4" required>
+					<option selected disabled hidden>Choose College</option>
+					{{#each colleges}}
+					{{../prevForm.demographic.collegeId}}
+					{{#ifeq expected=id val=../prevForm.demographic.collegeId}}
+					<option class="py-2" value="{{id}}" selected>{{name}}</option>
+					{{else}}
+					<option class="py-2" value="{{id}}">{{name}}</option>
+					{{/ifeq}}
+					{{/each}}
+				</select>
+			</div>
 
-        <input 
-            type="password" 
-            class="underline-input font-sm bold w-100 mt-4" 
-            name="password"
-            placeholder="Password"
-            required />
+			<div class="row mt-5">
+				<div class="col-md-6">
+					<div class="select-container">
+						<select name="branchId" class="font-sm bold underline-select pb-4" required>
+							<option selected disabled hidden>Choose Branch</option>
+							{{#each branches}}
+							{{#ifeq expected=id val=../prevForm.demographic.branchId}}
+							<option class="py-2" value="{{id}}" selected>{{name}}</option>
+							{{else}}
+							<option class="py-2" value="{{id}}">{{name}}</option>
+							{{/ifeq}}
+							{{/each}}
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6 mt-md-0 mt-4">
+					<div class="select-container">
+						<select name="gradYear" class="font-sm bold underline-select pb-4" required>
+							<option selected disabled hidden>Choose Graduation Year</option>
+							{{#each gradYears}}
+							{{#ifeq expected=this val=../prevForm.gradYear}}
+							<option class="py-2" value="{{this}}" selected>{{this}}</option>
+							{{else}}
+							<option class="py-2" value="{{this}}">{{this}}</option>
+							{{/ifeq}}
+							{{/each}}
+						</select>
+					</div>
+					<div class="card-md orange mt-2">*Required</div>
+				</div>
+			</div>
 
-        <div class="mt-5">
-            <button class="button-solid lg" type="submit">Sign Up Now</button>
-        </div>
-      </form>
-    </div>
-  </div>
+			<div class="mt-5">
+				<input type="text" class="underline-input font-sm bold w-100" name="email" value="{{prevForm.email}}"
+					placeholder="Email Address" required />
+				<div class="card-md orange mt-2">*Required</div>
+			</div>
+
+			<div class="mt-5">
+				<input type="password" class="underline-input font-sm bold w-100" name="password" placeholder="Password"
+					required />
+				<div class="card-md orange mt-2">*Required</div>
+			</div>
+
+			<div class="mt-5">
+				<button class="button-solid button-orange lg" type="submit">Sign Up Now</button>
+			</div>
+		</form>
+	</div>
+</div>

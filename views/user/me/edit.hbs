@@ -11,25 +11,21 @@
       <div>
         <div class="img-ring img-ring--profile p-1">
           {{#if user.photo}}
-            <img class="round img"
-              src={{user.photo}}
-              alt="User Photo">
+          <img class="round img" src={{user.photo}} alt="User Photo">
           {{else}}
-            <img class="round img"
-              src="/img/user.svg"
-              alt="User Photo">
+          <img class="round img" src="/img/user.svg" alt="User Photo">
           {{/if}}
         </div>
       </div>
       <div class="flex-1 ml-4">
         <h5 class="bold mb-1">Hi, {{user.firstname}} {{user.lastname}}</h5>
-        <button type="button" class="salmon mt-1 font-sm" id="change-dp-trigger">
+        <button type="button" class="orange mt-1 font-sm" id="change-dp-trigger">
           Change Profile Picture
         </button>
       </div>
     </div>
 
-    <div class="divider-h mb-5 mt-4"></div>
+    <div class="divider-h mb-md-5 mt-4"></div>
 
     {{>modal_profile_pic}}
 
@@ -64,7 +60,8 @@
               <label for="addtype" class="font-sm">First Name</label>
             </div>
             <div class="col-8">
-              <input type="text" name="firstname" value="{{user.firstname}}" class="underline-input pb-3 font-sm bold w-100" placeholder="First Name">
+              <input type="text" name="firstname" value="{{user.firstname}}"
+                class="underline-input pb-4 font-sm bold w-100" placeholder="First Name">
             </div>
           </div>
         </div>
@@ -74,7 +71,8 @@
               <label for="addtype" class="font-sm">Last Name</label>
             </div>
             <div class="col-8">
-              <input type="text" name="lastname" value="{{user.lastname}}" class="underline-input pb-3 font-sm bold w-100" placeholder="Last Name">
+              <input type="text" name="lastname" value="{{user.lastname}}"
+                class="underline-input pb-4 font-sm bold w-100" placeholder="Last Name">
             </div>
           </div>
         </div>
@@ -87,11 +85,14 @@
             </div>
             <div class="col-8">
               <div class="select-container">
-                <select name="gender" class="font-sm bold underline-select">
+                <select name="gender" class="font-sm bold underline-select w-100 pb-4">
                   <option disabled hidden>Choose Gender</option>
-                  <option value="MALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>MALE</option>
-                  <option value="FEMALE" class="py-2" {{#ifeq expected="FEMALE" val=../user.gender}}selected{{/ifeq}}>FEMALE</option>
-                  <option value="UNDISCLOSED" class="py-2" {{#ifeq expected="UNDISCLOSED" val=../user.gender}}selected{{/ifeq}}>UNDISCLOSED</option>
+                  <option value="MALE" class="py-2" {{#ifeq expected="MALE" val=../user.gender}}selected{{/ifeq}}>MALE
+                  </option>
+                  <option value="FEMALE" class="py-2" {{#ifeq expected="FEMALE" val=../user.gender}}selected{{/ifeq}}>
+                    FEMALE</option>
+                  <option value="UNDISCLOSED" class="py-2"
+                    {{#ifeq expected="UNDISCLOSED" val=../user.gender}}selected{{/ifeq}}>UNDISCLOSED</option>
                 </select>
               </div>
             </div>
@@ -104,14 +105,14 @@
             </div>
             <div class="col-8">
               <div class="select-container">
-                <select name="collegeId" class="font-sm bold underline-select">
+                <select name="collegeId" class="font-sm bold underline-select w-100 pb-4">
                   {{#each colleges}}
-                    {{#ifeq expected=id val=../user.demographic.collegeId}}
-                      <option class="py-2" value="{{id}}" selected>{{name}}</option>
-                    {{/ifeq}}
-                    {{#ifneq expected=id val=../user.demographic.collegeId}}
-                      <option class="py-2" value="{{id}}">{{name}}</option>
-                    {{/ifneq}}
+                  {{#ifeq expected=id val=../user.demographic.collegeId}}
+                  <option class="py-2" value="{{id}}" selected>{{name}}</option>
+                  {{/ifeq}}
+                  {{#ifneq expected=id val=../user.demographic.collegeId}}
+                  <option class="py-2" value="{{id}}">{{name}}</option>
+                  {{/ifneq}}
                   {{/each}}
                 </select>
               </div>
@@ -126,7 +127,7 @@
               <label for="addtype" class="font-sm">Password</label>
             </div>
             <div class="col-8">
-              <input type="password" name="password" class="underline-input pb-3 font-sm bold w-100"
+              <input type="password" name="password" class="underline-input pb-4 font-sm bold w-100"
                 placeholder="Enter Password">
             </div>
           </div>
@@ -137,7 +138,7 @@
               <label for="addtype" class="font-sm">Re-Enter Password</label>
             </div>
             <div class="col-8">
-              <input type="password" name="repassword" class="underline-input pb-3 font-sm bold w-100"
+              <input type="password" name="repassword" class="underline-input pb-4 font-sm bold w-100"
                 placeholder="Re-Enter Password">
             </div>
           </div>
@@ -151,14 +152,14 @@
             </div>
             <div class="col-8">
               <div class="select-container">
-                <select name="branchId" class="font-sm bold underline-select">
+                <select name="branchId" class="font-sm bold underline-select w-100 pb-4">
                   {{#each branches}}
-                    {{#ifeq expected=id val=../user.demographic.branchId}}
-                      <option class="py-2" value="{{id}}" selected>{{name}}</option>
-                    {{/ifeq}}
-                    {{#ifneq expected=id val=../user.demographic.branchId}}
-                      <option class="py-2" value="{{id}}">{{name}}</option>
-                    {{/ifneq}}
+                  {{#ifeq expected=id val=../user.demographic.branchId}}
+                  <option class="py-2" value="{{id}}" selected>{{name}}</option>
+                  {{/ifeq}}
+                  {{#ifneq expected=id val=../user.demographic.branchId}}
+                  <option class="py-2" value="{{id}}">{{name}}</option>
+                  {{/ifneq}}
                   {{/each}}
                 </select>
               </div>
@@ -172,13 +173,13 @@
             </div>
             <div class="col-8">
               <div class="select-container">
-                <select name="gradYear" class="font-sm bold underline-select">
+                <select name="gradYear" class="font-sm bold underline-select w-100 pb-4">
                   {{#each gradYears}}
-                    {{#ifeq expected=this val=../user.graduationYear}}
-                      <option class="py-2" value="{{this}}" selected>{{this}}</option>
-                    {{else}}
-                      <option class="py-2" value="{{this}}">{{this}}</option>
-                    {{/ifeq}}
+                  {{#ifeq expected=this val=../user.graduationYear}}
+                  <option class="py-2" value="{{this}}" selected>{{this}}</option>
+                  {{else}}
+                  <option class="py-2" value="{{this}}">{{this}}</option>
+                  {{/ifeq}}
                   {{/each}}
                 </select>
               </div>
@@ -194,23 +195,20 @@
             </div>
             <div class="col-8">
               <div class="row">
-                <div class="col-4 select-container">
-                  <select name="dial_code" class="font-sm bold underline-select" required>
-                    {{#each countries}}
+                <div class="col-4">
+                  <div class="select-container">
+                    <select name="dial_code" class="font-sm bold underline-select w-100 pb-4" required>
+                      {{#each countries}}
                       <option class="py-2" value="{{dial_code}}">
                         {{name}} ({{dial_code}})
                       </option>
-                    {{/each}}
-                  </select>
+                      {{/each}}
+                    </select>
+                  </div>
                 </div>
                 <div class="col-8">
-                  <input 
-                    type="text" 
-                    class="underline-input font-sm bold w-100"
-                    id="mobile_number"
-                    name="mobile_number"
-                    value="{{user.mobile_number}}"
-                    placeholder="Phone Number" />
+                  <input type="text" class="underline-input font-sm bold w-100 pb-4" id="mobile_number"
+                    name="mobile_number" value="{{user.mobile_number}}" placeholder="Phone Number" />
                 </div>
               </div>
             </div>
@@ -221,36 +219,37 @@
             <div class="col-4">
               <label class="font-sm">Your T-shirt Size</label>
             </div>
-            <div class="col-8 select-container">
-              <select class="underline-select font-sm bold w-100" name="apparelGoodiesSize" id="apparelGoodiesSize">
-                  <option class="py-2" value="" {{#ifeq expected='' val=user.apparelGoodiesSize}}
-                          selected={{true}}
-                  {{/ifeq}}>Choose your fit
+            <div class="col-8">
+              <div class="select-container">
+                <select class="underline-select font-sm bold w-100 pb-4" name="apparelGoodiesSize" id="apparelGoodiesSize">
+                  <option class="py-2" value="" {{#ifeq expected='' val=user.apparelGoodiesSize}} selected={{true}}
+                    {{/ifeq}}>Choose your fit
                   </option>
-                  <option class="py-2" value="S" {{#ifeq expected='S' val=user.apparelGoodiesSize}}
-                          selected
-                  {{/ifeq}}>S - Small
+                  <option class="py-2" value="S" {{#ifeq expected='S' val=user.apparelGoodiesSize}} selected {{/ifeq}}>S
+                    -
+                    Small
                   </option>
-                  <option class="py-2" value="M" {{#ifeq expected='M' val=user.apparelGoodiesSize}}
-                          selected
-                  {{/ifeq}}>M - Medium
+                  <option class="py-2" value="M" {{#ifeq expected='M' val=user.apparelGoodiesSize}} selected {{/ifeq}}>M
+                    -
+                    Medium
                   </option>
-                  <option class="py-2" value="L" {{#ifeq expected='L' val=user.apparelGoodiesSize}}
-                          selected
-                  {{/ifeq}}>L - Large
+                  <option class="py-2" value="L" {{#ifeq expected='L' val=user.apparelGoodiesSize}} selected {{/ifeq}}>L
+                    -
+                    Large
                   </option>
-                  <option class="py-2" value="XL" {{#ifeq expected='XL' val=user.apparelGoodiesSize}}
-                          selected
-                  {{/ifeq}}>XL - Extra Large
+                  <option class="py-2" value="XL" {{#ifeq expected='XL' val=user.apparelGoodiesSize}} selected
+                    {{/ifeq}}>
+                    XL - Extra Large
                   </option>
-              </select>
+                </select>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="mt-5">
-        <button class="button-solid lg" type="submit">Save Changes</button>
-        <button class="font-sm ml-4 dark-grey" type="reset">Reset</button>
+        <button class="button-solid button-orange lg" type="submit">Save Changes</button>
+        <button class="font-sm ml-4 orange" type="reset">Reset</button>
       </div>
     </form>
   </div>
