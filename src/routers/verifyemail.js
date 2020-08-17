@@ -155,16 +155,16 @@ router.get('/key/:key', function (req, res) {
                             where: {id: user.dataValues.id},
                             returning: true
                         }
-                    )
+                    )[1][0]
             } else {
-                return
+                return req.user
             }
         })
         .then((verifiedUser) => {
 
             if (verifiedUser) {
                 try {
-                    eventUserUpdated(verifiedUser.id).catch(Raven.captureException)
+                    eventUserUpdated(verifiedUser.id).catch(Raven.captureException.bind(Raven))
                 } catch (e) {
                     Raven.captureException(e)
                 }

@@ -36,13 +36,13 @@ router.use(function (req, res, next) {
     next()
 })
 
-router.use('/', makeGaEvent('view', 'page', '/'), publicroute)
-router.use('/users', makeGaEvent('view', 'page', '/users'), usersroute)
-router.use('/clients', makeGaEvent('view', 'page', '/clients'), clientroute)
-router.use('/address', makeGaEvent('view', 'page', '/address'), addressroute)
-router.use('/forgot', makeGaEvent('view', 'page', '/forgot'), forgotroute)
-router.use('/apps', makeGaEvent('view', 'page', '/apps'), approute)
-router.use('/organisations', makeGaEvent('view', 'page', '/organisations'), orgroute)
+router.use('/', publicroute)
+router.use('/users', usersroute)
+router.use('/clients', clientroute)
+router.use('/address', addressroute)
+router.use('/forgot', forgotroute)
+router.use('/apps', approute)
+router.use('/organisations', orgroute)
 
 
 module.exports = router

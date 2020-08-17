@@ -91,17 +91,21 @@ module.exports = new FacebookStrategy({
                 First ensure there aren't already users with the same email
                 id that comes from facebook
                  */
-                const existingUsers = await models.User.findAll({
-                    include: [{
-                        model: models.UserFacebook,
-                        attributes: ['id'],
-                        required: false
-                    }],
-                    where: {
-                        email: profileJson.email,
-                        '$userfacebook.id$': {$eq: null}
-                    }
-                })
+                let existingUsers = [];
+                if (profileJson.email) {
+                    existingUsers = await models.User.findAll({
+                        include: [{
+                            model: models.UserFacebook,
+                            attributes: ['id'],
+                            required: false
+                        }],
+                        where: {
+                            email: profileJson.email,
+                            '$userfacebook.id$': {$eq: null}
+                        }
+                    })
+                }
+
                 if (existingUsers && existingUsers.length > 0) {
                     let oldIds = existingUsers.map(eu => eu.id).join(',')
                     return cb(null, false, {
@@ -124,17 +128,18 @@ module.exports = new FacebookStrategy({
                         lastname: profileJson.last_name,
                         email: profileJson.email,
                         referralCode: generateReferralCode(profileJson.email).toUpperCase(),
-                        photo: "https://graph.facebook.com/" + profileJson.id + "/picture?type=large"
+                        photo: "https://graph.facebook.com/" + profileJson.id + "/picture?type=large",
+                        marketing_meta : req.session.marketingMeta
                     }
                 }, {
                     include: [models.User],
                 })
-                req.ga.event({
-                    action: 'signup',
-                    category: 'successful',
-                    label: 'facebook'
-                }, e => {
-                })
+                req.visitor.event({
+                    ea: 'successful',
+                    ec: 'signup',
+                    el: 'facebook'
+                }).send()
+                req.session.isNewSignup = true
                 if (!userFacebook) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }

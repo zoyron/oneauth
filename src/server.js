@@ -8,7 +8,8 @@ const express = require('express')
     , passport = require('./passport/passporthandler')
     , path = require('path')
     , exphbs = require('express-hbs')
-    , expressGa = require('express-ga-middleware')
+    , cookieParser = require('cookie-parser')
+    , expressGa = require('express-universal-analytics')
     , flash = require('express-flash')
     , csurf = require('csurf')
     , Raven = require('raven')
@@ -30,10 +31,12 @@ const config = require('../config')
     , oauthrouter = require('./routers/oauthrouter')
     , pagerouter = require('./routers/pages')
     , statusrouter = require('./routers/statusrouter')
-    , {expresstracer, datadogRouter} = require('./utils/ddtracer')
-    , {expressLogger} = require('./utils/logger')
+    , { expresstracer, datadogRouter } = require('./utils/ddtracer')
+    , { expressLogger } = require('./utils/logger')
     , handlebarsHelpers = require('./utils/handlebars')
-    ,  { profilePhotoMiddleware } = require('./middlewares/profilephoto');
+    , { setuserContextRaven, triggerGApageView, setUtmParamsInGa } = require('./middlewares/analytics')
+    , { profilePhotoMiddleware } = require('./middlewares/profilephoto')
+    , destroysessionsrouter = require('./routers/destroysessions');
 
 const app = express()
 
@@ -51,25 +54,7 @@ const redirectToHome = function (req, res, next) {
     next()
 
 }
-const setuserContext = function (req, res, next) {
-    if (req.authInfo) {
-        if (req.authInfo.clientOnly) {
-            return next()
-        }
-    }
-    if (req.user) {
-        if (req.authInfo)
-            Raven.setContext({
-                user: {
-                    username: req.user.dataValues.username,
-                    id: req.user.dataValues.id
-                }
 
-            })
-
-    }
-    next()
-}
 // ====================== START SENTRY
 Raven.config(secrets.SENTRY_DSN).install()
 app.use(Raven.requestHandler())
@@ -93,6 +78,7 @@ app.use(express.static(path.join(__dirname, '../public_static')))
 app.use(express.static(path.join(__dirname, '../submodules/motley/examples/public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser())
 app.use(session({
     store: sessionStore,
     secret: secrets.EXPRESS_SESSION_SECRET,
@@ -103,18 +89,26 @@ app.use(session({
         domain: config.COOKIE_DOMAIN,
         secure: false,
         maxAge: 86400000,
+        sameSite: 'lax'
     }
 }))
 app.use(saveIp)
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(setuserContext)
+app.use(setuserContextRaven)
 app.use(redirectToHome)
-app.use(expressGa('UA-83327907-12'))
 app.use(datadogRouter)
+app.use(expressGa({
+    uaCode: 'UA-83327907-12',
+    autoTrackPages: false,
+    cookieName: '_ga',
+    reqToUserId: (req) => req.user && req.user.id
+}))
+app.use(setUtmParamsInGa)
 app.use('/api', apirouter)
 app.use(profilePhotoMiddleware)
+app.use(triggerGApageView)
 app.use('/oauth', oauthrouter)
 app.use('/verifyemail', verifyemailrouter)
 // app.use(csurf({cookie: false}))
@@ -126,6 +120,7 @@ app.use('/verifymobile', verifymobilerouter)
 app.use('/logout', logoutrouter)
 app.use('/signup', signuprouter)
 app.use('/login', loginrouter)
+app.use('/destroysessions', destroysessionsrouter)
 app.use(redirectToEditProfile);
 app.use('/disconnect', disconnectrouter)
 app.use('/connect', connectrouter)

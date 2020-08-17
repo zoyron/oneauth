@@ -47,13 +47,15 @@ const User = db.define('user', {
     photo: Sequelize.DataTypes.STRING,
     email: Sequelize.DataTypes.STRING,
     mobile_number: {type: Sequelize.DataTypes.STRING},
+    whatsapp_number: {type: Sequelize.DataTypes.STRING},
     role: {type: Sequelize.DataTypes.ENUM('admin', 'employee', 'intern'), allowNull: true},
     verifiedemail: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true},
     verifiedmobile: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique: true, allowNull: true},
     referralCode: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:true, allowNull: true},
     referredBy: {type: Sequelize.DataTypes.BIGINT, defaultValue: null, unique:false, allowNull:true},
     graduationYear: {type: Sequelize.DataTypes.SMALLINT, defaultValue: null, unique:false, allowNull:true},
-    apparelGoodiesSize: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:false, allowNull:true}
+    apparelGoodiesSize: {type: Sequelize.DataTypes.STRING, defaultValue: null, unique:false, allowNull:true},
+    marketing_meta : {type: Sequelize.DataTypes.JSON, defaultValue: null, unique:false, allowNull:true}
 }, {
     paranoid: true
 })
@@ -100,6 +102,7 @@ const UserGithub = db.define('usergithub', definitions.social.github)
 const UserGoogle = db.define('usergoogle', definitions.social.google)
 const UserLinkedin = db.define('userlinkedin', definitions.social.linkedin)
 const UserLms = db.define('userlms', definitions.social.lms)
+const UserDiscord = db.define('userdiscord', definitions.social.discord)
 
 UserLocal.belongsTo(User)
 User.hasOne(UserLocal, {foreignKey: {unique: true}})
@@ -121,6 +124,9 @@ User.hasOne(UserLinkedin, {foreignKey: {unique: true}})
 
 UserLms.belongsTo(User)
 User.hasOne(UserLms, {foreignKey: {unique: true}})
+
+UserDiscord.belongsTo(User)
+User.hasOne(UserDiscord, {foreignKey: {unique: true}})
 
 Resetpassword.belongsTo(User)
 Verifyemail.belongsTo(User)
@@ -217,7 +223,11 @@ User.hasMany(AuthToken)
 AuthToken.belongsTo(Client)
 Client.hasMany(AuthToken)
 
-const Demographic = db.define('demographic', {})
+const Demographic = db.define('demographic', {
+    otherCollege: {
+        type: Sequelize.DataTypes.STRING
+    }
+})
 
 Demographic.belongsTo(User)     // Demographic has userId
 User.Demographic = User.hasOne(Demographic)        // One user has only one demographic, so userId is UNIQUE
@@ -305,6 +315,7 @@ module.exports = {
         UserGoogle,
         UserLinkedin,
         UserLms,
+        UserDiscord,
         Client,
         Organisation,
         OrgAdmin,

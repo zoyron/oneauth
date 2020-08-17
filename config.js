@@ -4,6 +4,8 @@ config = {
   "FACEBOOK_LOGIN_SCOPES": ["email", "public_profile"],
   "TWITTER_CALLBACK": "/login/twitter/callback",
   "GITHUB_CALLBACK": "/login/github/callback",
+  "DISCORD_CALLBACK": "/connect/discord/callback",
+  "DISCORD_LOGIN_SCOPES": ['identify', 'email', 'guilds.join', 'gdm.join'],
   "GOOGLE_CALLBACK": "/login/google/callback",
   "LINKEDIN_CALLBACK": "/connect/linkedin/callback",
   "GRANT_TOKEN_SIZE": 32,
@@ -15,7 +17,8 @@ config = {
   "WELCOME_EMAIL": "51913645-587b-419c-af40-79fc10553451",
   "FORGOT_USER_EMAIL": "a7e8ca83-0b5f-4ec8-b7cb-a3dbd2839c46",
   "FORGOT_PASS_EMAIL":"64d80a73-194d-4988-a581-87fbcf5457c7",
-  "VERIFY_EMAIL" :"3e470c46-5d2b-471e-992e-4820f1599de3"
+  "VERIFY_EMAIL" :"3e470c46-5d2b-471e-992e-4820f1599de3",
+  "PROFILE_COMPLETION_CREDITS": "bc634c8a-384c-4636-b029-a920250f32df"
 };
 
 config.DEPLOY_CONFIG = process.env.ONEAUTH_DEV || 'production';

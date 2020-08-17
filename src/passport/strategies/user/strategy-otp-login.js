@@ -12,11 +12,11 @@ const {findUserByParams} = require('../../../controllers/user');
 module.exports = new LocalStrategy({
     passReqToCallback: true,
 }, async function (req, mobile_number, otp, cb) {
-    req.ga.event({
-        category: 'login',
-        action: 'attempt',
-        label: 'otp_login'
-    });
+    req.visitor.event({
+        ec: 'login',
+        ea: 'attempt',
+        el: 'otp_login'
+    }).send()
 
     Raven.setContext({extra: {file: 'otp_login_strategy'}});
     try {

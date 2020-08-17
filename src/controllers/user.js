@@ -1,4 +1,5 @@
 const { User, UserLocal, Demographic, College, Branch, Address, WhitelistDomains} = require("../db/models").models;
+const { db }= require('../db/models')
 const sequelize = require('sequelize');
 const Raven = require('raven');
 
@@ -48,7 +49,7 @@ async function createUserLocal(userParams, pass, includes) {
         Raven.captureException(err)
         throw new Error('Unsuccessful registration. Please try again.')
     }
-    eventUserCreated(userLocal.user.id).catch(Raven.captureException)
+    eventUserCreated(userLocal.user.id).catch(Raven.captureException.bind(Raven))
     return userLocal
 }
 
@@ -76,7 +77,7 @@ async function createUserWithoutPassword(userParams) {
 
 async function createUser(user) {
     const userObj = await User.create(user)
-    eventUserCreated(userObj.id).catch(Raven.captureException)
+    eventUserCreated(userObj.id).catch(Raven.captureException.bind(Raven))
     return userObj
 }
 
@@ -87,12 +88,15 @@ async function createUser(user) {
  * @param newValues object has to merge into old user
  * @returns Promise<User>
  */
-async function updateUserById(userid, newValues) {
+async function updateUserById(userid, newValues, opts = {}) {
+    const { 
+      transaction = null 
+    } = opts
     const updated = await User.update(newValues, {
         where: { id: userid },
         returning: true
-    });
-    eventUserUpdated(userid).catch(Raven.captureException)
+    }, { transaction });
+    eventUserUpdated(userid).catch(Raven.captureException.bind(Raven))
     return updated
 }
 
@@ -116,18 +120,21 @@ async function updateUserByParams(whereParams, newValues) {
         attributes: ['id'],
         where: whereParams
     })
-    eventUserUpdated(user.id).catch(Raven.captureException)
+    eventUserUpdated(user.id).catch(Raven.captureException.bind(Raven))
     return updated
 }
 
-function findUserForTrustedClient(trustedClient, userId) {
+function findUserForTrustedClient(trustedClient, userId, query = {}) {
     return User.findOne({
-        attributes: trustedClient ? undefined : ["id", "username", "photo"],
+        attributes: trustedClient ? undefined : ["id", "username", "photo", "graduationYear"],
         where: { id: userId },
-        include: {
+        include: [
+          {
             model: Demographic,
             include: [College, Branch, Address],
-        }
+          },
+          ...(query.include || [])
+        ]
     });
 }
 
@@ -191,6 +198,11 @@ function generateFilter(filterArgs) {
 
 }
 
+async function clearSessionForUser (userId) {
+    return db.query(`DELETE FROM SESSIONS WHERE "userId" = ${+userId}`)
+}
+
+
 module.exports = {
     findAllUsers,
     findUserById,
@@ -200,5 +212,6 @@ module.exports = {
     updateUserByParams,
     findUserForTrustedClient,
     findAllUsersWithFilter,
-    createUserWithoutPassword
+    createUserWithoutPassword,
+    clearSessionForUser
 };

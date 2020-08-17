@@ -73,17 +73,21 @@ module.exports = new GithubStrategy({
                 First ensure there aren't already users with the same email
                 id that comes from Github
                  */
-                const existingUsers = await models.User.findAll({
-                    include: [{
-                        model: models.UserGithub,
-                        attributes: ['id'],
-                        required: false
-                    }],
-                    where: {
-                        email: profileJson.email,
-                        '$usergithub.id$': {$eq: null}
-                    }
-                })
+                let existingUsers = [];
+                if (profileJson.email) {
+                    existingUsers = await models.User.findAll({
+                        include: [{
+                            model: models.UserGithub,
+                            attributes: ['id'],
+                            required: false
+                        }],
+                        where: {
+                            email: profileJson.email,
+                            '$usergithub.id$': {$eq: null}
+                        }
+                    })
+                }
+
                 if (existingUsers && existingUsers.length > 0) {
                     let oldIds = existingUsers.map(eu => eu.id).join(',')
                     return cb(null, false, {
@@ -110,17 +114,20 @@ module.exports = new GithubStrategy({
                         lastname: profileJson.name ? profileJson.name.split(' ').pop() : profileJson.login,
                         email: profileJson.email,
                         referralCode: generateReferralCode(profileJson.email).toUpperCase(),
-                        photo: profileJson.avatar_url
+                        photo: profileJson.avatar_url,
+                        marketing_meta: req.session.marketingMeta
                     }
                 }, {
                     include: [models.User],
                 })
-                req.ga.event({
-                    action: 'signup',
-                    category: 'successful',
-                    label: 'github'
-                }, e => {
-                })
+                req.visitor.event({
+                    ea: 'successful',
+                    ec: 'signup',
+                    el: 'github'
+                }).send()
+
+                req.session.isNewSignup = true
+
                 if (!userGithub) {
                     return cb(null, false, {message: 'Authentication Failed'})
                 }

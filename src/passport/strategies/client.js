@@ -18,7 +18,7 @@ const { findClientById } = require('../../controllers/clients')
  * @param clientSecret
  * @param done
  */
-const verifyClient = async function (clientId, clientSecret, done) {
+const verifyClient = async function (req, clientId, clientSecret, done) {
     try {
         const client = await findClientById(clientId)
 
@@ -28,6 +28,8 @@ const verifyClient = async function (clientId, clientSecret, done) {
         if (client.secret !== clientSecret) {
             return done(null, false)
         }
+        
+        req.client = client.get()
 
         return done(null, client)
 
@@ -41,9 +43,9 @@ const verifyClient = async function (clientId, clientSecret, done) {
  * This is used to authenticate a _client_ with
  * Authorization: Basic <base64(clientId:clientSecret)>
  */
-const basicStrategy = new BasicStrategy(verifyClient)
+const basicStrategy = new BasicStrategy({passReqToCallback: true}, verifyClient)
 
-const clientPasswordStrategy = new ClientPasswordStrategy(verifyClient)
+const clientPasswordStrategy = new ClientPasswordStrategy({passReqToCallback: true}, verifyClient)
 
 
 module.exports = {basicStrategy, clientPasswordStrategy}

@@ -17,12 +17,12 @@ module.exports = new LmsStrategy({
     passReqToCallback: true,
 }, async function (req, accessToken, profile, cb) {
     let profileJson = JSON.parse(profile)
-    req.ga.event({
-        category: 'login',
-        action: 'attempt',
-        label: 'lms',
-        value: profileJson.id
-    })
+    req.visitor.event({
+        ec: 'login',
+        ea: 'attempt',
+        el: 'lms',
+        cd1: profileJson.id
+    }).send()
     Raven.setContext({
         extra: {
             file: 'lmsstrategy'

@@ -265,6 +265,22 @@
         </div>
       </div>
       {{/if}}
+      {{#if user.userdiscord}}
+      <div class="col-md-6 mt-5">
+        <div class="row">
+          <div class="col-4">
+            <i class="fab fa-discord"></i>
+            <span class="font-sm ml-2">Discord</span>
+          </div>
+          <div class="col-8">
+            <span class="font-sm bold salmon mr-2">{{user.userdiscord.username}}</span>
+            <a href="/disconnect/discord">
+              <i class="fas fa-times"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {{/if}}
     </div>
 
     <div class="mt-5">
@@ -292,6 +308,11 @@
       {{#unless user.userlinkedin}}
       <a href="/connect/linkedin" class="ml-sm-5 ml-4">
         <i class="fa-2x fab fa-linkedin-in"></i>
+      </a>
+      {{/unless}}
+      {{#unless user.userdiscord}}
+      <a href="/connect/discord" class="ml-sm-5 ml-4">
+        <i class="fa-2x fab fa-discord"></i>
       </a>
       {{/unless}}
     </div>

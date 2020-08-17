@@ -18,8 +18,8 @@ module.exports = new GoogleStrategy({
     }, async function (req, accessToken, refreshToken, profile, cb) {
         let profileJson = profile._json
         let oldUser = req.user
-        profileJson.email = profileJson.emails[0].value
-        profileJson.username = profileJson.emails[0].value.split('@')[0] //Pre-@ part of first email
+        // profileJson.email = profileJson.emails[0].value
+        profileJson.username = profileJson.email.split('@')[0] //Pre-@ part of first email
         Raven.setContext({extra: {file: 'googlestrategy'}})
         try {
             if (oldUser) {
@@ -29,12 +29,12 @@ module.exports = new GoogleStrategy({
                 connect Google to his account. Let us see if there
                 are any connections to his Google already
                 */
-                const glaccount = await models.UserGoogle.findOne({where: {id: profileJson.id}})
+                const glaccount = await models.UserGoogle.findOne({where: {id: profileJson.sub}})
                 if (glaccount) {
                     throw new Error('Your Google account is already linked with codingblocks account Id: ' + glaccount.dataValues.userId)
                 } else {
                     await models.UserGoogle.upsert({
-                        id: profileJson.id,
+                        id: profileJson.sub,
                         accessToken: accessToken,
                         refreshToken: refreshToken,
                         username: profileJson.username,
@@ -57,7 +57,7 @@ module.exports = new GoogleStrategy({
 
                 let userGoogle = await models.UserGoogle.findOne({
                     include: [models.User],
-                    where: {id: profileJson.id},
+                    where: {id: profileJson.sub},
                 })
                 /*
                 If userGoogle exists then
@@ -70,18 +70,21 @@ module.exports = new GoogleStrategy({
                     First ensure there aren't already users with the same email
                     id that comes from Google
                      */
+                    let existingUsers = [];
+                    if (profileJson.email) {
+                        existingUsers = await models.User.findAll({
+                            include: [{
+                                model: models.UserGoogle,
+                                attributes: ['id'],
+                                required: false
+                            }],
+                            where: {
+                                email: profileJson.email,
+                                '$usergoogle.id$': {$eq: null}
+                            }
+                        })
+                    }
 
-                    const existingUsers = await models.User.findAll({
-                        include: [{
-                            model: models.UserGoogle,
-                            attributes: ['id'],
-                            required: false
-                        }],
-                        where: {
-                            email: profileJson.email,
-                            '$usergoogle.id$': {$eq: null}
-                        }
-                    })
                     if (existingUsers && existingUsers.length > 0) {
                         let oldIds = existingUsers.map(eu => eu.id).join(',')
                         return cb(null, false, {
@@ -97,7 +100,7 @@ module.exports = new GoogleStrategy({
                     const existCount = await models.User.count({where: {username: profileJson.username}})
 
                     userGoogle = await models.UserGoogle.create({
-                        id: profileJson.id,
+                        id: profileJson.sub,
                         accessToken: accessToken,
                         refreshToken: refreshToken,
                         username: profileJson.username,
@@ -105,20 +108,23 @@ module.exports = new GoogleStrategy({
                             username: existCount === 0 ? profileJson.username : profileJson.username + '-g',
                             firstname: profileJson.name.givenName,
                             lastname: profileJson.name.familyName,
-                            photo: profileJson.image.url,
-                            email: profileJson.emails[0].value,
-                            referralCode: generateReferralCode(profileJson.emails[0].value).toUpperCase(),
-                            verifiedemail: profileJson.emails[0].value
+                            photo: profileJson.picture,
+                            email: profileJson.email,
+                            referralCode: generateReferralCode(profileJson.email).toUpperCase(),
+                            verifiedemail: profileJson.email,
+                            marketing_meta: req.session.marketingMeta
                         }
                     }, {
                         include: [models.User],
                     })
-                    req.ga.event({
-                        action: 'signup',
-                        category: 'successful',
-                        label: 'google'
-                    }, e => {
-                    })
+                    req.visitor.event({
+                        ea: 'successful',
+                    ec: 'signup',
+                        el: 'google'
+                    }).send()
+
+                    req.session.isNewSignup = true
+                    
                     if (!userGoogle) {
                         return cb(null, false, {message: 'Authentication Failed'})
                     }

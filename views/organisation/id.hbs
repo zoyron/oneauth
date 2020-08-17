@@ -1,65 +1,67 @@
-<div class="row no-gutters work-area">
-  {{> side-nav}}
-  <div class="col-md-9 py-5 work-area__main-area">
-    <div class="row no-gutters align-items-center justify-content-between">
-      <div class="col-4">
-        <div class="tab-nav-underline w-100 justify-content-start">
-          <div class="tab active px-0 font-md extra-bold">Organisation {{organisation.name}}</div>
-        </div>
-      </div>
-      <a href="/organisations/{{organisation.id}}/edit" class="button-solid lg">
-        Edit Organisation
-      </a>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Name</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold word-wrap">{{organisation.name}}</span>
+{{!< centercolumn}}
+<div class="offset-md-4 col-md-8 c-client-add">
+    <div class="card">
+      <div class="flex-row justify-content-between">
+          <h1 class="heading-u-red">Details for {{organisation.name}}</h1>
+          <div class="button-solid align-self-start">
+              <a class="white" href="/organisations/{{organisation.id}}/edit/">
+                  <button>EDIT ORGANISATION</button>
+              </a>
           </div>
         </div>
+            <div class="attributes d-flex flex-column">
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">ID</div>
+                        <input type="text" class="input-text col-8" value="{{organisation.id}}" disabled/>
+                    </div>
+                <div class="row justify-content-between">
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Name</div>
+                        <input type="text" class="input-text col-8" value="{{organisation.name}}" disabled/>
+                    </div>
+
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Full Name</div>
+                        <input type="text" class="input-text col-8" value="{{organisation.full_name}}" disabled/>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between">
+                  {{#each organisation.domain as |domain|}}
+                    <div class="row no-gutters align-items-center justify-content-between detail-row">
+                        <div class="label-input col-md-4 col-sm-3">Domain</div>
+                        <input type="text" class="input-text col-8" value="{{domain}}" disabled/>
+                    </div>
+                  {{/each}}
+                </div>
+
+                <div class="row justify-content-between">
+                  <div class="row no-gutters align-items-center justify-content-between detail-row">
+                      <div class="label-input col-md-4 col-sm-3">Website</div>
+                      <input type="text" class="input-text col-8" value="{{organisation.website}}" disabled/>
+                  </div>
+                </div>
+
+                <br>
+                <div class="row justify-content-end mt-5">
+                  <div class="reset-button mr-5">
+                    <a class="grey" href="/users/me/organisations/">
+                      <button>BACK </button>
+                    </a>
+                  </div>
+
+                  <div class="button-solid mr-3">
+                    <a class="white" href="/organisations/{{organisation.id}}/member/">
+                      <button>MEMBERS</button>
+                    </a>
+                  </div>
+
+                  <div class="button-solid">
+                    <a class="white" href="/organisations/{{organisation.id}}/admin/">
+                      <button>ADMINS</button>
+                    </a>
+                  </div>
+              </div>
+          </div>
       </div>
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Full Name</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold word-wrap">{{organisation.full_name}}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Website</span>
-          </div>
-          <div class="col-8">
-            <span class="font-sm bold word-wrap">{{organisation.website}}</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 mt-5">
-        <div class="row">
-          <div class="col-4">
-            <span class="font-sm">Domains</span>
-          </div>
-          <div class="col-8">
-            {{#each organisation.domain as |domain index|}}
-              <span class="font-sm bold word-wrap">
-                {{#if index }} , {{/if}}
-                {{domain}}
-              </span>
-            {{/each}}
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div>
 </div>

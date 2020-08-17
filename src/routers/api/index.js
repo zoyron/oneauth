@@ -5,18 +5,24 @@
  */
 const router = require('express').Router()
 const { apiLimiter } = require('../../middlewares/ratelimit')
-router.use((req, res, next) => {
-    res.set('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization')
-    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+const CORS = require('express-cors')
 
-    let origin = req.get('origin') || ""
-    if (origin.indexOf('codingblocks.com') !== -1) {
-        res.set('Access-Control-Allow-Credentials', true)
-        res.set('Access-Control-Allow-Origin', origin)
-    }
+router.use(CORS({
+    allowedOrigins: [
+        '*.codingblocks.com', '*.codingblocks.xyz', 'localhost:*'
+    ],
+    headers: [
+        'X-Requested-With','content-type','Authorization'
+    ],
+    methods: [
+        'GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'
+    ]
+}))
 
-    next()
+router.options('*', (req, res, next) => {
+    res.sendStatus(204)
 })
+
 router.use(apiLimiter)
 router.use('/users', require('./users'))
 router.use('/clients', require('./clients'))
@@ -25,5 +31,7 @@ router.use('/organisations', require('./organisations'))
 router.use('/demographics', require('./demographics'))
 router.use('/signup_check', require('./signupcheck'))
 router.use('/otp', require('./otp'))
+router.use('/colleges', require('./colleges'))
+router.use('/branches', require('./branches'))
 
 module.exports = router

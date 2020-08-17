@@ -18,6 +18,8 @@ const linkedInStrategy = require('./strategy-linkedin');
 
 const otpLoginStrategy = require('./strategy-otp-login');
 
+const discordStrategy = require('./strategy-discord');
+
 module.exports = {
     localStrategy,
     fbStrategy,
@@ -26,5 +28,6 @@ module.exports = {
     googleStrategy,
     linkedInStrategy,
     lmsStrategy,
-    otpLoginStrategy
+    otpLoginStrategy,
+    discordStrategy
 };

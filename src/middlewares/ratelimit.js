@@ -7,7 +7,7 @@ module.exports = {
     }),
     apiLimiter: rateLimit({
         windowMs: 5 * 60 * 1000, // 5 minutes
-        max: 3000 //  per ip
+        max: 300000 //  per ip
     }),
     authLimiter: rateLimit({
         windowMs: 5 * 60 * 1000, // 5 minutes

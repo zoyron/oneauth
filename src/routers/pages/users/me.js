@@ -30,6 +30,12 @@ const {
   parseNumberEntireString,
   validateNumber
 } = require('../../../utils/mobile_validator')
+const { eventUserUpdated } = require("../../../controllers/event/users")
+const { 
+  sessionsCount,
+  authTokensCount
+} = require('../../../controllers/session')
+
 
 router.get('/',
   cel.ensureLoggedIn('/login'),
@@ -42,6 +48,7 @@ router.get('/',
         models.UserLms,
         models.UserTwitter,
         models.UserLinkedin,
+        models.UserDiscord,
         {
           model: models.Demographic,
           include: [
@@ -51,12 +58,29 @@ router.get('/',
           ]
         }
       ]);
+      const sessionCount = await sessionsCount(req.user.id);
+      const authTokenCount = await authTokensCount(req.user.id);
+      const multipleSessions = (sessionCount+authTokenCount > 1) ? true : false
       if (!user) {
         res.redirect('/login')
       }
+
+      if (req.session.isNewSignup) {
+        res.render('user/me', {
+          user: user,
+          addSignupTrackerScript: true,
+          sessionCount: sessionCount+authTokenCount-1,
+          multipleSessions: multipleSessions
+        })
+        return delete req.session.isNewSignup
+      }
+
       return res.render('user/me', {
-        user: user
+        user: user,
+        sessionCount: sessionCount+authTokenCount-1,
+        multipleSessions: multipleSessions
       })
+      
     } catch (error) {
       Raven.captureException(error)
       res.status(500).json({
@@ -93,8 +117,8 @@ router.get('/edit',
         } else {
           user.mobile_number = mobNoSplit[0]
         }
-
       }
+
       const gradYears = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
         2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000]
 
@@ -165,7 +189,19 @@ router.post('/edit',
       req.flash('error', 'Contact number is not a valid number')
       return res.redirect('/users/me/edit')
     }
-
+      if (req.body.whatsapp_number.trim() != '') {
+          try {
+              if (!(validateNumber(parseNumberEntireString(
+                  req.body.dial_code_wa + '-' + req.body.whatsapp_number
+              )))) {
+                  req.flash('error', 'Whatsapp number is not a valid number')
+                  return res.redirect('/users/me/edit')
+              }
+          } catch (e) {
+              req.flash('error', 'Whatsapp number is not a valid number')
+              return res.redirect('/users/me/edit')
+          }
+      }
 
 
     try {
@@ -200,6 +236,9 @@ router.post('/edit',
           user.mobile_number = req.body.dial_code + '-' + req.body.mobile_number
           user.verifiedmobile = null
       }
+        if (req.body.whatsapp_number) {
+            user.whatsapp_number = req.body.dial_code_wa + '-' + req.body.whatsapp_number
+        }
 
       if (!user.verifiedemail && req.body.email !== user.email) {
         user.email = req.body.email
@@ -254,6 +293,12 @@ router.post('/edit',
         })
       }
       res.redirect(returnTo)
+      // do in side effects
+      try {
+        await eventUserUpdated(req.user.id)
+      } catch (hookErr) {
+        Raven.captureException(hookErr)
+      }
     } catch (err) {
       Raven.captureException(err)
       req.flash('error', 'Error in Server')

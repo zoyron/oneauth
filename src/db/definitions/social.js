@@ -47,6 +47,13 @@ module.exports = {
         accessToken: Sequelize.DataTypes.STRING,
         course_identifier: Sequelize.DataTypes.STRING,
         courses: Sequelize.DataTypes.JSONB,
+    },
+
+    discord: {
+      id: {type: Sequelize.DataTypes.BIGINT, primaryKey: true},
+      accessToken: Sequelize.DataTypes.STRING,
+      refreshToken: Sequelize.DataTypes.STRING,
+      username: Sequelize.DataTypes.STRING,
     }
 
 }
